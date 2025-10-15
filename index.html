@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Rafik Khelifa — Trkelnit</title>
+<style>
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; margin:0;background:#efefef;color:#222}
+  header{background:#0f4b4f;color:#fff;padding:18px 36px}
+  header .brand{font-weight:700;font-size:20px}
+  .container{max-width:1100px;margin:36px auto;padding:0 20px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .card{background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 2px 6px rgba(15,15,15,.06)}
+  .card img{width:100%;height:160px;object-fit:cover}
+  .card .body{padding:12px}
+  footer{padding:20px;background:#f6f6f6;text-align:center;color:#444;margin-top:30px}
+  @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:600px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div class="container"><span class="brand">Rafik Khelifa — Trkelnit</span></div></header>
+<main class="container">
+  <section style="margin-bottom:22px">
+    <h1>Hello — I'm Rafik</h1>
+    <p>Freelance developer • Founder of Trkelnit — I build automation, scrapers, and integrations.</p>
+  </section>
+
+  <section>
+    <h2>Selected projects</h2>
+    <div class="grid">
+      <article class="card">
+        <img src="https://images.unsplash.com/photo-1508830524289-0adcbe822b40?auto=format&fit=crop&w=1200&q=60" alt="">
+        <div class="body">
+          <h3>Playwright Scraper</h3>
+          <p>Automated data extraction pipeline — demo with mock data. #Python #Playwright</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://images.unsplash.com/photo-1526378728071-2d0fcb3b0a2e?auto=format&fit=crop&w=1200&q=60" alt="">
+        <div class="body">
+          <h3>Google Sheets Automation</h3>
+          <p>Reports & daily exports using GCP and Apps Script. (sanitized demo)</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=60" alt="">
+        <div class="body">
+          <h3>n8n Integrations</h3>
+          <p>Workflow automation connecting Upwork, CRM and notifications.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+<footer>Contact: your-email@example.com · GitHub: github.com/TrkElnIt</footer>
+</body>
+</html>
