@@ -3,241 +3,57 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>TrkElnIt — Applied AI Systems & Automation Frameworks</title>
+<title>TrkElnIt — AI Systems & Automation Frameworks</title>
 <style>
   :root {
-    --bg-main:#0f172a;
-    --bg-card:#1e253a;
-    --text-primary:#e2e8f0;
-    --text-dim:#94a3b8;
-    --line:#2a334d;
-    --accent:#38bdf8; /* soft cyan accent for CTA */
-    --radius-lg:14px;
+    --nav-bg:#ffffff;
+    --nav-text:#0a1747;
+    --accent:#0a1747;
+    --card-bg:#f5f5f7;
+    --card-border:#d9d9e3;
     --radius-md:10px;
-    --radius-sm:6px;
     --font-main:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
   }
-  *{box-sizing:border-box}
-  body{
-    margin:0;
-    background:var(--bg-main);
-    color:var(--text-primary);
-    font-family:var(--font-main);
-    line-height:1.45;
-  }
-  header{
-    background:var(--bg-main);
-    border-bottom:1px solid rgba(148,163,184,.18);
-    padding:16px 24px;
-    position:sticky;
-    top:0;
-    z-index:10;
-  }
-  nav{
-    max-width:1200px;
-    margin:0 auto;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    font-size:14px;
-  }
-  nav .brand{
-    font-weight:600;
-    color:#fff;
-    font-size:15px;
-    letter-spacing:-.03em;
-  }
-  nav .links a{
-    color:var(--text-dim);
-    text-decoration:none;
-    margin-left:20px;
-  }
-  nav .links a:hover{
-    color:#fff;
-  }
+  *{box-sizing:border-box;scroll-behavior:smooth;}
+  body{margin:0;font-family:var(--font-main);color:#1a1a1a;line-height:1.5;background:#fff;}
+  header{background:var(--nav-bg);border-bottom:1px solid #e4e6ee;padding:16px 24px;position:sticky;top:0;z-index:100;}
+  nav{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
+  .brand{font-weight:600;color:var(--accent);border:2px solid var(--accent);padding:6px 10px;border-radius:4px;}
+  .links a{text-decoration:none;color:var(--nav-text);margin-left:20px;font-weight:500;}
+  .links a:hover{text-decoration:underline;}
+  main{max-width:1200px;margin:0 auto;padding:0 24px 64px;}
 
-  main{
-    max-width:1200px;
-    margin:0 auto;
-    padding:48px 24px 80px;
-  }
+  .hero{position:relative;margin-top:32px;border:1px solid #d0d3e0;border-radius:var(--radius-md);overflow:hidden;min-height:340px;}
+  .hero-bg{background:url('toronto.jpg') center/cover no-repeat;filter:brightness(0.85);width:100%;height:100%;min-height:340px;}
+  .hero-card{background:#fff;color:var(--accent);border-radius:var(--radius-md);box-shadow:0 18px 40px rgba(0,0,0,.15);
+    max-width:520px;border:1px solid #d0d3e0;padding:24px;position:absolute;left:24px;bottom:-24px;}
+  .hero-card h1{margin:0 0 16px;font-size:2rem;font-weight:500;}
+  .hero-card p{margin:0 0 24px;color:#3a3a3a;font-size:0.95rem;}
+  .btn{display:inline-block;padding:10px 16px;border-radius:6px;font-weight:500;text-decoration:none;}
+  .btn-solid{background:var(--accent);color:#fff;}
+  .btn-solid:hover{background:#12236b;}
+  .btn-outline{border:2px solid var(--accent);color:var(--accent);}
+  .btn-outline:hover{background:var(--accent);color:#fff;}
 
-  /* hero */
-  .hero{
-    display:grid;
-    grid-template-columns:1fr;
-    row-gap:24px;
-  }
-  .hero-headline{
-    font-size:1.8rem;
-    font-weight:600;
-    color:#fff;
-    letter-spacing:-.04em;
-    margin:0 0 12px;
-    max-width:800px;
-  }
-  .hero-sub{
-    color:var(--text-dim);
-    font-size:1rem;
-    max-width:780px;
-    line-height:1.5;
-    margin:0 0 24px;
-  }
-  .hero-cta{
-    display:flex;
-    flex-wrap:wrap;
-    gap:12px;
-  }
-  .btn{
-    display:inline-block;
-    font-size:0.9rem;
-    font-weight:500;
-    text-decoration:none;
-    padding:10px 16px;
-    border-radius:var(--radius-md);
-    line-height:1.3;
-    border:1px solid transparent;
-  }
-  .btn-primary{
-    background:var(--accent);
-    color:#0f172a;
-    border-color:var(--accent);
-  }
-  .btn-primary:hover{
-    filter:brightness(1.07);
-  }
-  .btn-outline{
-    background:transparent;
-    color:var(--text-primary);
-    border-color:var(--line);
-  }
-  .btn-outline:hover{
-    border-color:var(--text-primary);
-    color:#fff;
-  }
+  section{padding-top:100px;}
+  .section-intro{text-align:center;margin-bottom:32px;}
+  .section-intro h2{color:var(--accent);margin:0 0 10px;font-size:1.8rem;}
+  .section-intro p{max-width:700px;margin:0 auto;color:#4a4a4a;}
 
-  /* section headers */
-  .section-block{
-    margin-top:56px;
-  }
-  .section-label{
-    font-size:0.8rem;
-    font-weight:600;
-    text-transform:uppercase;
-    letter-spacing:.12em;
-    color:#64748b;
-    margin:0 0 16px;
-  }
-  .section-title{
-    color:#fff;
-    font-size:1.1rem;
-    font-weight:600;
-    letter-spacing:-.03em;
-    margin:0 0 24px;
-  }
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:32px;}
+  .card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius-md);padding:24px;box-shadow:0 8px 20px rgba(0,0,0,.06);}
+  .card h3{color:var(--accent);margin:0 0 12px;}
+  .card p{color:#333;margin:0 0 12px;}
 
-  /* capabilities row */
-  .cap-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));
-    gap:20px;
-  }
-  .cap-card{
-    background:var(--bg-card);
-    border:1px solid rgba(148,163,184,.18);
-    border-radius:var(--radius-lg);
-    padding:20px 20px 16px;
-    min-height:170px;
-  }
-  .cap-title{
-    margin:0 0 10px;
-    font-size:0.95rem;
-    font-weight:600;
-    color:#fff;
-    letter-spacing:-.03em;
-  }
-  .cap-desc{
-    margin:0;
-    font-size:0.9rem;
-    color:var(--text-dim);
-    line-height:1.45;
-  }
+  .industries{background:var(--accent);color:#fff;border-radius:var(--radius-md);padding:32px 24px;margin-top:40px;}
+  .industries h3{margin:0 0 12px;font-size:1.4rem;}
+  .industries p{max-width:700px;margin-bottom:24px;}
+  .tags{display:flex;flex-wrap:wrap;gap:10px;}
+  .tag{background:#fff;color:var(--accent);padding:8px 12px;border-radius:6px;font-size:0.85rem;font-weight:500;}
 
-  /* stack grid */
-  .stack-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));
-    gap:16px;
-  }
-  .stack-card{
-    background:var(--bg-card);
-    border:1px solid rgba(148,163,184,.18);
-    border-radius:var(--radius-md);
-    padding:16px;
-    min-height:150px;
-  }
-  .stack-card h3{
-    margin:0 0 8px;
-    font-size:0.9rem;
-    font-weight:600;
-    color:#fff;
-    letter-spacing:-.03em;
-  }
-  .stack-card p{
-    margin:0;
-    font-size:0.85rem;
-    color:var(--text-dim);
-    line-height:1.4;
-  }
-
-  footer{
-    border-top:1px solid rgba(148,163,184,.18);
-    color:var(--text-dim);
-    font-size:0.8rem;
-    padding:32px 24px 48px;
-    margin-top:64px;
-  }
-  footer .inner{
-    max-width:1200px;
-    margin:0 auto;
-    line-height:1.5;
-  }
-  a.inline{
-    color:var(--text-primary);
-    text-decoration:none;
-  }
-  a.inline:hover{
-    text-decoration:underline;
-  }
-
-  @media(min-width:800px){
-    .hero{
-      grid-template-columns:minmax(0,1fr) minmax(0,400px);
-      column-gap:40px;
-      align-items:start;
-    }
-    .hero-side{
-      border:1px solid rgba(148,163,184,.18);
-      background:var(--bg-card);
-      border-radius:var(--radius-lg);
-      padding:20px 20px 16px;
-      height:max-content;
-    }
-    .hero-side h2{
-      margin:0 0 10px;
-      font-size:0.8rem;
-      font-weight:600;
-      text-transform:uppercase;
-      letter-spacing:.12em;
-      color:#64748b;
-    }
-    .hero-side p{
-      margin:0;
-      font-size:0.9rem;
-      color:var(--text-dim);
-      line-height:1.45;
-    }
-  }
+  footer{border-top:1px solid #d0d3e0;background:#fafafa;padding:32px 24px 64px;text-align:center;color:#555;font-size:0.9rem;}
+  footer a{color:#000;text-decoration:none;font-weight:500;}
+  footer a:hover{text-decoration:underline;}
 </style>
 </head>
 <body>
@@ -246,133 +62,105 @@
   <nav>
     <div class="brand">TrkElnIt</div>
     <div class="links">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="services.html">Services</a>
-      <a href="contact.html">Contact</a>
+      <a href="#why">Why Choose Us</a>
+      <a href="#services">Our Services</a>
+      <a href="#industries">Industries</a>
+      <a href="#stack">Tools & Tech</a>
+      <a href="#contact">Contact</a>
     </div>
   </nav>
 </header>
 
 <main>
-
-  <!-- HERO -->
-  <section class="hero">
-    <div>
-      <h1 class="hero-headline">
-        Applied AI systems & automation frameworks.
-      </h1>
-      <div class="hero-sub">
-        Private automation, document intelligence, and operational visibility — delivered under the TrkElnIt brand by Rafik Khelifa Toudjine.
-      </div>
-
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="services.html">Services</a>
-        <a class="btn btn-outline" href="contact.html">Contact</a>
-      </div>
-    </div>
-
-    <aside class="hero-side">
-      <h2>Focus</h2>
-      <p>
-        AI agents, controlled browser automation, document parsing with LangChain, local LLM (Ollama with Llama / Mistral), reporting surfaces, and deployable infrastructure.
-      </p>
-    </aside>
-  </section>
-
-  <!-- CORE CAPABILITIES -->
-  <section class="section-block">
-    <div class="section-label">Core Capabilities</div>
-    <div class="cap-grid">
-
-      <div class="cap-card">
-        <div class="cap-title">AI Agents & Workflow Intelligence</div>
-        <div class="cap-desc">
-          Task-focused assistants that can understand context, respond, update systems, and close the loop — not generic chatbots.
-        </div>
-      </div>
-
-      <div class="cap-card">
-        <div class="cap-title">Document Intelligence</div>
-        <div class="cap-desc">
-          LangChain pipelines that interpret PDFs, forms, and statements, then return structured fields or summaries you can act on.
-        </div>
-      </div>
-
-      <div class="cap-card">
-        <div class="cap-title">Browser Automation</div>
-        <div class="cap-desc">
-          Playwright-driven automation that signs in, navigates, collects relevant business data, and feeds internal tooling with auditability.
-        </div>
-      </div>
-
-      <div class="cap-card">
-        <div class="cap-title">Dashboards & Reporting Layer</div>
-        <div class="cap-desc">
-          Streamlit dashboards, Google Sheets sync, and PDF exports for finance, ops, compliance and leadership visibility.
-        </div>
-      </div>
-
+  <section class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-card">
+      <h1>AI Systems & Automation Frameworks</h1>
+      <p>Private automation, document intelligence, operational dashboards, and controlled AI execution — delivered by TrkElnIt, founded by Rafik Khelifa Toudjine.</p>
+      <a class="btn btn-solid" href="#services">View Services</a>
+      <a class="btn btn-outline" href="#contact">Contact</a>
     </div>
   </section>
 
-  <!-- STACK -->
-  <section class="section-block">
-    <div class="section-label">Stack</div>
-    <div class="section-title">Technologies in active use</div>
+  <section id="why">
+    <div class="section-intro">
+      <h2>Why Choose Us</h2>
+      <p>We build infrastructure that runs — AI agents, LangChain pipelines, local models via Ollama, and dashboards that bring clarity to automation.</p>
+    </div>
+  </section>
 
-    <div class="stack-grid">
-
-      <div class="stack-card">
-        <h3>FastAPI</h3>
-        <p>Backend services, secure endpoints, API surfaces, business logic, data flow control.</p>
+  <section id="services">
+    <div class="section-intro">
+      <h2>Our Services</h2>
+      <p>Automation, AI integration, and data processing systems built for operational reliability.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <h3>AI Agents & Workflow Intelligence</h3>
+        <p>Task-scoped assistants that update systems and close loops across platforms and APIs.</p>
       </div>
-
-      <div class="stack-card">
-        <h3>n8n</h3>
-        <p>Self-hosted orchestration and scheduling. Event routing, escalation, integration with external systems.</p>
+      <div class="card">
+        <h3>Document Intelligence</h3>
+        <p>LangChain pipelines for parsing PDFs, forms, and reports with private Llama/Mistral inference.</p>
       </div>
-
-      <div class="stack-card">
-        <h3>Playwright</h3>
-        <p>Automation layer for authenticated portals and operational platforms. Reliable, human-like navigation.</p>
+      <div class="card">
+        <h3>Browser Automation</h3>
+        <p>Playwright automation that signs in, extracts data, and executes human-like workflows.</p>
       </div>
-
-      <div class="stack-card">
-        <h3>LangChain / RAG</h3>
-        <p>Document parsing, retrieval, structured extraction, context-grounded answers on client data.</p>
+      <div class="card">
+        <h3>Dashboards & Reporting</h3>
+        <p>Streamlit or Google-powered dashboards and reports for finance, ops, and compliance teams.</p>
       </div>
+    </div>
+  </section>
 
-      <div class="stack-card">
-        <h3>Ollama (Llama / Mistral)</h3>
-        <p>Local LLM inference for privacy-sensitive workflows in finance, healthcare, real estate, and internal ops.</p>
+  <section id="industries">
+    <div class="section-intro">
+      <h2>Industries</h2>
+      <p>We deliver solutions across multiple sectors that demand precision, data integrity, and automation.</p>
+    </div>
+    <div class="industries">
+      <h3>We Support Teams In:</h3>
+      <p>Finance, healthcare operations, real estate, and compliance — where automation and structured intelligence save time and reduce errors.</p>
+      <div class="tags">
+        <div class="tag">Finance</div>
+        <div class="tag">Healthcare</div>
+        <div class="tag">Real Estate</div>
+        <div class="tag">Operations</div>
+        <div class="tag">Compliance</div>
       </div>
+    </div>
+  </section>
 
-      <div class="stack-card">
-        <h3>Streamlit</h3>
-        <p>Internal consoles and dashboards for review, audit, decision support, and live monitoring.</p>
-      </div>
+  <section id="stack">
+    <div class="section-intro">
+      <h2>Tools & Tech</h2>
+      <p>The frameworks and systems that power our solutions — from backend to automation and AI inference.</p>
+    </div>
+    <div class="cards">
+      <div class="card"><h3>FastAPI</h3><p>API backend for services, business logic, and integrations.</p></div>
+      <div class="card"><h3>n8n</h3><p>Workflow orchestration, event routing, and automation scheduling.</p></div>
+      <div class="card"><h3>Playwright</h3><p>Robust browser automation and data extraction.</p></div>
+      <div class="card"><h3>LangChain / RAG</h3><p>AI-powered document parsing and contextual retrieval.</p></div>
+      <div class="card"><h3>Ollama (Llama / Mistral)</h3><p>Local AI inference for privacy-sensitive operations.</p></div>
+      <div class="card"><h3>Streamlit</h3><p>Dashboards for internal visibility and reporting.</p></div>
+      <div class="card"><h3>Google APIs</h3><p>Sheets, Drive, Gmail — integrated reporting and delivery.</p></div>
+      <div class="card"><h3>Oracle Cloud / GCP</h3><p>Cloud deployment for persistent AI agents and workflows.</p></div>
+    </div>
+  </section>
 
-      <div class="stack-card">
-        <h3>Google APIs</h3>
-        <p>Sheets, Drive, Gmail, PDF delivery — automated handoff to operators and leadership.</p>
-      </div>
-
-      <div class="stack-card">
-        <h3>Oracle Cloud / GCP</h3>
-        <p>Deployment targets for services, agents, data pipelines, and persistent automation.</p>
-      </div>
-
+  <section id="contact">
+    <div class="section-intro">
+      <h2>Contact</h2>
+      <p>Get in touch for collaborations, automation projects, or AI integrations.</p>
     </div>
   </section>
 </main>
 
 <footer>
-  <div class="inner">
-    TrkElnIt · Toronto, Canada<br/>
-    <a class="inline" href="https://github.com/TrkElnIt">github.com/TrkElnIt</a> ·
-    <a class="inline" href="mailto:trkelnit@gmail.com">trkelnit@gmail.com</a>
-  </div>
+  TrkElnIt · Toronto, Canada<br/>
+  <a href="https://github.com/TrkElnIt">github.com/TrkElnIt</a> ·
+  <a href="mailto:trkelnit@gmail.com">trkelnit@gmail.com</a>
 </footer>
 
 </body>
