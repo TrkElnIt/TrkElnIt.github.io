@@ -3,58 +3,97 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Rafik Khelifa — Trkelnit</title>
+<title>TrkElnIt — AI Systems & Automation Frameworks</title>
 <style>
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; margin:0;background:#efefef;color:#222}
-  header{background:#0f4b4f;color:#fff;padding:18px 36px}
-  header .brand{font-weight:700;font-size:20px}
-  .container{max-width:1100px;margin:36px auto;padding:0 20px}
-  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-  .card{background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 2px 6px rgba(15,15,15,.06)}
-  .card img{width:100%;height:160px;object-fit:cover}
-  .card .body{padding:12px}
-  footer{padding:20px;background:#f6f6f6;text-align:center;color:#444;margin-top:30px}
-  @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:600px){.grid{grid-template-columns:1fr}}
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:#0f172a;color:#e2e8f0;line-height:1.45}
+  header{background:#0f172a;border-bottom:1px solid rgba(148,163,184,.2);padding:16px 24px;position:sticky;top:0;z-index:10}
+  nav{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+  nav .brand{font-weight:600;color:#fff;font-size:15px;letter-spacing:-.03em}
+  nav .links a{color:#94a3b8;text-decoration:none;margin-left:20px}
+  nav .links a:hover{color:#fff}
+  .wrap{max-width:1100px;margin:48px auto 80px;padding:0 24px}
+  h1{font-size:1.6rem;font-weight:600;color:#fff;letter-spacing:-.04em;margin:0 0 12px}
+  .sub{color:#94a3b8;font-size:0.95rem;max-width:700px}
+  section{margin-top:48px}
+  h2{font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:#64748b;margin:0 0 16px}
+  .stack-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+  .card{background:#1e253a;border:1px solid rgba(148,163,184,.18);border-radius:10px;padding:16px}
+  .card h3{margin:0 0 8px;font-size:0.9rem;font-weight:600;color:#fff;letter-spacing:-.03em}
+  .card p{margin:0;font-size:0.85rem;color:#94a3b8;line-height:1.4}
+  footer{border-top:1px solid rgba(148,163,184,.2);color:#94a3b8;font-size:0.8rem;padding:32px 24px 48px;margin-top:64px}
+  footer .inner{max-width:1100px;margin:0 auto}
+  a.inline{color:#e2e8f0;text-decoration:none}
+  a.inline:hover{text-decoration:underline}
 </style>
 </head>
 <body>
-<header><div class="container"><span class="brand">Rafik Khelifa — Trkelnit</span></div></header>
-<main class="container">
-  <section style="margin-bottom:22px">
-    <h1>Hello — I'm Rafik</h1>
-    <p>Freelance developer • Founder of Trkelnit — I build automation, scrapers, and integrations.</p>
+
+<header>
+  <nav>
+    <div class="brand">TrkElnIt</div>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+  <section>
+    <h1>TrkElnIt — Applied AI Systems & Automation Frameworks</h1>
+    <div class="sub">
+      Independent engineering studio based in Toronto, created by Rafik Khelifa Toudjine.
+      Focus on private automation, AI-driven data handling, and operational visibility.
+    </div>
   </section>
 
   <section>
-    <h2>Selected projects</h2>
-    <div class="grid">
-      <article class="card">
-        <img src="https://images.unsplash.com/photo-1508830524289-0adcbe822b40?auto=format&fit=crop&w=1200&q=60" alt="">
-        <div class="body">
-          <h3>Playwright Scraper</h3>
-          <p>Automated data extraction pipeline — demo with mock data. #Python #Playwright</p>
-        </div>
-      </article>
-
-      <article class="card">
-        <img src="https://images.unsplash.com/photo-1526378728071-2d0fcb3b0a2e?auto=format&fit=crop&w=1200&q=60" alt="">
-        <div class="body">
-          <h3>Google Sheets Automation</h3>
-          <p>Reports & daily exports using GCP and Apps Script. (sanitized demo)</p>
-        </div>
-      </article>
-
-      <article class="card">
-        <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=60" alt="">
-        <div class="body">
-          <h3>n8n Integrations</h3>
-          <p>Workflow automation connecting Upwork, CRM and notifications.</p>
-        </div>
-      </article>
+    <h2>Core Stack</h2>
+    <div class="stack-grid">
+      <div class="card">
+        <h3>Python / FastAPI</h3>
+        <p>Backend services, secure endpoints, business logic, data flow control.</p>
+      </div>
+      <div class="card">
+        <h3>n8n</h3>
+        <p>Self-hosted orchestration layer for routing events, triggers, integrations and scheduled workflows.</p>
+      </div>
+      <div class="card">
+        <h3>Playwright Automation</h3>
+        <p>Browser automations that can sign in, navigate systems, collect structured data, and interact safely with portals.</p>
+      </div>
+      <div class="card">
+        <h3>LangChain + RAG</h3>
+        <p>Document parsing, structured extraction, retrieval, and contextual QA over client data.</p>
+      </div>
+      <div class="card">
+        <h3>Ollama (Llama / Mistral)</h3>
+        <p>Local LLMs for private inference, classification, and reasoning without sending data to external providers.</p>
+      </div>
+      <div class="card">
+        <h3>Streamlit / Reporting Layer</h3>
+        <p>Internal dashboards, review consoles, audit views, PDF / XLS export for ops and leadership.</p>
+      </div>
+      <div class="card">
+        <h3>Google APIs</h3>
+        <p>Sheets, Drive, Gmail integration for delivery, handoff, and daily reporting to stakeholders.</p>
+      </div>
+      <div class="card">
+        <h3>Oracle Cloud & GCP</h3>
+        <p>Deployment targets for services, schedulers, agents, and monitoring — cost-efficient and controlled.</p>
+      </div>
     </div>
   </section>
 </main>
-<footer>Contact: your-email@example.com · GitHub: github.com/TrkElnIt</footer>
+
+<footer>
+  <div class="inner">
+    TrkElnIt · Toronto, Canada<br/>
+    github.com/TrkElnIt · <a class="inline" href="mailto:trkelnit@gmail.com">trkelnit@gmail.com</a>
+  </div>
+</footer>
+
 </body>
 </html>
