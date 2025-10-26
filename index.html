@@ -6,61 +6,395 @@
 <title>TrkElnIt — AI Systems & Automation Frameworks</title>
 <style>
   :root {
-    --nav-bg:#ffffff;
-    --nav-text:#0a1747;
-    --accent:#0a1747;
-    --card-bg:#f5f5f7;
-    --card-border:#d9d9e3;
+    --accent:#0a0a0a;         /* black for headings, buttons, nav text */
+    --border:#d0d3e0;         /* light gray border */
+    --bg-card:#ffffff;
+    --bg-page:#ffffff;
+    --bg-soft:#f5f5f7;
+    --text-main:#111111;
+    --text-dim:#444444;
     --radius-md:10px;
+    --radius-lg:14px;
+    --radius-sm:6px;
     --font-main:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
   }
-  *{box-sizing:border-box;scroll-behavior:smooth;}
-  body{margin:0;font-family:var(--font-main);color:#1a1a1a;line-height:1.5;background:#fff;}
-  header{background:var(--nav-bg);border-bottom:1px solid #e4e6ee;padding:16px 24px;position:sticky;top:0;z-index:100;}
-  nav{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
-  .brand{font-weight:600;color:var(--accent);border:2px solid var(--accent);padding:6px 10px;border-radius:4px;}
-  .links a{text-decoration:none;color:var(--nav-text);margin-left:20px;font-weight:500;}
-  .links a:hover{text-decoration:underline;}
-  main{max-width:1200px;margin:0 auto;padding:0 24px 64px;}
 
-  .hero{position:relative;margin-top:32px;border:1px solid #d0d3e0;border-radius:var(--radius-md);overflow:hidden;min-height:340px;}
-  .hero-bg{background:url('toronto.jpg') center/cover no-repeat;filter:brightness(0.85);width:100%;height:100%;min-height:340px;}
-  .hero-card{background:#fff;color:var(--accent);border-radius:var(--radius-md);box-shadow:0 18px 40px rgba(0,0,0,.15);
-    max-width:520px;border:1px solid #d0d3e0;padding:24px;position:absolute;left:24px;bottom:-24px;}
-  .hero-card h1{margin:0 0 16px;font-size:2rem;font-weight:500;}
-  .hero-card p{margin:0 0 24px;color:#3a3a3a;font-size:0.95rem;}
-  .btn{display:inline-block;padding:10px 16px;border-radius:6px;font-weight:500;text-decoration:none;}
-  .btn-solid{background:var(--accent);color:#fff;}
-  .btn-solid:hover{background:#12236b;}
-  .btn-outline{border:2px solid var(--accent);color:var(--accent);}
-  .btn-outline:hover{background:var(--accent);color:#fff;}
+  *{
+    box-sizing:border-box;
+    scroll-behavior:smooth;
+  }
 
-  section{padding-top:100px;}
-  .section-intro{text-align:center;margin-bottom:32px;}
-  .section-intro h2{color:var(--accent);margin:0 0 10px;font-size:1.8rem;}
-  .section-intro p{max-width:700px;margin:0 auto;color:#4a4a4a;}
+  body{
+    margin:0;
+    background:var(--bg-page);
+    color:var(--text-main);
+    font-family:var(--font-main);
+    line-height:1.5;
+  }
 
-  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:32px;}
-  .card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius-md);padding:24px;box-shadow:0 8px 20px rgba(0,0,0,.06);}
-  .card h3{color:var(--accent);margin:0 0 12px;}
-  .card p{color:#333;margin:0 0 12px;}
+  /* NAVBAR */
+  header{
+    background:#fff;
+    border-bottom:1px solid var(--border);
+    padding:12px 24px;
+    position:sticky;
+    top:0;
+    z-index:2000;
+  }
 
-  .industries{background:var(--accent);color:#fff;border-radius:var(--radius-md);padding:32px 24px;margin-top:40px;}
-  .industries h3{margin:0 0 12px;font-size:1.4rem;}
-  .industries p{max-width:700px;margin-bottom:24px;}
-  .tags{display:flex;flex-wrap:wrap;gap:10px;}
-  .tag{background:#fff;color:var(--accent);padding:8px 12px;border-radius:6px;font-size:0.85rem;font-weight:500;}
+  nav{
+    max-width:1200px;
+    margin:0 auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    row-gap:12px;
+  }
 
-  footer{border-top:1px solid #d0d3e0;background:#fafafa;padding:32px 24px 64px;text-align:center;color:#555;font-size:0.9rem;}
-  footer a{color:#000;text-decoration:none;font-weight:500;}
-  footer a:hover{text-decoration:underline;}
+  .brand-area{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .brand-logo{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    background:#000;
+    overflow:hidden;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .brand-logo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:50%;
+    display:block;
+  }
+
+  .brand-text{
+    font-size:15px;
+    font-weight:600;
+    color:var(--accent);
+    letter-spacing:-0.03em;
+  }
+
+  .links a{
+    color:var(--accent);
+    text-decoration:none;
+    margin-left:20px;
+    font-weight:500;
+    font-size:14px;
+  }
+
+  .links a:hover{
+    text-decoration:underline;
+  }
+
+  main{
+    max-width:1200px;
+    margin:0 auto;
+    padding:0 24px 64px;
+  }
+
+  /* HERO SECTION */
+  .hero-shell{
+    margin-top:32px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-md);
+    overflow:hidden;
+    background:#000;
+    position:relative;
+  }
+
+  .hero-bg{
+    /* Toronto skyline background */
+    background:url('toronto.jpg') center center / cover no-repeat;
+    width:100%;
+    min-height:340px;
+    filter:brightness(0.9);
+  }
+
+  .hero-card{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    box-shadow:0 18px 40px rgba(0,0,0,.12);
+    border-radius:var(--radius-md);
+    max-width:520px;
+    padding:24px 24px 20px;
+    position:absolute;
+    left:24px;
+    bottom:24px;
+  }
+
+  .hero-title{
+    margin:0 0 16px;
+    font-size:2rem;
+    font-weight:600;
+    line-height:1.2;
+    color:var(--accent);
+    letter-spacing:-.04em;
+  }
+
+  .hero-text{
+    margin:0 0 20px;
+    color:var(--text-dim);
+    font-size:0.95rem;
+    line-height:1.5;
+  }
+
+  .hero-cta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+
+  .btn{
+    display:inline-block;
+    font-size:0.9rem;
+    font-weight:500;
+    text-decoration:none;
+    line-height:1.3;
+    padding:10px 16px;
+    border-radius:var(--radius-sm);
+    border:2px solid transparent;
+    cursor:pointer;
+  }
+
+  .btn-solid{
+    background:var(--accent);
+    color:#fff;
+    border-color:var(--accent);
+  }
+
+  .btn-solid:hover{
+    background:#000;
+    border-color:#000;
+  }
+
+  .btn-outline{
+    background:#fff;
+    color:var(--accent);
+    border:2px solid var(--accent);
+  }
+
+  .btn-outline:hover{
+    background:#000;
+    color:#fff;
+  }
+
+  /* GENERIC SECTION BLOCK */
+  section{
+    padding-top:96px;
+  }
+
+  .section-intro{
+    text-align:center;
+    margin-bottom:32px;
+    max-width:800px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  .section-headline{
+    font-size:1.8rem;
+    font-weight:600;
+    line-height:1.2;
+    letter-spacing:-.04em;
+    color:var(--accent);
+    margin:0 0 12px;
+  }
+
+  .section-copy{
+    color:var(--text-dim);
+    font-size:0.95rem;
+    line-height:1.5;
+    margin:0;
+  }
+
+  /* SERVICES / CAPABILITIES */
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));
+    gap:24px;
+    margin-top:32px;
+  }
+
+  .card{
+    background:var(--bg-soft);
+    border:1px solid var(--border);
+    border-radius:var(--radius-md);
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+    padding:24px;
+    min-height:200px;
+  }
+
+  .card h3{
+    margin:0 0 12px;
+    font-size:1.15rem;
+    font-weight:600;
+    line-height:1.3;
+    color:var(--accent);
+    letter-spacing:-.03em;
+  }
+
+  .card p{
+    margin:0;
+    color:var(--text-dim);
+    font-size:0.95rem;
+    line-height:1.45;
+  }
+
+  /* INDUSTRIES BLOCK */
+  .industries-wrap{
+    background:#000;
+    color:#fff;
+    border-radius:var(--radius-md);
+    padding:32px 24px;
+    margin-top:40px;
+    border:1px solid #000;
+  }
+
+  .industries-head{
+    margin:0 0 12px;
+    font-size:1.4rem;
+    font-weight:600;
+    color:#fff;
+    line-height:1.3;
+    letter-spacing:-.03em;
+  }
+
+  .industries-desc{
+    margin:0 0 24px;
+    color:#d1d1d1;
+    font-size:0.95rem;
+    line-height:1.45;
+    max-width:800px;
+  }
+
+  .industries-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  .industry-pill{
+    background:#fff;
+    color:#000;
+    border-radius:var(--radius-sm);
+    font-size:0.8rem;
+    font-weight:500;
+    line-height:1.3;
+    padding:8px 12px;
+    border:2px solid #fff;
+  }
+
+  /* STACK GRID */
+  .stack-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));
+    gap:24px;
+    margin-top:32px;
+  }
+
+  .stack-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:var(--radius-md);
+    padding:20px;
+    min-height:160px;
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+  }
+
+  .stack-card h3{
+    margin:0 0 8px;
+    font-size:1rem;
+    font-weight:600;
+    color:var(--accent);
+    letter-spacing:-.03em;
+  }
+
+  .stack-card p{
+    margin:0;
+    color:var(--text-dim);
+    font-size:0.9rem;
+    line-height:1.45;
+  }
+
+  /* CONTACT SECTION */
+  .contact-blurb{
+    text-align:center;
+    font-size:0.95rem;
+    color:var(--text-dim);
+    max-width:700px;
+    margin:0 auto;
+    line-height:1.5;
+  }
+
+  /* FOOTER */
+  footer{
+    border-top:1px solid var(--border);
+    background:#fafafa;
+    padding:32px 24px 64px;
+    color:#555;
+    font-size:0.9rem;
+    text-align:center;
+    margin-top:96px;
+  }
+
+  footer a{
+    color:#000;
+    text-decoration:none;
+    font-weight:500;
+  }
+
+  footer a:hover{
+    text-decoration:underline;
+  }
+
+  /* RESPONSIVE hero on mobile */
+  @media(max-width:700px){
+    .hero-card{
+      position:static;
+      border-radius:0;
+      border-left:0;
+      border-right:0;
+      border-bottom:0;
+      max-width:100%;
+      box-shadow:none;
+      border-top:4px solid #000;
+      margin:0;
+    }
+
+    .hero-shell{
+      border-radius:var(--radius-md);
+      overflow:hidden;
+    }
+
+    .hero-bg{
+      min-height:240px;
+    }
+  }
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <header>
   <nav>
-    <div class="brand">TrkElnIt</div>
+    <div class="brand-area">
+      <div class="brand-logo">
+        <img src="logo.png" alt="TrkElnIt logo"/>
+      </div>
+      <div class="brand-text">TrkElnIt</div>
+    </div>
+
     <div class="links">
       <a href="#why">Why Choose Us</a>
       <a href="#services">Our Services</a>
@@ -72,89 +406,146 @@
 </header>
 
 <main>
-  <section class="hero" id="hero">
+
+  <!-- HERO -->
+  <section class="hero-shell" id="hero">
     <div class="hero-bg"></div>
+
     <div class="hero-card">
-      <h1>AI Systems & Automation Frameworks</h1>
-      <p>Private automation, document intelligence, operational dashboards, and controlled AI execution — delivered by TrkElnIt, founded by Rafik Khelifa Toudjine.</p>
-      <a class="btn btn-solid" href="#services">View Services</a>
-      <a class="btn btn-outline" href="#contact">Contact</a>
+      <h1 class="hero-title">AI Systems &amp; Automation Frameworks</h1>
+      <p class="hero-text">
+        Private automation, document intelligence, operational dashboards,
+        and controlled AI execution — delivered by TrkElnIt, founded by Rafik
+        Khelifa Toudjine.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-solid" href="#services">View Services</a>
+        <a class="btn btn-outline" href="#contact">Contact</a>
+      </div>
     </div>
   </section>
 
+  <!-- WHY CHOOSE US -->
   <section id="why">
     <div class="section-intro">
-      <h2>Why Choose Us</h2>
-      <p>We build infrastructure that runs — AI agents, LangChain pipelines, local models via Ollama, and dashboards that bring clarity to automation.</p>
+      <h2 class="section-headline">Why Choose Us</h2>
+      <p class="section-copy">
+        We build infrastructure that runs — AI agents, LangChain pipelines,
+        local models via Ollama, and dashboards that bring clarity to automation.
+      </p>
     </div>
   </section>
 
+  <!-- SERVICES -->
   <section id="services">
     <div class="section-intro">
-      <h2>Our Services</h2>
-      <p>Automation, AI integration, and data processing systems built for operational reliability.</p>
+      <h2 class="section-headline">Our Services</h2>
+      <p class="section-copy">
+        Focus areas built for reliability, observability, and handoff.
+      </p>
     </div>
+
     <div class="cards">
       <div class="card">
-        <h3>AI Agents & Workflow Intelligence</h3>
-        <p>Task-scoped assistants that update systems and close loops across platforms and APIs.</p>
+        <h3>AI Agents &amp; Workflow Intelligence</h3>
+        <p>Task-scoped assistants that update systems, follow context, and close loops across platforms.</p>
       </div>
       <div class="card">
         <h3>Document Intelligence</h3>
-        <p>LangChain pipelines for parsing PDFs, forms, and reports with private Llama/Mistral inference.</p>
+        <p>LangChain pipelines that parse PDFs, forms, and statements, including private Llama / Mistral inference via Ollama.</p>
       </div>
       <div class="card">
         <h3>Browser Automation</h3>
-        <p>Playwright automation that signs in, extracts data, and executes human-like workflows.</p>
+        <p>Playwright automation that signs in, navigates, and captures the data teams actually depend on.</p>
       </div>
       <div class="card">
-        <h3>Dashboards & Reporting</h3>
-        <p>Streamlit or Google-powered dashboards and reports for finance, ops, and compliance teams.</p>
+        <h3>Dashboards &amp; Reporting</h3>
+        <p>Streamlit dashboards and scheduled reports for finance, ops, compliance, and leadership visibility.</p>
       </div>
     </div>
   </section>
 
+  <!-- INDUSTRIES -->
   <section id="industries">
     <div class="section-intro">
-      <h2>Industries</h2>
-      <p>We deliver solutions across multiple sectors that demand precision, data integrity, and automation.</p>
+      <h2 class="section-headline">Industries</h2>
+      <p class="section-copy">
+        High-accuracy, high-friction workflows where automation + intelligence = advantage.
+      </p>
     </div>
-    <div class="industries">
-      <h3>We Support Teams In:</h3>
-      <p>Finance, healthcare operations, real estate, and compliance — where automation and structured intelligence save time and reduce errors.</p>
-      <div class="tags">
-        <div class="tag">Finance</div>
-        <div class="tag">Healthcare</div>
-        <div class="tag">Real Estate</div>
-        <div class="tag">Operations</div>
-        <div class="tag">Compliance</div>
+
+    <div class="industries-wrap">
+      <div class="industries-head">We support teams in:</div>
+      <div class="industries-desc">
+        Finance, healthcare-style document operations, real estate deal intelligence,
+        and operations / compliance environments that need traceable, controlled execution.
+      </div>
+
+      <div class="industries-tags">
+        <div class="industry-pill">Finance</div>
+        <div class="industry-pill">Healthcare</div>
+        <div class="industry-pill">Real Estate</div>
+        <div class="industry-pill">Operations</div>
+        <div class="industry-pill">Compliance</div>
       </div>
     </div>
   </section>
 
+  <!-- STACK / TOOLS -->
   <section id="stack">
     <div class="section-intro">
-      <h2>Tools & Tech</h2>
-      <p>The frameworks and systems that power our solutions — from backend to automation and AI inference.</p>
+      <h2 class="section-headline">Tools &amp; Tech</h2>
+      <p class="section-copy">
+        Backend, orchestration, AI reasoning, browser control, reporting, and deployment.
+      </p>
     </div>
-    <div class="cards">
-      <div class="card"><h3>FastAPI</h3><p>API backend for services, business logic, and integrations.</p></div>
-      <div class="card"><h3>n8n</h3><p>Workflow orchestration, event routing, and automation scheduling.</p></div>
-      <div class="card"><h3>Playwright</h3><p>Robust browser automation and data extraction.</p></div>
-      <div class="card"><h3>LangChain / RAG</h3><p>AI-powered document parsing and contextual retrieval.</p></div>
-      <div class="card"><h3>Ollama (Llama / Mistral)</h3><p>Local AI inference for privacy-sensitive operations.</p></div>
-      <div class="card"><h3>Streamlit</h3><p>Dashboards for internal visibility and reporting.</p></div>
-      <div class="card"><h3>Google APIs</h3><p>Sheets, Drive, Gmail — integrated reporting and delivery.</p></div>
-      <div class="card"><h3>Oracle Cloud / GCP</h3><p>Cloud deployment for persistent AI agents and workflows.</p></div>
+
+    <div class="stack-grid">
+      <div class="stack-card">
+        <h3>FastAPI</h3>
+        <p>Backend services, secure endpoints, and business logic.</p>
+      </div>
+      <div class="stack-card">
+        <h3>n8n</h3>
+        <p>Workflow orchestration, triggers, integrations, and scheduling.</p>
+      </div>
+      <div class="stack-card">
+        <h3>Playwright</h3>
+        <p>Browser automation for authenticated systems and operational portals.</p>
+      </div>
+      <div class="stack-card">
+        <h3>LangChain / RAG</h3>
+        <p>Document parsing, retrieval, structured extraction, and contextual QA.</p>
+      </div>
+      <div class="stack-card">
+        <h3>Ollama (Llama / Mistral)</h3>
+        <p>Local LLM inference for privacy-sensitive workloads and internal assistants.</p>
+      </div>
+      <div class="stack-card">
+        <h3>Streamlit</h3>
+        <p>Internal dashboards, review panels, and decision surfaces for ops and finance.</p>
+      </div>
+      <div class="stack-card">
+        <h3>Google APIs</h3>
+        <p>Sheets, Drive, Gmail, PDF output, scheduled handoff to stakeholders.</p>
+      </div>
+      <div class="stack-card">
+        <h3>Oracle Cloud / GCP</h3>
+        <p>Runtime for agents, services, reporting jobs, and persistent automation.</p>
+      </div>
     </div>
   </section>
 
+  <!-- CONTACT -->
   <section id="contact">
     <div class="section-intro">
-      <h2>Contact</h2>
-      <p>Get in touch for collaborations, automation projects, or AI integrations.</p>
+      <h2 class="section-headline">Contact</h2>
+      <p class="section-copy contact-blurb">
+        For collaboration, automation builds, AI deployment, or systems work: reach out with context and scope.
+      </p>
     </div>
   </section>
+
 </main>
 
 <footer>
