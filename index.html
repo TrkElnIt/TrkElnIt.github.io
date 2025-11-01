@@ -68,15 +68,28 @@
     align-items:center;
     justify-content:center;
     box-shadow:0 10px 26px rgba(0,0,0,.2);
+    position:relative;
   }
 
   .brand-logo img{
-    width:132%;
-    height:132%;
-    object-fit:contain;
+    width:115%;
+    height:115%;
+    object-fit:cover;
     display:block;
-    filter:brightness(2.1) contrast(1.35);
-    transform:translateY(1%);
+    opacity:0.55;
+  }
+
+  .brand-logo::after{
+    content:"TrkElnIt";
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#f7f7f7;
+    font-size:18px;
+    font-weight:500;
+    letter-spacing:0.02em;
   }
 
   .brand-text{
