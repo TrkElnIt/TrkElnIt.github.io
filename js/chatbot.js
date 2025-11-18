@@ -10,15 +10,8 @@ if (!sessionId) {
 }
 
 let conversationHistory = [];
-try {
-  const stored = localStorage.getItem(HISTORY_STORAGE_KEY);
-  conversationHistory = stored ? JSON.parse(stored) : [];
-} catch (err) {
-  conversationHistory = [];
-}
-
 const persistHistory = () => {
-  localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(conversationHistory));
+  // no-op: history is kept in-memory only so UI resets when the page reloads
 };
 
 /* ---------- shared helpers ---------- */
