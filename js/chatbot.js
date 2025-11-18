@@ -14,6 +14,18 @@ const persistHistory = () => {
   // no-op: history is kept in-memory only so UI resets when the page reloads
 };
 
+let sessionMeta = null;
+const sessionMetaPromise = fetch(`${API_BASE_URL}/chat/session/${sessionId}`)
+  .then(async (resp) => {
+    if (!resp.ok) return null;
+    return await resp.json();
+  })
+  .then((data) => {
+    sessionMeta = data;
+    return data;
+  })
+  .catch(() => null);
+
 /* ---------- shared helpers ---------- */
 async function sendMessage(message) {
   const resp = await fetch(`${API_BASE_URL}/chat/`, {
@@ -104,15 +116,27 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
     );
   }
 
-  const openPanel = () => {
+  const openPanel = async () => {
     panel.classList.remove('hidden');
     toggleBtn.classList.add('hidden');
     if (!greeted) {
-      appendMessage(
-        logEl,
-        'bot',
-        "Hello! I'm TrkElnIt's assistant. Tell me a bit about your project and I'll help however I can."
-      );
+      await sessionMetaPromise;
+      if (sessionMeta && sessionMeta.client_name) {
+        const topicLine = sessionMeta.topic
+          ? ` We last discussed “${sessionMeta.topic}.” Mention it if you'd like to continue.`
+          : '';
+        appendMessage(
+          logEl,
+          'bot',
+          `Hi ${sessionMeta.client_name}! Would you like to continue where we stopped or start something new?${topicLine}`
+        );
+      } else {
+        appendMessage(
+          logEl,
+          'bot',
+          "Hello! I'm TrkElnIt's assistant. Tell me a bit about your project and I'll help however I can."
+        );
+      }
       greeted = true;
     }
     inputEl.focus();
