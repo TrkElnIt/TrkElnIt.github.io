@@ -120,7 +120,18 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
     panel.classList.remove('hidden');
     toggleBtn.classList.add('hidden');
     if (!greeted) {
-      await sessionMetaPromise;
+      let meta = null;
+      try {
+        meta = await Promise.race([
+          sessionMetaPromise,
+          new Promise((resolve) => setTimeout(() => resolve(null), 1200)),
+        ]);
+      } catch (err) {
+        meta = null;
+      }
+      if (meta) {
+        sessionMeta = meta;
+      }
       if (sessionMeta && sessionMeta.client_name) {
         const topicLine = sessionMeta.topic
           ? ` We last discussed “${sessionMeta.topic}.” Mention it if you'd like to continue.`
