@@ -1,21 +1,14 @@
 import { API_BASE_URL } from './apiConfig.js';
 
-const SESSION_STORAGE_KEY = 'trkChatSession';
-const HISTORY_STORAGE_KEY = 'trkChatHistory';
-
-let sessionId = localStorage.getItem(SESSION_STORAGE_KEY);
-if (!sessionId) {
-  sessionId = crypto.randomUUID();
-  localStorage.setItem(SESSION_STORAGE_KEY, sessionId);
-}
-
 let conversationHistory = [];
 const persistHistory = () => {
   // no-op: history is kept in-memory only so UI resets when the page reloads
 };
 
 let sessionMeta = null;
-const sessionMetaPromise = fetch(`${API_BASE_URL}/chat/session/${sessionId}`)
+const sessionMetaPromise = fetch(`${API_BASE_URL}/chat/session`, {
+  credentials: 'include',
+})
   .then(async (resp) => {
     if (!resp.ok) return null;
     return await resp.json();
@@ -30,9 +23,9 @@ const sessionMetaPromise = fetch(`${API_BASE_URL}/chat/session/${sessionId}`)
 async function sendMessage(message) {
   const resp = await fetch(`${API_BASE_URL}/chat/`, {
     method: 'POST',
+    credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      session_id: sessionId,
       message,
       history: conversationHistory,
     }),
