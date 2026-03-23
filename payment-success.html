@@ -1,7 +1,80 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" /><title>Payment Success — TrkElnIt</title><link rel="stylesheet" href="css/main.css" /></head><body>
-<div class="utility-bar"><div class="container"><span>Payments</span><span>Stripe return page</span><a href="contact.html">Contact</a></div></div>
-<header class="site-header"><div class="container"><a class="brand" href="index.html"><div class="brand-mark">TRK</div><div class="brand-text"><strong>TrkElnIt</strong><span>Enterprise automation systems</span></div></a><nav class="nav-links"><a href="services.html" data-nav-current>Services</a><a href="solutions.html" data-nav-current>Solutions</a><a href="industries.html" data-nav-current>Industries</a><a href="portfolio.html" data-nav-current>Work</a><a href="pricing.html" data-nav-current>Pricing</a><a href="contact.html" data-nav-current>Contact</a></nav><div class="header-cta"><a class="button-secondary" href="order.html">Request quote</a></div></div></header>
-<section class="section"><div class="container"><div class="legal-shell"><span class="badge">Payment received</span><h1 style="margin-top:18px;">Payment submitted successfully.</h1><p class="section-copy">Once Stripe backend wiring is completed, this page should show the confirmed session details and next delivery step. For now it serves as the return destination page.</p><div class="hero-actions"><a class="button" href="contact.html">Contact TrkElnIt</a><a class="button-secondary" href="index.html">Return home</a></div></div></div></section>
-<footer class="site-footer"><div class="footer-bottom"><div class="container"><div>© <span data-current-year></span> TrkElnIt</div><ul class="legal-links"><li><a href="privacy.html">Privacy notice</a></li><li><a href="terms.html">Terms of use</a></li><li><a href="cookies.html">Cookie notice</a></li></ul></div></div></footer><script src="js/main.js"></script><script src="js/navigation.js"></script>
-</body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Payment Success — TrkElnIt</title>
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+  <div class="utility-bar">
+    <div class="container">
+      <span>Payments</span>
+      <span>Stripe return page</span>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">TRK</div>
+        <div class="brand-text">
+          <strong>TrkElnIt</strong>
+          <span>Enterprise automation systems</span>
+        </div>
+      </a>
+      <nav class="nav-links">
+        <a href="services.html" data-nav-current>Services</a>
+        <a href="solutions.html" data-nav-current>Solutions</a>
+        <a href="industries.html" data-nav-current>Industries</a>
+        <a href="portfolio.html" data-nav-current>Work</a>
+        <a href="pricing.html" data-nav-current>Pricing</a>
+        <a href="contact.html" data-nav-current>Contact</a>
+      </nav>
+      <div class="header-cta">
+        <a class="button-secondary" href="order.html">Request quote</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="container">
+      <div class="legal-shell">
+        <span class="badge">Payment received</span>
+        <h1 style="margin-top:18px;">Payment submitted successfully.</h1>
+        <p class="section-copy" id="payment-success-copy">
+          TrkElnIt is loading the confirmed order and payment details from the CRM.
+        </p>
+
+        <div id="payment-success-status" style="margin:20px 0 8px;color:#7c89b2;">Loading payment record...</div>
+
+        <div id="payment-success-details" style="display:grid;gap:12px;margin:24px 0;"></div>
+
+        <div class="hero-actions">
+          <a class="button" href="contact.html">Contact TrkElnIt</a>
+          <a class="button-secondary" href="index.html">Return home</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-bottom">
+      <div class="container">
+        <div>© <span data-current-year></span> TrkElnIt</div>
+        <ul class="legal-links">
+          <li><a href="privacy.html">Privacy notice</a></li>
+          <li><a href="terms.html">Terms of use</a></li>
+          <li><a href="cookies.html">Cookie notice</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/navigation.js"></script>
+  <script type="module" src="js/apiConfig.js"></script>
+  <script type="module" src="js/payment-success.js"></script>
+</body>
+</html>
