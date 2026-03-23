@@ -1,112 +1,232 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Services — TrkElnIt</title>
-<style>
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:#0f172a;color:#e2e8f0;line-height:1.5}
-  header{background:#0f172a;border-bottom:1px solid rgba(148,163,184,.2);padding:16px 24px;position:sticky;top:0;z-index:10}
-  nav{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;font-size:14px;gap:16px}
-  nav .brand{font-weight:600;color:#fff;font-size:15px;letter-spacing:-.03em}
-  nav .links{display:flex;gap:20px;flex-wrap:wrap;justify-content:flex-end}
-  nav .links a{color:#94a3b8;text-decoration:none}
-  nav .links a:hover{color:#fff}
-  .wrap{max-width:1100px;margin:48px auto 80px;padding:0 24px}
-  h1{font-size:1.5rem;font-weight:600;color:#fff;letter-spacing:-.04em;margin:0 0 24px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
-  .card{background:#1e253a;border:1px solid rgba(148,163,184,.18);border-radius:10px;padding:20px}
-  .card h2{margin:0 0 10px;font-size:1rem;font-weight:600;color:#fff;letter-spacing:-.03em}
-  .card p{margin:0;color:#94a3b8;font-size:0.9rem;line-height:1.45}
-  footer{border-top:1px solid rgba(148,163,184,.2);color:#94a3b8;font-size:0.8rem;padding:32px 24px 48px;margin-top:64px}
-  footer .inner{max-width:1100px;margin:0 auto}
-  a.inline{color:#e2e8f0;text-decoration:none}
-  a.inline:hover{text-decoration:underline}
-  @media(max-width:640px){
-    nav{flex-direction:column;align-items:flex-start}
-    nav .links{width:100%;justify-content:flex-start;gap:12px}
-    .wrap{margin:32px auto 64px}
-    h1{font-size:1.3rem}
-    .grid{grid-template-columns:1fr}
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Products & Services — TrkElnIt</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/components.css" />
 </head>
 <body>
-
-<header>
-  <nav>
-    <div class="brand">TrkElnIt</div>
-    <div class="links">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="services.html">Services</a>
-      <a href="contact.html">Contact</a>
+  <div class="utility-bar">
+    <div class="container">
+      <span>Products & Services</span>
+      <span>Private AI, automation, and business systems</span>
+      <a href="order.html">Request a quote</a>
     </div>
-  </nav>
-</header>
-
-<main class="wrap">
-  <h1>Capabilities</h1>
-
-  <div class="grid">
-
-    <div class="card">
-      <h2>Browser Automation</h2>
-      <p>
-        Playwright-driven agents that can authenticate, navigate business platforms, read relevant data, and feed internal systems.
-        Built for reliability and auditability, not scraping at scale.
-      </p>
-    </div>
-
-    <div class="card">
-      <h2>Document Parsing & AI Extraction</h2>
-      <p>
-        LangChain pipelines that read PDFs, forms, statements, onboarding packets and produce structured fields.
-        Includes retrieval-augmented answering over client documents using local Llama / Mistral through Ollama.
-      </p>
-    </div>
-
-    <div class="card">
-      <h2>Internal Assistants / Agents</h2>
-      <p>
-        Private AI agents that respond to users, follow conversation state, update records, and hand off when the task is done.
-        Not a generic chatbot — task-scoped assistants that run inside the client's environment.
-      </p>
-    </div>
-
-    <div class="card">
-      <h2>Dashboards & Reporting</h2>
-      <p>
-        Streamlit dashboards for operations, finance, inventory, or pipeline visibility.
-        Daily reporting via Google Sheets, PDF, and email delivery through Gmail API.
-      </p>
-    </div>
-
-    <div class="card">
-      <h2>Backend & Workflow Layer</h2>
-      <p>
-        FastAPI services for business logic and data APIs.
-        n8n automation to coordinate triggers, escalation, messaging, and scheduling between systems.
-      </p>
-    </div>
-
-    <div class="card">
-      <h2>Deployment</h2>
-      <p>
-        Oracle Cloud and Google Cloud environments for sustained runtime.
-        Containerized services, monitored jobs, controlled cost.
-      </p>
-    </div>
-
   </div>
-</main>
 
-<footer>
-  <div class="inner">
-    TrkElnIt · Toronto, Canada<br/>
-    github.com/TrkElnIt · <a class="inline" href="mailto:trkelnit@gmail.com">trkelnit@gmail.com</a>
-  </div>
-</footer>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index.html">
+        <div class="brand-mark">TRK</div>
+        <div class="brand-text">
+          <strong>TrkElnIt</strong>
+          <span>Automation-first business operations</span>
+        </div>
+      </a>
 
+      <nav class="nav-links">
+        <a href="services.html" data-nav-current>Products & Services</a>
+        <a href="solutions.html" data-nav-current>Solutions</a>
+        <a href="industries.html" data-nav-current>Industries</a>
+        <a href="portfolio.html" data-nav-current>Work</a>
+        <a href="pricing.html" data-nav-current>Pricing</a>
+        <a href="contact.html" data-nav-current>Contact</a>
+      </nav>
+
+      <div class="header-cta">
+        <a class="button-secondary" href="pricing.html">View pricing</a>
+        <a class="button" href="order.html">Start order</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Products & Services</span>
+      <h1>AI should be visible in the offer, not hidden in the implementation.</h1>
+      <p>
+        Explore TrkElnIt capabilities across local AI systems, AI API integrations, document intelligence,
+        workflow automation, custom applications, and deployment infrastructure.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container card-grid">
+      <article class="card">
+        <h3>Local AI Systems</h3>
+        <p>
+          Private AI execution designed to run under your control rather than depending entirely on external providers.
+        </p>
+        <ul class="check-list" style="margin-top:16px;">
+          <li>Local LLM deployment</li>
+          <li>Ollama-based private assistants</li>
+          <li>On-server AI workflows</li>
+          <li>Secure internal inference pipelines</li>
+          <li>Domain-specific AI workspaces</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>AI API Integrations</h3>
+        <p>
+          External AI provider integrations for workflows that need hosted reasoning, multimodal handling, or hybrid routing.
+        </p>
+        <ul class="check-list" style="margin-top:16px;">
+          <li>OpenAI API integration</li>
+          <li>Hybrid local + hosted AI routing</li>
+          <li>Prompt workflow design</li>
+          <li>Embeddings and retrieval</li>
+          <li>Business application AI integration</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Document AI & Extraction</h3>
+        <p>
+          Convert PDFs, forms, statements, and business records into structured, searchable, workflow-ready data.
+        </p>
+        <ul class="check-list" style="margin-top:16px;">
+          <li>OCR pipelines</li>
+          <li>Tesseract-based extraction</li>
+          <li>PDF parsing</li>
+          <li>Structured field extraction</li>
+          <li>Statement and invoice processing</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>AI Automation Systems</h3>
+        <p>
+          Automation workflows where AI is part of the decision or extraction layer, not just a cosmetic add-on.
+        </p>
+        <ul class="check-list" style="margin-top:16px;">
+          <li>AI-assisted workflow automation</li>
+          <li>Agent-driven task handling</li>
+          <li>Human-in-the-loop approvals</li>
+          <li>Scheduled and event-based automation</li>
+          <li>Browser and messaging automation</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Custom AI Applications</h3>
+        <p>
+          Business tools and interfaces where AI is embedded directly into the operational surface.
+        </p>
+        <ul class="check-list" style="margin-top:16px;">
+          <li>AI web applications</li>
+          <li>Admin portals</li>
+          <li>Internal business tools</li>
+          <li>AI-enabled CRM workflows</li>
+          <li>Mobile and client-facing interfaces</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h3>Backend & Deployment Infrastructure</h3>
+        <p>
+          The system layer required to make AI, automation, dashboards, and apps run reliably in production.
+        </p>
+        <ul class="check-list" style="margin-top:16px;">
+          <li>Custom APIs and backend logic</li>
+          <li>Webhook orchestration</li>
+          <li>VM creation and deployment</li>
+          <li>Docker and process hosting</li>
+          <li>Monitoring and scheduled jobs</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container two-col">
+      <div class="info-card">
+        <span class="eyebrow">Offer framing</span>
+        <h3>What clients understand first</h3>
+        <p class="section-copy">
+          Clients should first see business-facing capability areas such as local AI systems, AI integrations,
+          document AI, automation, custom apps, and deployment. Technical stack choices come after that.
+        </p>
+      </div>
+      <div class="info-card">
+        <span class="eyebrow">Implementation examples</span>
+        <h3>What powers the delivery</h3>
+        <p class="section-copy">
+          Under the hood, TrkElnIt can implement local LLM workflows, hosted AI integrations, OCR pipelines,
+          retrieval systems, pgvector-backed search, backend APIs, and deployment architecture.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand" href="index.html">
+          <div class="brand-mark">TRK</div>
+          <div class="brand-text">
+            <strong>TrkElnIt</strong>
+            <span>Automation-first business operations</span>
+          </div>
+        </a>
+        <p class="section-copy" style="margin-top:18px;">
+          Private AI systems, document intelligence, dashboards, and client workflow infrastructure.
+        </p>
+      </div>
+
+      <div>
+        <div class="footer-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="about.html">About</a></li>
+          <li><a href="portfolio.html">Portfolio</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-title">Products & Services</div>
+        <ul class="footer-links">
+          <li><a href="services.html">Products & Services</a></li>
+          <li><a href="solutions.html">Solutions</a></li>
+          <li><a href="industries.html">Industries</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-title">Ordering</div>
+        <ul class="footer-links">
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="order.html">Order</a></li>
+          <li><a href="payment-success.html">Payments</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-title">Legal</div>
+        <ul class="footer-links">
+          <li><a href="privacy.html">Privacy notice</a></li>
+          <li><a href="terms.html">Terms of use</a></li>
+          <li><a href="cookies.html">Cookie notice</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+        <div>© <span data-current-year></span> TrkElnIt</div>
+        <ul class="legal-links">
+          <li><a href="privacy.html">Privacy notice</a></li>
+          <li><a href="terms.html">Terms of use</a></li>
+          <li><a href="cookies.html">Cookie notice</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/navigation.js"></script>
 </body>
 </html>
