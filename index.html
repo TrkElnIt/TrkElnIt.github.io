@@ -91,18 +91,6 @@
       min-width: 0;
     }
 
-    .hero-copy .mini-home {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 44px;
-      height: 44px;
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 12px;
-      font-size: 1.15rem;
-      margin-bottom: 28px;
-    }
-
     .hero-copy h1 {
       font-size: clamp(2.6rem, 4.8vw, 4.8rem);
       line-height: 1.02;
@@ -143,9 +131,8 @@
       align-items: center;
       justify-content: center;
       background:
-        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)),
-        linear-gradient(135deg, #181818 0%, #090909 100%);
-      border: 1px solid rgba(255,255,255,0.08);
+        linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.005)),
+        linear-gradient(135deg, #101010 0%, #050505 100%);
     }
 
     .hero-visual::before,
@@ -156,22 +143,22 @@
     }
 
     .hero-visual::before {
-      right: 18%;
-      top: 12%;
-      width: 180px;
-      height: 180px;
-      transform: rotate(45deg);
-      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-    }
-
-    .hero-visual::after {
-      right: -8%;
-      bottom: -10%;
+      right: 6%;
+      top: 4%;
       width: 420px;
       height: 420px;
       clip-path: polygon(18% 0, 67% 0, 100% 50%, 67% 100%, 18% 100%, 51% 50%);
       border-radius: 44px;
-      opacity: 0.72;
+      opacity: 0.5;
+    }
+
+    .hero-visual::after {
+      right: 18%;
+      bottom: 12%;
+      width: 180px;
+      height: 180px;
+      opacity: 0.18;
+      clip-path: inset(0 round 2px);
     }
 
     .hero-image {
@@ -578,7 +565,6 @@
           <button class="hero-arrow hero-arrow-right" type="button" aria-label="Next slide" data-hero-next>›</button>
           <div class="hero-stage">
             <div class="hero-copy">
-              <div class="mini-home">⌂</div>
               <div class="hero-slide active" data-hero-slide>
                 <h1>Building the future of private AI operations.</h1>
                 <p>
