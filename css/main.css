@@ -396,7 +396,7 @@ img {
 .site-footer {
   margin-top: 56px;
   border-top: 1px solid var(--line);
-  background: rgba(2, 4, 24, 0.92);
+  background: #ffffff;
 }
 
 .footer-links li,
@@ -410,6 +410,7 @@ img {
 }
 
 .footer-title {
+  color: var(--text);
   font-weight: 700;
   letter-spacing: 0.04em;
   margin-bottom: 16px;
