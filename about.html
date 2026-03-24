@@ -1,82 +1,20 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>About — TrkElnIt</title>
-<style>
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:#0f172a;color:#e2e8f0;line-height:1.5}
-  header{background:#0f172a;border-bottom:1px solid rgba(148,163,184,.2);padding:16px 24px;position:sticky;top:0;z-index:10}
-  nav{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;font-size:14px;gap:16px}
-  nav .brand{font-weight:600;color:#fff;font-size:15px;letter-spacing:-.03em}
-  nav .links{display:flex;gap:20px;flex-wrap:wrap;justify-content:flex-end}
-  nav .links a{color:#94a3b8;text-decoration:none}
-  nav .links a:hover{color:#fff}
-  .wrap{max-width:800px;margin:48px auto 80px;padding:0 24px}
-  h1{font-size:1.5rem;font-weight:600;color:#fff;letter-spacing:-.04em;margin:0 0 16px}
-  p{color:#94a3b8;font-size:0.95rem;margin:0 0 20px;line-height:1.5}
-  footer{border-top:1px solid rgba(148,163,184,.2);color:#94a3b8;font-size:0.8rem;padding:32px 24px 48px;margin-top:64px}
-  footer .inner{max-width:1100px;margin:0 auto}
-  a.inline{color:#e2e8f0;text-decoration:none}
-  a.inline:hover{text-decoration:underline}
-  @media(max-width:640px){
-    nav{flex-direction:column;align-items:flex-start}
-    nav .links{width:100%;justify-content:flex-start;gap:12px}
-    .wrap{margin:32px auto 64px}
-    h1{font-size:1.3rem}
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About — TrkElnIt</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/components.css" />
 </head>
 <body>
+  <header class="site-header"><div class="container"><a class="brand" href="index.html"><div class="brand-mark">TRK</div><div class="brand-text"><strong>TrkElnIt</strong><span>Automation-first business operations</span></div></a><nav class="nav-links"><div class="nav-dropdown" data-nav-dropdown><button class="nav-dropdown-toggle" type="button" aria-expanded="false">Products & services</button><div class="nav-dropdown-menu"><a href="services.html" data-nav-current>Overview</a><a href="services.html#local-ai">Local AI Systems</a><a href="services.html#ai-integrations">AI API Integrations</a><a href="services.html#document-ai">Document AI & Extraction</a><a href="services.html#automation">AI Automation Systems</a><a href="services.html#custom-apps">Custom AI Applications</a><a href="services.html#deployment">Backend & Deployment</a></div></div><a href="solutions.html" data-nav-current>Solutions</a><a href="industries.html" data-nav-current>Industries</a><a href="portfolio.html" data-nav-current>Work</a><a href="contact.html" data-nav-current>Contact</a></nav><div class="header-cta"><a class="button" href="order.html">Start order</a></div></div></header>
 
-<header>
-  <nav>
-    <div class="brand">TrkElnIt</div>
-    <div class="links">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="services.html">Services</a>
-      <a href="contact.html">Contact</a>
-    </div>
-  </nav>
-</header>
+  <section class="page-hero"><div class="container"><span class="eyebrow">About</span><h1>Controlled business systems, not demo automation.</h1><p>TrkElnIt builds applied AI, backend workflows, document intelligence, CRM structure, and delivery-ready operational systems for teams that need something real to run.</p></div></section>
 
-<main class="wrap">
-  <h1>About TrkElnIt</h1>
+  <section class="section"><div class="container two-col"><div class="legal-shell legal-copy"><p>TrkElnIt is an applied AI and automation studio founded by Rafik Khelifa Toudjine in Toronto. The focus is on building production systems that connect documents, workflows, reporting, payment state, and operational decisions into one controlled environment.</p><p>Typical delivery includes private AI workflows, OCR and parsing pipelines, backend APIs, CRM tooling, payment tracking, dashboards, and deployment infrastructure. The goal is not experimentation. The goal is operational leverage with clear ownership and traceable state.</p><p>The studio works end to end: client intake, payment routing, data extraction, internal interfaces, backend orchestration, and deployment. Each engagement is meant to produce infrastructure a team can actually use after handoff.</p></div><div class="info-card"><span class="eyebrow">Delivery model</span><h3>What TrkElnIt is optimized for</h3><ul class="check-list" style="margin-top:18px;"><li>Private AI and local model workflows</li><li>Document and statement extraction</li><li>CRM and client operations tooling</li><li>Stripe-connected order and payment flows</li><li>Backend APIs, dashboards, and deployment</li></ul></div></div></section>
 
-  <p>
-    TrkElnIt is an applied AI and automation studio founded by Rafik Khelifa Toudjine and based in Toronto.
-    The focus is on building controlled, production-grade systems that handle data, decisions, and delivery.
-  </p>
-
-  <p>
-    Typical engagements include operational intelligence for real estate, reporting pipelines for finance-driven teams,
-    internal assistants for service organizations, and document handling / interpretation for healthcare-style workflows.
-    In all cases, the goal is the same: connect information, remove bottlenecks, and give teams direct visibility into what matters.
-  </p>
-
-  <p>
-    The studio works end-to-end: browser-level automation, backend logic, AI reasoning, reporting surface, and deployment.
-    The output is not a prototype — it’s infrastructure the client can actually run.
-  </p>
-
-  <p>
-    Privacy and locality are built in. When needed, language models run on Ollama using Llama / Mistral instead of external APIs.
-    Dashboards are delivered through Streamlit and Google Sheets for clarity and auditability.
-    Workloads are hosted on Oracle Cloud or Google Cloud with monitoring and version control.
-  </p>
-
-  <p>
-    TrkElnIt is intentionally lean. The model is simple: understand the workflow, build the system, hand over something real.
-  </p>
-</main>
-
-<footer>
-  <div class="inner">
-    TrkElnIt · Toronto, Canada<br/>
-    github.com/TrkElnIt · <a class="inline" href="mailto:trkelnit@gmail.com">trkelnit@gmail.com</a>
-  </div>
-</footer>
-
+  <footer class="site-footer"><div class="container footer-grid"><div><a class="brand" href="index.html"><div class="brand-mark">TRK</div><div class="brand-text"><strong>TrkElnIt</strong><span>Automation-first business operations</span></div></a><p class="section-copy" style="margin-top:18px;">Private AI systems, document intelligence, dashboards, and client workflow infrastructure.</p></div><div><div class="footer-title">Company</div><ul class="footer-links"><li><a href="about.html">About</a></li><li><a href="portfolio.html">Portfolio</a></li><li><a href="contact.html">Contact</a></li></ul></div><div><div class="footer-title">Explore</div><ul class="footer-links"><li><a href="services.html">Products & services</a></li><li><a href="solutions.html">Solutions</a></li><li><a href="industries.html">Industries</a></li></ul></div><div><div class="footer-title">Ordering</div><ul class="footer-links"><li><a href="order.html">Order</a></li><li><a href="payment-success.html">Payment success</a></li><li><a href="payment-cancel.html">Payment cancel</a></li></ul></div><div><div class="footer-title">Legal</div><ul class="footer-links"><li><a href="privacy.html">Privacy notice</a></li><li><a href="terms.html">Terms of use</a></li><li><a href="cookies.html">Cookie notice</a></li></ul></div></div><div class="footer-bottom"><div class="container"><div>© <span data-current-year></span> TrkElnIt</div><ul class="legal-links"><li><a href="privacy.html">Privacy notice</a></li><li><a href="terms.html">Terms of use</a></li><li><a href="cookies.html">Cookie notice</a></li></ul></div></div></footer>
+  <script src="js/main.js"></script><script src="js/navigation.js"></script>
 </body>
 </html>

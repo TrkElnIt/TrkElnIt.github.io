@@ -8,39 +8,8 @@
   <link rel="stylesheet" href="css/components.css" />
 </head>
 <body>
-  <div class="utility-bar">
-    <div class="container">
-      <span>Products & Services</span>
-      <span>Private AI, automation, and business systems</span>
-      <a href="order.html">Request a quote</a>
-    </div>
-  </div>
 
-  <header class="site-header">
-    <div class="container">
-      <a class="brand" href="index.html">
-        <div class="brand-mark">TRK</div>
-        <div class="brand-text">
-          <strong>TrkElnIt</strong>
-          <span>Automation-first business operations</span>
-        </div>
-      </a>
-
-      <nav class="nav-links">
-        <a href="services.html" data-nav-current>Products & Services</a>
-        <a href="solutions.html" data-nav-current>Solutions</a>
-        <a href="industries.html" data-nav-current>Industries</a>
-        <a href="portfolio.html" data-nav-current>Work</a>
-        <a href="pricing.html" data-nav-current>Pricing</a>
-        <a href="contact.html" data-nav-current>Contact</a>
-      </nav>
-
-      <div class="header-cta">
-        <a class="button-secondary" href="pricing.html">View pricing</a>
-        <a class="button" href="order.html">Start order</a>
-      </div>
-    </div>
-  </header>
+  <header class="site-header"><div class="container"><a class="brand" href="index.html"><div class="brand-mark">TRK</div><div class="brand-text"><strong>TrkElnIt</strong><span>Automation-first business operations</span></div></a><nav class="nav-links"><div class="nav-dropdown" data-nav-dropdown><button class="nav-dropdown-toggle" type="button" aria-expanded="false">Products & services</button><div class="nav-dropdown-menu"><a href="services.html" data-nav-current>Overview</a><a href="services.html#local-ai">Local AI Systems</a><a href="services.html#ai-integrations">AI API Integrations</a><a href="services.html#document-ai">Document AI & Extraction</a><a href="services.html#automation">AI Automation Systems</a><a href="services.html#custom-apps">Custom AI Applications</a><a href="services.html#deployment">Backend & Deployment</a></div></div><a href="solutions.html" data-nav-current>Solutions</a><a href="industries.html" data-nav-current>Industries</a><a href="portfolio.html" data-nav-current>Work</a><a href="contact.html" data-nav-current>Contact</a></nav><div class="header-cta"><a class="button" href="order.html">Start order</a></div></div></header>
 
   <section class="page-hero">
     <div class="container">
@@ -55,7 +24,7 @@
 
   <section class="section">
     <div class="container card-grid">
-      <article class="card">
+      <article class="card" id="local-ai">
         <h3>Local AI Systems</h3>
         <p>
           Private AI execution designed to run under your control rather than depending entirely on external providers.
@@ -69,7 +38,7 @@
         </ul>
       </article>
 
-      <article class="card">
+      <article class="card" id="ai-integrations">
         <h3>AI API Integrations</h3>
         <p>
           External AI provider integrations for workflows that need hosted reasoning, multimodal handling, or hybrid routing.
@@ -83,7 +52,7 @@
         </ul>
       </article>
 
-      <article class="card">
+      <article class="card" id="document-ai">
         <h3>Document AI & Extraction</h3>
         <p>
           Convert PDFs, forms, statements, and business records into structured, searchable, workflow-ready data.
@@ -97,7 +66,7 @@
         </ul>
       </article>
 
-      <article class="card">
+      <article class="card" id="automation">
         <h3>AI Automation Systems</h3>
         <p>
           Automation workflows where AI is part of the decision or extraction layer, not just a cosmetic add-on.
@@ -111,7 +80,7 @@
         </ul>
       </article>
 
-      <article class="card">
+      <article class="card" id="custom-apps">
         <h3>Custom AI Applications</h3>
         <p>
           Business tools and interfaces where AI is embedded directly into the operational surface.
@@ -125,7 +94,7 @@
         </ul>
       </article>
 
-      <article class="card">
+      <article class="card" id="deployment">
         <h3>Backend & Deployment Infrastructure</h3>
         <p>
           The system layer required to make AI, automation, dashboards, and apps run reliably in production.
