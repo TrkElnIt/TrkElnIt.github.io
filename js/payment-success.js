@@ -20,9 +20,9 @@ function formatTimestamp(value) {
 
 function renderDetail(label, value) {
   return `
-    <div style="padding:16px;border:1px solid rgba(124,137,178,.25);border-radius:18px;background:rgba(16,20,56,.25);">
-      <div style="font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#7c89b2;margin-bottom:6px;">${label}</div>
-      <div style="font-size:18px;font-weight:700;color:#f3f5ff;">${value}</div>
+    <div style="padding:16px;border:1px solid rgba(255,255,255,.14);border-radius:18px;background:rgba(255,255,255,.04);">
+      <div style="font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#9d9d9d;margin-bottom:6px;">${label}</div>
+      <div style="font-size:18px;font-weight:700;color:#f1f1f1;">${value}</div>
     </div>
   `;
 }

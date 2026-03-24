@@ -427,8 +427,8 @@ textarea {
   gap: 8px;
   border-radius: 999px;
   padding: 8px 12px;
-  background: rgba(17, 230, 195, 0.12);
-  color: var(--accent);
+  background: rgba(255, 255, 255, 0.08);
+  color: #f0f0f0;
   font-size: 0.85rem;
   font-weight: 700;
 }
