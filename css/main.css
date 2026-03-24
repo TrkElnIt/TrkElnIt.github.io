@@ -154,7 +154,7 @@ img {
 
 .nav-dropdown-menu {
   position: absolute;
-  top: calc(100% + 14px);
+  top: calc(100% - 2px);
   left: 0;
   min-width: 260px;
   display: none;
