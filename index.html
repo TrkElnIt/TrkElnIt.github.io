@@ -74,19 +74,21 @@
 
     .hero-shell {
       position: relative;
+      padding: 0 56px;
     }
 
     .hero-stage {
       display: grid;
-      grid-template-columns: 1fr 1.2fr;
-      min-height: 620px;
+      grid-template-columns: minmax(0, 1.05fr) minmax(380px, 0.95fr);
+      min-height: 560px;
       align-items: center;
-      gap: 26px;
+      gap: 40px;
       padding: 42px 0 30px;
     }
 
     .hero-copy {
       padding: 10px 0 10px 2px;
+      min-width: 0;
     }
 
     .hero-copy .mini-home {
@@ -102,17 +104,19 @@
     }
 
     .hero-copy h1 {
-      font-size: clamp(3rem, 5.2vw, 5.2rem);
-      line-height: 0.98;
+      font-size: clamp(2.6rem, 4.8vw, 4.8rem);
+      line-height: 1.02;
       letter-spacing: -0.06em;
       margin: 0 0 24px;
-      max-width: 660px;
+      max-width: 100%;
+      word-break: normal;
+      overflow-wrap: anywhere;
     }
 
     .hero-copy p {
-      max-width: 620px;
-      font-size: 1.15rem;
-      line-height: 1.72;
+      max-width: 100%;
+      font-size: 1.05rem;
+      line-height: 1.68;
       color: var(--text);
       margin: 0 0 28px;
     }
@@ -133,7 +137,7 @@
 
     .hero-visual {
       position: relative;
-      min-height: 620px;
+      min-height: 420px;
       overflow: hidden;
       display: flex;
       align-items: center;
@@ -152,22 +156,22 @@
     }
 
     .hero-visual::before {
-      right: 12%;
-      top: 6%;
-      width: 280px;
-      height: 280px;
+      right: 18%;
+      top: 12%;
+      width: 180px;
+      height: 180px;
       transform: rotate(45deg);
       clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
     }
 
     .hero-visual::after {
-      right: -4%;
-      bottom: -2%;
-      width: 520px;
-      height: 520px;
+      right: -8%;
+      bottom: -10%;
+      width: 420px;
+      height: 420px;
       clip-path: polygon(18% 0, 67% 0, 100% 50%, 67% 100%, 18% 100%, 51% 50%);
       border-radius: 44px;
-      opacity: 0.92;
+      opacity: 0.72;
     }
 
     .hero-image {
@@ -193,11 +197,11 @@
     }
 
     .hero-arrow-left {
-      left: -18px;
+      left: 0;
     }
 
     .hero-arrow-right {
-      right: -18px;
+      right: 0;
     }
 
     .ticker-band {
@@ -486,23 +490,40 @@
       }
 
       .hero-arrow-left {
-        left: 8px;
+        left: 12px;
       }
 
       .hero-arrow-right {
-        right: 8px;
+        right: 12px;
+      }
+
+      .hero-shell {
+        padding: 0 48px;
       }
     }
 
     @media (max-width: 760px) {
+      .hero-shell {
+        padding: 0 18px;
+      }
+
       .hero-copy h1 {
-        font-size: 2.7rem;
+        font-size: 2.3rem;
       }
 
       .enterprise-links,
       .enterprise-actions,
       .enterprise-top-right {
         gap: 16px;
+      }
+
+      .hero-stage {
+        gap: 24px;
+        min-height: auto;
+      }
+
+      .hero-visual {
+        min-height: 280px;
       }
 
       .chat-floating {
