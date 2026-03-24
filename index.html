@@ -41,12 +41,7 @@
 
     .enterprise-nav {
       padding: 14px 0 22px;
-    }
-
-    .enterprise-brand {
-      font-size: 2.1rem;
-      font-weight: 800;
-      letter-spacing: 0.04em;
+      gap: 28px;
     }
 
     .enterprise-links {
@@ -54,8 +49,7 @@
       align-items: center;
       gap: 34px;
       flex-wrap: wrap;
-      margin-right: auto;
-      margin-left: 52px;
+      margin-left: auto;
     }
 
     .enterprise-links a,
@@ -76,6 +70,10 @@
       display: flex;
       align-items: center;
       gap: 24px;
+    }
+
+    .hero-shell {
+      position: relative;
     }
 
     .hero-stage {
@@ -125,6 +123,14 @@
       font-size: 1.05rem;
     }
 
+    .hero-slide {
+      display: none;
+    }
+
+    .hero-slide.active {
+      display: block;
+    }
+
     .hero-visual {
       position: relative;
       min-height: 620px;
@@ -168,15 +174,10 @@
       display: none;
     }
 
-    .hero-bottom-controls {
-      display: grid;
-      grid-template-columns: 80px 1fr 80px;
-      align-items: center;
-      gap: 18px;
-      padding: 18px 0 30px;
-    }
-
     .hero-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
       width: 42px;
       height: 42px;
       border-radius: 50%;
@@ -186,26 +187,17 @@
       justify-content: center;
       color: var(--text);
       font-size: 1.3rem;
+      background: rgba(0,0,0,0.78);
+      cursor: pointer;
+      z-index: 4;
     }
 
-    .hero-dots {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 12px;
+    .hero-arrow-left {
+      left: -18px;
     }
 
-    .hero-dots span {
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.45);
-      display: block;
-    }
-
-    .hero-dots span.active {
-      width: 40px;
-      background: #fff;
+    .hero-arrow-right {
+      right: -18px;
     }
 
     .ticker-band {
@@ -492,6 +484,14 @@
       .ticker-band .container {
         grid-template-columns: 1fr;
       }
+
+      .hero-arrow-left {
+        left: 8px;
+      }
+
+      .hero-arrow-right {
+        right: 8px;
+      }
     }
 
     @media (max-width: 760px) {
@@ -503,11 +503,6 @@
       .enterprise-actions,
       .enterprise-top-right {
         gap: 16px;
-      }
-
-      .hero-bottom-controls {
-        grid-template-columns: 1fr;
-        justify-items: center;
       }
 
       .chat-floating {
@@ -526,7 +521,13 @@
   <div class="home-shell">
     <header class="enterprise-header">
       <div class="container enterprise-top">
-        <div class="enterprise-brand">TRKELNIT</div>
+        <a class="brand" href="index.html">
+          <div class="brand-mark">TRK</div>
+          <div class="brand-text">
+            <strong>TrkElnIt</strong>
+            <span>Automation-first business operations</span>
+          </div>
+        </a>
         <div class="enterprise-top-right">
           <span>Canada | EN</span>
           <a href="contact.html">Support & community</a>
@@ -551,27 +552,39 @@
 
     <main>
       <section class="container">
-        <div class="hero-stage">
-          <div class="hero-copy">
-            <div class="mini-home">⌂</div>
-            <h1>Building the future of private AI operations.</h1>
-            <p>
-              TrkElnIt designs private AI systems, document intelligence workflows, finance tooling,
-              CRM infrastructure, and automation layers that turn fragmented operations into structured execution.
-            </p>
-            <a class="button" href="services.html">View services</a>
+        <div class="hero-shell" data-hero-shell>
+          <button class="hero-arrow hero-arrow-left" type="button" aria-label="Previous slide" data-hero-prev>‹</button>
+          <button class="hero-arrow hero-arrow-right" type="button" aria-label="Next slide" data-hero-next>›</button>
+          <div class="hero-stage">
+            <div class="hero-copy">
+              <div class="mini-home">⌂</div>
+              <div class="hero-slide active" data-hero-slide>
+                <h1>Building the future of private AI operations.</h1>
+                <p>
+                  TrkElnIt designs private AI systems, document intelligence workflows, finance tooling,
+                  CRM infrastructure, and automation layers that turn fragmented operations into structured execution.
+                </p>
+                <a class="button" href="services.html">View services</a>
+              </div>
+              <div class="hero-slide" data-hero-slide>
+                <h1>Move from private AI architecture to production deployment.</h1>
+                <p>
+                  Build local LLM workflows, parsing services, backend integrations, and hosted business infrastructure
+                  without turning the stack into a brittle experiment.
+                </p>
+                <a class="button" href="solutions.html">View solutions</a>
+              </div>
+              <div class="hero-slide" data-hero-slide>
+                <h1>Turn quoting, payment, and CRM intake into one controlled flow.</h1>
+                <p>
+                  TrkElnIt connects website ordering, Stripe payment capture, and internal CRM visibility so operations
+                  stay structured from the first client request.
+                </p>
+                <a class="button" href="order.html">Start order</a>
+              </div>
+            </div>
+            <div class="hero-visual"></div>
           </div>
-          <div class="hero-visual"></div>
-        </div>
-        <div class="hero-bottom-controls">
-          <div><span class="hero-arrow">‹</span></div>
-          <div class="hero-dots">
-            <span></span>
-            <span class="active"></span>
-            <span></span>
-            <span></span>
-          </div>
-          <div style="justify-self:end;"><span class="hero-arrow">›</span></div>
         </div>
       </section>
 
@@ -688,5 +701,45 @@
   <script src="js/main.js"></script>
   <script src="js/navigation.js"></script>
   <script type="module" src="js/chatbot.js"></script>
+  <script>
+    (() => {
+      const slides = Array.from(document.querySelectorAll('[data-hero-slide]'));
+      const prevButton = document.querySelector('[data-hero-prev]');
+      const nextButton = document.querySelector('[data-hero-next]');
+      if (!slides.length || !prevButton || !nextButton) return;
+
+      let currentIndex = 0;
+      let timerId = null;
+
+      const render = () => {
+        slides.forEach((slide, index) => {
+          slide.classList.toggle('active', index === currentIndex);
+        });
+      };
+
+      const startAutoRotate = () => {
+        window.clearInterval(timerId);
+        timerId = window.setInterval(() => {
+          currentIndex = (currentIndex + 1) % slides.length;
+          render();
+        }, 5000);
+      };
+
+      prevButton.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        render();
+        startAutoRotate();
+      });
+
+      nextButton.addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % slides.length;
+        render();
+        startAutoRotate();
+      });
+
+      render();
+      startAutoRotate();
+    })();
+  </script>
 </body>
 </html>
