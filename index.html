@@ -28,7 +28,7 @@
 
     .enterprise-top {
       padding: 18px 0 10px;
-      color: var(--muted);
+      color: #4f4f4f;
       font-size: 0.95rem;
     }
 
@@ -55,7 +55,7 @@
     .enterprise-links a,
     .enterprise-actions a,
     .enterprise-top a {
-      color: var(--text);
+      color: #111111;
     }
 
     .enterprise-links a:hover,
@@ -63,7 +63,7 @@
     .enterprise-top a:hover,
     .footer-links a:hover,
     .legal-links a:hover {
-      color: #5e5e5e;
+      color: #000000;
     }
 
     .enterprise-actions {
@@ -87,9 +87,11 @@
       padding: 10px 0 10px 2px;
       min-width: 0;
       max-width: 860px;
+      color: #111111;
     }
 
     .hero-copy h1 {
+      color: #111111;
       font-size: clamp(2.6rem, 4.8vw, 4.8rem);
       line-height: 1.02;
       letter-spacing: -0.06em;
@@ -103,7 +105,7 @@
       max-width: 100%;
       font-size: 1.05rem;
       line-height: 1.68;
-      color: var(--text);
+      color: #212121;
       margin: 0 0 28px;
     }
 
@@ -132,7 +134,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      color: var(--text);
+      color: #111111;
       font-size: 1.3rem;
       background: rgba(255,255,255,0.96);
       cursor: pointer;
@@ -185,6 +187,7 @@
         linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01)),
         linear-gradient(135deg, #ffffff 0%, #f3f3f3 100%);
       border-radius: 0;
+      color: #111111;
     }
 
     .editorial-card img {
@@ -201,7 +204,7 @@
     }
 
     .editorial-card .tag {
-      color: #4a4a4a;
+      color: #202020;
       font-weight: 800;
       font-size: 0.84rem;
       text-transform: uppercase;
@@ -218,6 +221,7 @@
 
     .editorial-card a {
       font-weight: 700;
+      color: #111111;
     }
 
     .enterprise-footer {
@@ -248,7 +252,7 @@
       display: flex;
       gap: 16px;
       margin-top: 24px;
-      color: var(--text);
+      color: #111111;
       font-weight: 700;
     }
 
@@ -302,7 +306,7 @@
       border: 0;
       border-radius: 999px;
       background: var(--accent);
-      color: #050505;
+      color: #ffffff;
       padding: 14px 22px;
       font: inherit;
       font-weight: 700;
@@ -344,7 +348,7 @@
     .chat-panel header button {
       border: 0;
       background: transparent;
-      color: var(--text);
+      color: #111111;
       font-size: 1.1rem;
       cursor: pointer;
     }
@@ -367,14 +371,14 @@
 
     .chat-msg.bot {
       background: rgba(0,0,0,0.04);
-      color: var(--text);
+      color: #111111;
       border: 1px solid rgba(0,0,0,0.08);
     }
 
     .chat-msg.user {
       align-self: flex-end;
       background: rgba(0, 0, 0, 0.08);
-      color: var(--text);
+      color: #111111;
       border: 1px solid rgba(0, 0, 0, 0.12);
     }
 
@@ -398,11 +402,20 @@
       border: 0;
       border-radius: 999px;
       background: var(--accent);
-      color: #050505;
+      color: #ffffff;
       padding: 0 18px;
       font: inherit;
       font-weight: 700;
       cursor: pointer;
+    }
+
+    .brand-text strong,
+    .brand-text span,
+    .footer-brand,
+    .footer-column-title,
+    .footer-links a,
+    .legal-links a {
+      color: #111111;
     }
 
     .chat-error {
