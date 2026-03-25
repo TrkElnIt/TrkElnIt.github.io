@@ -88,16 +88,26 @@ img {
   min-width: 220px;
 }
 
-.brand-mark {
+.brand-mark,
+.brand-logo {
   width: 48px;
   height: 48px;
   border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.brand-mark {
   background: #000;
   border: 1px solid rgba(255,255,255,0.14);
   display: grid;
   place-items: center;
   font-weight: 700;
   letter-spacing: 0.04em;
+}
+
+.brand-logo {
+  object-fit: cover;
+  display: block;
 }
 
 .brand-text strong {
@@ -197,10 +207,13 @@ img {
   justify-content: center;
   gap: 10px;
   border-radius: 999px;
-  padding: 13px 20px;
+  min-height: 48px;
+  padding: 12px 20px;
   font-weight: 600;
+  line-height: 1;
   transition: 0.18s ease;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .button {
@@ -286,6 +299,12 @@ img {
   flex-wrap: wrap;
   gap: 14px;
   margin-top: 28px;
+}
+
+.hero-actions .button,
+.hero-actions .button-secondary,
+.hero-actions .button-ghost {
+  min-width: 160px;
 }
 
 .panel,
