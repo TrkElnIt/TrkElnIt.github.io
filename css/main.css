@@ -84,14 +84,14 @@ img {
 .brand {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   min-width: 220px;
 }
 
 .brand-mark,
 .brand-logo {
-  width: 48px;
-  height: 48px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   flex-shrink: 0;
 }
@@ -106,12 +106,12 @@ img {
 }
 
 .brand-logo {
-  width: 48px;
-  height: 48px;
-  min-width: 48px;
-  min-height: 48px;
-  max-width: 48px;
-  max-height: 48px;
+  width: 64px;
+  height: 64px;
+  min-width: 64px;
+  min-height: 64px;
+  max-width: 64px;
+  max-height: 64px;
   object-fit: cover;
   display: block;
 }
