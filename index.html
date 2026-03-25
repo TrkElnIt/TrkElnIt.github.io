@@ -73,12 +73,12 @@
     }
 
     .enterprise-header .brand-logo {
-      width: 64px;
-      height: 64px;
-      min-width: 64px;
-      min-height: 64px;
-      max-width: 64px;
-      max-height: 64px;
+      width: 80px;
+      height: 80px;
+      min-width: 80px;
+      min-height: 80px;
+      max-width: 80px;
+      max-height: 80px;
       border-radius: 50%;
       object-fit: cover;
       display: block;
@@ -536,7 +536,18 @@
       </div>
       <div class="container enterprise-nav">
         <nav class="enterprise-links">
-          <a href="services.html" data-nav-current>Products & services</a>
+          <div class="nav-dropdown">
+            <a class="nav-dropdown-link" href="services.html" data-nav-current>Products & services</a>
+            <div class="nav-dropdown-menu">
+              <a href="services.html">Overview</a>
+              <a href="services.html#local-ai">Local AI Systems</a>
+              <a href="services.html#ai-integrations">AI API Integrations</a>
+              <a href="services.html#document-ai">Document AI & Extraction</a>
+              <a href="services.html#automation">AI Automation Systems</a>
+              <a href="services.html#custom-apps">Custom AI Applications</a>
+              <a href="services.html#deployment">Backend & Deployment</a>
+            </div>
+          </div>
           <a href="solutions.html" data-nav-current>Solutions</a>
           <a href="industries.html" data-nav-current>Industries</a>
           <a href="portfolio.html" data-nav-current>Work</a>
