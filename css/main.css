@@ -90,8 +90,8 @@ img {
 
 .brand-mark,
 .brand-logo {
-  width: 80px;
-  height: 80px;
+  width: 112px;
+  height: 112px;
   border-radius: 50%;
   flex-shrink: 0;
 }
@@ -107,25 +107,14 @@ img {
 }
 
 .brand-logo {
-  width: 80px;
-  height: 80px;
-  min-width: 80px;
-  min-height: 80px;
-  max-width: 80px;
-  max-height: 80px;
+  width: 112px;
+  height: 112px;
+  min-width: 112px;
+  min-height: 112px;
+  max-width: 112px;
+  max-height: 112px;
   object-fit: cover;
   display: block;
-}
-
-.brand-mark-image {
-  padding: 0;
-}
-
-.brand-wordmark {
-  width: 72%;
-  height: auto;
-  display: block;
-  object-fit: contain;
 }
 
 .brand-text strong {

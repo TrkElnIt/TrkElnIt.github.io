@@ -72,14 +72,16 @@
       gap: 16px;
     }
 
-    .enterprise-header .brand-mark {
-      width: 80px;
-      height: 80px;
-      min-width: 80px;
-      min-height: 80px;
-      max-width: 80px;
-      max-height: 80px;
+    .enterprise-header .brand-logo {
+      width: 112px;
+      height: 112px;
+      min-width: 112px;
+      min-height: 112px;
+      max-width: 112px;
+      max-height: 112px;
       border-radius: 50%;
+      object-fit: cover;
+      display: block;
       flex-shrink: 0;
     }
 
@@ -520,7 +522,7 @@
     <header class="enterprise-header">
       <div class="container enterprise-top">
         <a class="brand" href="index.html">
-          <div class="brand-mark brand-mark-image"><img class="brand-wordmark" src="TrkElnIt.png" alt="TrkElnIt logo" /></div>
+          <img class="brand-logo" src="logo.png" alt="TrkElnIt logo" />
           <div class="brand-text">
             <strong>TrkElnIt</strong>
             <span>Automation-first business operations</span>
