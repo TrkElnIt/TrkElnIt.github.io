@@ -4,7 +4,7 @@ const CHAT_HISTORY_KEY = 'trk_chat_history_v1';
 const QUICK_ACTIONS = [
   {
     label: 'Schedule a Meeting',
-    intent: 'I want to schedule a meeting about my project. Please ask me for my name, email, company, preferred time, and what I want to discuss.',
+    intent: 'I want to schedule a meeting.',
   },
   {
     label: 'Request a Quote',
