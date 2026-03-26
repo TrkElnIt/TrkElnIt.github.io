@@ -361,5 +361,23 @@
 
   <script src="js/main.js"></script>
   <script src="js/navigation.js"></script>
+
+  <div class="chat-floating">
+    <button id="chat-toggle">Ask TrkElnIt</button>
+    <div id="chat-panel" class="chat-panel hidden">
+      <header>
+        <strong>Ask TrkElnIt</strong>
+        <button id="chat-close" aria-label="Close chat">×</button>
+      </header>
+      <div id="chat-log" class="chat-log"></div>
+      <div class="chat-input-row">
+        <input id="chat-input" type="text" placeholder="Ask us anything..." />
+        <button id="chat-send">Send</button>
+      </div>
+      <div id="chat-error" class="chat-error hidden"></div>
+    </div>
+  </div>
+
+  <script type="module" src="js/chatbot.js"></script>
 </body>
 </html>

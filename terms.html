@@ -135,4 +135,22 @@
 <section class="section"><div class="container legal-shell legal-copy"><p>Website content is provided for information and business inquiry purposes. Project scope, pricing, delivery timelines, and payment terms are finalized only through written agreement, invoice, milestone approval, or other direct commercial confirmation.</p><p>Clients are responsible for ensuring they have rights to the files, credentials, documents, and third-party systems they ask TrkElnIt to use. TrkElnIt will not knowingly implement workflows that breach third-party terms, law, or client data obligations.</p><p>Quoted pricing on this website is indicative unless stated otherwise. Custom integrations, external platform dependencies, and production deployment constraints may change scope.</p><p>All intellectual property, project materials, and transfer terms should be confirmed in the specific engagement agreement.</p></div></section>
 <footer class="site-footer"><div class="container footer-grid"><div><a class="brand" href="index.html"><span class="brand-logo-shell"><img class="brand-logo" src="logo.png" alt="TrkElnIt logo" /></span><div class="brand-text"><strong>TrkElnIt</strong><span>Automation-first business operations</span></div></a><p class="section-copy" style="margin-top:18px;">Private AI systems, document intelligence, dashboards, and client workflow infrastructure.</p></div><div><div class="footer-title">Company</div><ul class="footer-links"><li><a href="about.html">About</a></li><li><a href="portfolio.html">Portfolio</a></li><li><a href="contact.html">Contact</a></li></ul></div><div><div class="footer-title">Explore</div><ul class="footer-links"><li><a href="services.html">Products & services</a></li><li><a href="solutions.html">Solutions</a></li><li><a href="industries.html">Industries</a></li></ul></div><div><div class="footer-title">Ordering</div><ul class="footer-links"><li><a href="order.html">Order</a></li><li><a href="payment-success.html">Payment success</a></li><li><a href="payment-cancel.html">Payment cancel</a></li></ul></div><div><div class="footer-title">Legal</div><ul class="footer-links"><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms of use</a></li><li><a href="cookies.html">Cookie notice</a></li></ul></div></div><div class="footer-bottom"><div class="container"><div>© <span data-current-year></span> TrkElnIt</div><ul class="legal-links"><li><a href="privacy.html">Privacy notice</a></li><li><a href="terms.html">Terms of use</a></li><li><a href="cookies.html">Cookie notice</a></li></ul></div></div></footer>
 <script src="js/main.js"></script><script src="js/navigation.js"></script>
+
+  <div class="chat-floating">
+    <button id="chat-toggle">Ask TrkElnIt</button>
+    <div id="chat-panel" class="chat-panel hidden">
+      <header>
+        <strong>Ask TrkElnIt</strong>
+        <button id="chat-close" aria-label="Close chat">×</button>
+      </header>
+      <div id="chat-log" class="chat-log"></div>
+      <div class="chat-input-row">
+        <input id="chat-input" type="text" placeholder="Ask us anything..." />
+        <button id="chat-send">Send</button>
+      </div>
+      <div id="chat-error" class="chat-error hidden"></div>
+    </div>
+  </div>
+
+  <script type="module" src="js/chatbot.js"></script>
 </body></html>
