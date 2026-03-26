@@ -476,6 +476,10 @@ img {
   background: #ffffff;
 }
 
+.chat-hidden-input {
+  display: none !important;
+}
+
 .chat-error {
   color: #b42318;
   font-size: 0.88rem;

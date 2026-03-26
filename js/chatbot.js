@@ -309,7 +309,7 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
     const attachmentInput = document.createElement('input');
     attachmentInput.type = 'file';
     attachmentInput.id = 'chat-attachment-input';
-    attachmentInput.className = 'hidden';
+    attachmentInput.className = 'chat-hidden-input';
     attachmentInput.multiple = true;
 
     attachmentStatusEl = document.createElement('div');
