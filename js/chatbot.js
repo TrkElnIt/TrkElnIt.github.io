@@ -1,9 +1,44 @@
 import { API_BASE_URL } from './apiConfig.js';
 
-let conversationHistory = [];
+const CHAT_HISTORY_KEY = 'trk_chat_history_v1';
+
+function loadPersistedHistory() {
+  try {
+    const raw = window.localStorage.getItem(CHAT_HISTORY_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .filter((msg) => msg && typeof msg.content === 'string' && msg.content.trim())
+      .map((msg) => ({
+        role: msg.role === 'assistant' ? 'assistant' : 'user',
+        content: msg.content,
+      }));
+  } catch {
+    return [];
+  }
+}
+
+let conversationHistory = loadPersistedHistory();
 const persistHistory = () => {
-  // no-op: history is kept in-memory only so UI resets when the page reloads
+  try {
+    window.localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(conversationHistory));
+  } catch {
+    // ignore storage failures
+  }
 };
+
+function hydrateFromTranscript(transcript) {
+  if (!Array.isArray(transcript) || transcript.length === 0) return false;
+  conversationHistory = transcript
+    .filter((msg) => msg && typeof msg.content === 'string' && msg.content.trim())
+    .map((msg) => ({
+      role: msg.role === 'assistant' ? 'assistant' : 'user',
+      content: msg.content,
+    }));
+  persistHistory();
+  return conversationHistory.length > 0;
+}
 
 let sessionMeta = null;
 const sessionMetaPromise = fetch(`${API_BASE_URL}/chat/session`, {
@@ -15,6 +50,7 @@ const sessionMetaPromise = fetch(`${API_BASE_URL}/chat/session`, {
   })
   .then((data) => {
     sessionMeta = data;
+    hydrateFromTranscript(data?.transcript);
     return data;
   })
   .catch(() => null);
@@ -102,17 +138,21 @@ const errorEl = document.getElementById('chat-error');
 let greeted = conversationHistory.length > 0;
 
 if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
-  // hydrate log with stored history
-  if (conversationHistory.length > 0) {
+  let hydrated = false;
+
+  const renderHistory = () => {
+    if (hydrated || conversationHistory.length === 0) return;
     conversationHistory.forEach((msg) =>
       appendMessage(logEl, msg.role === 'assistant' ? 'bot' : 'user', msg.content)
     );
-  }
+    hydrated = true;
+    greeted = true;
+  };
 
   const openPanel = async () => {
     panel.classList.remove('hidden');
     toggleBtn.classList.add('hidden');
-    if (!greeted) {
+    if (!hydrated) {
       let meta = null;
       try {
         meta = await Promise.race([
@@ -125,6 +165,9 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
       if (meta) {
         sessionMeta = meta;
       }
+      renderHistory();
+    }
+    if (!greeted) {
       if (sessionMeta && sessionMeta.client_name) {
         const topicLine = sessionMeta.topic
           ? ` We last discussed “${sessionMeta.topic}.” Mention it if you'd like to continue.`
