@@ -76,7 +76,7 @@ const sessionMetaPromise = fetch(`${API_BASE_URL}/chat/session`, {
   .catch(() => null);
 
 /* ---------- shared helpers ---------- */
-async function sendMessage(message) {
+async function sendMessageWithOptions(message, options = {}) {
   const resp = await fetch(`${API_BASE_URL}/chat/`, {
     method: 'POST',
     credentials: 'include',
@@ -84,10 +84,28 @@ async function sendMessage(message) {
     body: JSON.stringify({
       message,
       history: conversationHistory,
+      reset: Boolean(options.reset),
     }),
   });
   if (!resp.ok) throw new Error(`Chatbot error ${resp.status}`);
   return resp.json();
+}
+
+async function sendMessage(message) {
+  return sendMessageWithOptions(message, {});
+}
+
+async function resetChatSession() {
+  const resp = await fetch(`${API_BASE_URL}/chat/session/reset`, {
+    method: 'POST',
+    credentials: 'include',
+  });
+  if (!resp.ok) throw new Error(`Session reset error ${resp.status}`);
+  const data = await resp.json();
+  sessionMeta = data;
+  conversationHistory = [];
+  persistHistory();
+  return data;
 }
 
 function appendMessage(container, role, text) {
@@ -133,7 +151,7 @@ function removeTypingIndicator(indicator) {
   }
 }
 
-async function handleSend(messageInput, sendButton, logEl, errorEl) {
+async function handleSend(messageInput, sendButton, logEl, errorEl, options = {}) {
   const message = messageInput.value.trim();
   if (!message) return;
   const attachmentInput = document.getElementById('chat-attachment-input');
@@ -156,7 +174,7 @@ async function handleSend(messageInput, sendButton, logEl, errorEl) {
   const typing = showTypingIndicator(logEl);
 
   try {
-    const data = await sendMessage(outboundMessage);
+    const data = await sendMessageWithOptions(outboundMessage, options);
     removeTypingIndicator(typing);
     appendMessage(logEl, 'bot', data.reply);
     conversationHistory.push({ role: 'assistant', content: data.reply });
@@ -260,17 +278,18 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
   };
 
   const triggerIntent = async (intent) => {
+    if (intent) {
+      await resetChatSession();
+      logEl.innerHTML = '';
+      hydrated = true;
+      greeted = false;
+    }
+
     await openPanel();
     if (!intent) return;
 
-    if (conversationHistory.length === 0) {
-      inputEl.value = intent;
-      await handleSend(inputEl, sendBtn, logEl, errorEl);
-      return;
-    }
-
     inputEl.value = intent;
-    inputEl.focus();
+    await handleSend(inputEl, sendBtn, logEl, errorEl, { reset: true });
   };
 
   if (floatingEl) {
