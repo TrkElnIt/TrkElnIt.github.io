@@ -1,6 +1,24 @@
 import { API_BASE_URL } from './apiConfig.js';
 
 const CHAT_HISTORY_KEY = 'trk_chat_history_v1';
+const QUICK_ACTIONS = [
+  {
+    label: 'Schedule a Meeting',
+    intent: 'I want to schedule a meeting about my project. Please ask me for my name, email, company, preferred time, and what I want to discuss.',
+  },
+  {
+    label: 'Request a Quote',
+    intent: 'I want a quote for my project. Please ask me for my name, email, company, project scope, timeline, and budget range.',
+  },
+  {
+    label: 'Upload Requirements',
+    intent: 'I want to share project requirements and documents. Please ask me what files I have, what the project is, and how you should review them.',
+  },
+  {
+    label: 'Ask TrkElnIt',
+    intent: null,
+  },
+];
 
 function loadPersistedHistory() {
   try {
@@ -135,6 +153,7 @@ const logEl = document.getElementById('chat-log');
 const inputEl = document.getElementById('chat-input');
 const sendBtn = document.getElementById('chat-send');
 const errorEl = document.getElementById('chat-error');
+const floatingEl = document.querySelector('.chat-floating');
 let greeted = conversationHistory.length > 0;
 
 if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
@@ -191,8 +210,43 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
 
   const closePanel = () => {
     panel.classList.add('hidden');
-    toggleBtn.classList.remove('hidden');
+    if (!floatingEl?.querySelector('.chat-action-rail')) {
+      toggleBtn.classList.remove('hidden');
+    }
   };
+
+  const triggerIntent = async (intent) => {
+    await openPanel();
+    if (!intent) return;
+
+    if (conversationHistory.length === 0) {
+      inputEl.value = intent;
+      await handleSend(inputEl, sendBtn, logEl, errorEl);
+      return;
+    }
+
+    inputEl.value = intent;
+    inputEl.focus();
+  };
+
+  if (floatingEl) {
+    const actionRail = document.createElement('div');
+    actionRail.className = 'chat-action-rail';
+
+    QUICK_ACTIONS.forEach((action) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = action.intent ? 'chat-action-button' : 'chat-action-button primary';
+      button.textContent = action.label;
+      button.addEventListener('click', () => {
+        triggerIntent(action.intent);
+      });
+      actionRail.appendChild(button);
+    });
+
+    floatingEl.insertBefore(actionRail, toggleBtn);
+    toggleBtn.classList.add('hidden');
+  }
 
   toggleBtn.addEventListener('click', openPanel);
   closeBtn.addEventListener('click', closePanel);
