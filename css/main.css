@@ -446,6 +446,22 @@ img {
   border: 1px solid var(--line) !important;
   background: #ffffff !important;
   color: #111111 !important;
+  width: 46px;
+  min-width: 46px;
+  padding: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-attach-button svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .chat-input-row button:disabled {

@@ -298,7 +298,13 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
     attachmentButton.type = 'button';
     attachmentButton.id = 'chat-attach';
     attachmentButton.className = 'chat-attach-button';
-    attachmentButton.textContent = 'Attach';
+    attachmentButton.setAttribute('aria-label', 'Attach files');
+    attachmentButton.title = 'Attach files';
+    attachmentButton.innerHTML = `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M16.5 6.5l-6.8 6.8a3 3 0 104.2 4.2l7.6-7.6a5 5 0 10-7.1-7.1L6 11.1" />
+      </svg>
+    `;
 
     const attachmentInput = document.createElement('input');
     attachmentInput.type = 'file';
