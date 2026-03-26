@@ -403,13 +403,18 @@ img {
   color: #111111;
 }
 
+.chat-msg.bot a {
+  color: #111111;
+  text-decoration: underline;
+}
+
 .chat-msg.typing {
   color: var(--muted);
 }
 
 .chat-input-row {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr auto auto;
   gap: 10px;
   padding: 14px 18px 10px;
   border-top: 1px solid var(--line);
@@ -437,9 +442,22 @@ img {
   cursor: pointer;
 }
 
+.chat-attach-button {
+  border: 1px solid var(--line) !important;
+  background: #ffffff !important;
+  color: #111111 !important;
+}
+
 .chat-input-row button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.chat-attachment-status {
+  padding: 0 18px 8px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  background: #ffffff;
 }
 
 .chat-error {

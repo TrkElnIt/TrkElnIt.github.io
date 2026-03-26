@@ -93,7 +93,25 @@ async function sendMessage(message) {
 function appendMessage(container, role, text) {
   const div = document.createElement('div');
   div.className = `chat-msg ${role}`;
-  div.textContent = text;
+  if (role === 'bot') {
+    const normalized = String(text || '').replace(/meeting\.html/g, `${window.location.origin}/meeting.html`);
+    const parts = normalized.split(/(https?:\/\/[^\s]+)/g);
+    parts.forEach((part) => {
+      if (!part) return;
+      if (/^https?:\/\//.test(part)) {
+        const link = document.createElement('a');
+        link.href = part;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = part;
+        div.appendChild(link);
+      } else {
+        div.appendChild(document.createTextNode(part));
+      }
+    });
+  } else {
+    div.textContent = text;
+  }
   container.appendChild(div);
   container.scrollTop = container.scrollHeight;
 }
@@ -118,17 +136,27 @@ function removeTypingIndicator(indicator) {
 async function handleSend(messageInput, sendButton, logEl, errorEl) {
   const message = messageInput.value.trim();
   if (!message) return;
+  const attachmentInput = document.getElementById('chat-attachment-input');
+  const selectedFiles = attachmentInput?.files ? Array.from(attachmentInput.files) : [];
+  const attachmentSuffix = selectedFiles.length
+    ? `\n\nAttached files: ${selectedFiles.map((file) => file.name).join(', ')}`
+    : '';
+  const outboundMessage = `${message}${attachmentSuffix}`;
 
-  appendMessage(logEl, 'user', message);
-  conversationHistory.push({ role: 'user', content: message });
+  appendMessage(logEl, 'user', outboundMessage);
+  conversationHistory.push({ role: 'user', content: outboundMessage });
   persistHistory();
   messageInput.value = '';
+  if (attachmentInput) {
+    attachmentInput.value = '';
+    updateAttachmentState();
+  }
   sendButton.disabled = true;
   if (errorEl) errorEl.classList.add('hidden');
   const typing = showTypingIndicator(logEl);
 
   try {
-    const data = await sendMessage(message);
+    const data = await sendMessage(outboundMessage);
     removeTypingIndicator(typing);
     appendMessage(logEl, 'bot', data.reply);
     conversationHistory.push({ role: 'assistant', content: data.reply });
@@ -156,7 +184,21 @@ const inputEl = document.getElementById('chat-input');
 const sendBtn = document.getElementById('chat-send');
 const errorEl = document.getElementById('chat-error');
 const floatingEl = document.querySelector('.chat-floating');
+let attachmentStatusEl = null;
 let greeted = conversationHistory.length > 0;
+
+function updateAttachmentState() {
+  const attachmentInput = document.getElementById('chat-attachment-input');
+  if (!attachmentStatusEl || !attachmentInput) return;
+  const files = attachmentInput.files ? Array.from(attachmentInput.files) : [];
+  if (!files.length) {
+    attachmentStatusEl.textContent = '';
+    attachmentStatusEl.classList.add('hidden');
+    return;
+  }
+  attachmentStatusEl.textContent = `Selected: ${files.map((file) => file.name).join(', ')}`;
+  attachmentStatusEl.classList.remove('hidden');
+}
 
 if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
   let hydrated = false;
@@ -248,6 +290,31 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
 
     floatingEl.insertBefore(actionRail, toggleBtn);
     toggleBtn.classList.add('hidden');
+  }
+
+  const inputRow = panel.querySelector('.chat-input-row');
+  if (inputRow) {
+    const attachmentButton = document.createElement('button');
+    attachmentButton.type = 'button';
+    attachmentButton.id = 'chat-attach';
+    attachmentButton.className = 'chat-attach-button';
+    attachmentButton.textContent = 'Attach';
+
+    const attachmentInput = document.createElement('input');
+    attachmentInput.type = 'file';
+    attachmentInput.id = 'chat-attachment-input';
+    attachmentInput.className = 'hidden';
+    attachmentInput.multiple = true;
+
+    attachmentStatusEl = document.createElement('div');
+    attachmentStatusEl.className = 'chat-attachment-status hidden';
+
+    attachmentButton.addEventListener('click', () => attachmentInput.click());
+    attachmentInput.addEventListener('change', updateAttachmentState);
+
+    inputRow.insertBefore(attachmentButton, sendBtn);
+    panel.insertBefore(attachmentInput, inputRow);
+    panel.insertBefore(attachmentStatusEl, inputRow);
   }
 
   toggleBtn.addEventListener('click', openPanel);
