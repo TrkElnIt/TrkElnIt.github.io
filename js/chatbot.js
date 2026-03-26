@@ -28,6 +28,7 @@ function loadPersistedHistory() {
     if (!Array.isArray(parsed)) return [];
     return parsed
       .filter((msg) => msg && typeof msg.content === 'string' && msg.content.trim())
+      .filter((msg) => msg.role === 'user' || msg.role === 'assistant')
       .map((msg) => ({
         role: msg.role === 'assistant' ? 'assistant' : 'user',
         content: msg.content,
@@ -50,6 +51,7 @@ function hydrateFromTranscript(transcript) {
   if (!Array.isArray(transcript) || transcript.length === 0) return false;
   conversationHistory = transcript
     .filter((msg) => msg && typeof msg.content === 'string' && msg.content.trim())
+    .filter((msg) => msg.role === 'user' || msg.role === 'assistant')
     .map((msg) => ({
       role: msg.role === 'assistant' ? 'assistant' : 'user',
       content: msg.content,
