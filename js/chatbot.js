@@ -8,11 +8,11 @@ const QUICK_ACTIONS = [
   },
   {
     label: 'Request a Quote',
-    intent: 'I want a quote for my project. Please ask me for my name, email, company, project scope, timeline, and budget range.',
+    intent: 'I want a quote for my project.',
   },
   {
     label: 'Upload Requirements',
-    intent: 'I want to share project requirements and documents. Please ask me what files I have, what the project is, and how you should review them.',
+    intent: 'I want to share project requirements.',
   },
   {
     label: 'Ask TrkElnIt',
