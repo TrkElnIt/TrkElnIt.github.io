@@ -1,3 +1,5 @@
+import { API_BASE_URL } from './apiConfig.js';
+
 const DAY_SLOTS = {
   'Mon, Mar 30': ['10:00 AM', '11:30 AM', '2:00 PM', '4:30 PM'],
   'Tue, Mar 31': ['9:00 AM', '11:00 AM', '1:30 PM', '4:00 PM'],
@@ -21,6 +23,7 @@ const summaryTime = document.getElementById('meeting-summary-time');
 const summaryDuration = document.getElementById('meeting-summary-duration');
 const summaryPrice = document.getElementById('meeting-summary-price');
 const confirmLink = document.getElementById('meeting-confirm');
+const bookingStatus = document.getElementById('meeting-booking-status');
 
 function setActive(buttons, activeButton) {
   buttons.forEach((button) => {
@@ -34,17 +37,7 @@ function updateSummary() {
   summaryDuration.textContent = selected.duration ? `${selected.duration} minutes` : 'Choose a duration';
   summaryPrice.textContent = selected.price === null ? '-' : selected.price === 0 ? 'Free' : `$${selected.price}`;
 
-  if (selected.day && selected.time && selected.duration) {
-    const params = new URLSearchParams({
-      day: selected.day,
-      time: selected.time,
-      duration: String(selected.duration),
-      price: String(selected.price),
-    });
-    confirmLink.href = `contact.html?${params.toString()}`;
-  } else {
-    confirmLink.href = 'contact.html';
-  }
+  confirmLink.disabled = !(selected.day && selected.time && selected.duration);
 }
 
 function renderTimes(day) {
@@ -83,5 +76,44 @@ durationButtons.forEach((button) => {
     updateSummary();
   });
 });
+
+async function submitBooking() {
+  if (!(selected.day && selected.time && selected.duration)) {
+    bookingStatus.textContent = 'Select day, time, and duration first.';
+    bookingStatus.classList.remove('hidden');
+    return;
+  }
+
+  confirmLink.disabled = true;
+  bookingStatus.textContent = 'Saving booking...';
+  bookingStatus.classList.remove('hidden');
+
+  try {
+    const resp = await fetch(`${API_BASE_URL}/chat/meeting-bookings`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        day: selected.day,
+        time: selected.time,
+        duration_minutes: selected.duration,
+        price: selected.price,
+      }),
+    });
+    if (!resp.ok) {
+      throw new Error(`Booking error ${resp.status}`);
+    }
+    const booking = await resp.json();
+    bookingStatus.textContent = booking.price > 0
+      ? 'Booking saved. Next step is payment for the selected duration.'
+      : 'Booking saved. Your free 15-minute meeting is confirmed pending review.';
+  } catch (err) {
+    bookingStatus.textContent = err.message || 'Failed to save booking.';
+  } finally {
+    confirmLink.disabled = false;
+  }
+}
+
+confirmLink.addEventListener('click', submitBooking);
 
 updateSummary();
