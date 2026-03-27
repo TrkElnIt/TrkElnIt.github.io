@@ -37,9 +37,10 @@ async function loadPaymentState() {
   statusNode.textContent = 'Fetching order and payment details...';
 
   try {
-    const [orderResp, paymentResp] = await Promise.all([
-      fetch(`${API_BASE_URL}/payments/orders/${orderId}`),
-      fetch(`${API_BASE_URL}/payments/orders/${orderId}/payment`)
+    const [orderResp, paymentResp, bookingResp] = await Promise.all([
+      fetch(`${API_BASE_URL}/payments/orders/${orderId}`, { credentials: 'include' }),
+      fetch(`${API_BASE_URL}/payments/orders/${orderId}/payment`, { credentials: 'include' }),
+      fetch(`${API_BASE_URL}/chat/meeting-bookings/by-order/${orderId}`, { credentials: 'include' })
     ]);
 
     if (!orderResp.ok || !paymentResp.ok) {
@@ -48,11 +49,14 @@ async function loadPaymentState() {
 
     const order = await orderResp.json();
     const payment = await paymentResp.json();
+    const booking = bookingResp.ok ? await bookingResp.json() : null;
 
-    copyNode.textContent = 'The order has been recorded in the TrkElnIt CRM. Use the references below if you need support or want to confirm delivery timing.';
+    copyNode.textContent = booking
+      ? 'Your payment has been recorded and the meeting booking is confirmed.'
+      : 'The order has been recorded in the TrkElnIt CRM. Use the references below if you need support or want to confirm delivery timing.';
     statusNode.textContent = `Order status: ${order.status} • Payment status: ${payment.status}`;
 
-    detailsNode.innerHTML = [
+    const details = [
       renderDetail('Order ID', order.id),
       renderDetail('Package', order.package_name),
       renderDetail('Amount', `${order.amount} ${order.currency}`),
@@ -61,10 +65,23 @@ async function loadPaymentState() {
       renderDetail('Payment Intent', shortValue(payment.provider_payment_id)),
       renderDetail('Created', formatTimestamp(order.created_at)),
       renderDetail('Paid At', formatTimestamp(payment.paid_at))
-    ].join('');
+    ];
+
+    if (booking) {
+      details.splice(
+        3,
+        0,
+        renderDetail('Meeting Day', booking.meeting_day),
+        renderDetail('Meeting Time', booking.meeting_time),
+        renderDetail('Duration', `${booking.duration_minutes} minutes`),
+        renderDetail('Booking Status', booking.status)
+      );
+    }
+
+    detailsNode.innerHTML = details.join('');
   } catch (error) {
     statusNode.textContent = error.message;
-    copyNode.textContent = 'Stripe redirected successfully, but the CRM details could not be loaded yet. Contact TrkElnIt with the order reference if you need confirmation.';
+    copyNode.textContent = 'Stripe redirected successfully. If the CRM details are not ready yet, use the email receipt as confirmation and contact TrkElnIt with the order reference if needed.';
     detailsNode.innerHTML = [
       renderDetail('Order ID', orderId),
       renderDetail('Stripe Session', shortValue(sessionId))
