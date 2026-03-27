@@ -104,9 +104,24 @@ async function submitBooking() {
       throw new Error(`Booking error ${resp.status}`);
     }
     const booking = await resp.json();
-    bookingStatus.textContent = booking.price > 0
-      ? 'Booking saved. Next step is payment for the selected duration.'
-      : 'Booking saved. Your free 15-minute meeting is confirmed pending review.';
+    if (booking.price > 0) {
+      bookingStatus.textContent = 'Booking saved. Redirecting to Stripe checkout...';
+      const checkoutResp = await fetch(`${API_BASE_URL}/chat/meeting-bookings/${booking.id}/checkout`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+      const checkoutData = await checkoutResp.json().catch(() => ({}));
+      if (!checkoutResp.ok) {
+        throw new Error(checkoutData.detail || `Stripe checkout error ${checkoutResp.status}`);
+      }
+      if (!checkoutData.checkout_url) {
+        throw new Error('Stripe checkout URL was not returned.');
+      }
+      window.location.href = checkoutData.checkout_url;
+      return;
+    }
+
+    bookingStatus.textContent = 'Booking saved. Your free 15-minute meeting is confirmed pending review.';
   } catch (err) {
     bookingStatus.textContent = err.message || 'Failed to save booking.';
   } finally {
