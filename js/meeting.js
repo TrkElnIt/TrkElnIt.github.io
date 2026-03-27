@@ -1,21 +1,23 @@
 import { API_BASE_URL } from './apiConfig.js';
 
-const DAY_SLOTS = {
-  'Mon, Mar 30': ['10:00 AM', '11:30 AM', '2:00 PM', '4:30 PM'],
-  'Tue, Mar 31': ['9:00 AM', '11:00 AM', '1:30 PM', '4:00 PM'],
-  'Wed, Apr 1': ['9:30 AM', '12:00 PM', '2:30 PM', '5:00 PM'],
-  'Thu, Apr 2': ['10:30 AM', '1:00 PM', '3:30 PM', '6:00 PM'],
-  'Fri, Apr 3': ['9:00 AM', '11:30 AM', '1:00 PM', '3:00 PM'],
-};
-
 const selected = {
   day: null,
+  dayLabel: null,
   time: null,
   duration: null,
   price: null,
 };
 
-const dayButtons = Array.from(document.querySelectorAll('[data-day]'));
+let availabilityDays = [];
+
+const DURATION_PRICES = {
+  15: 0,
+  30: 25,
+  45: 50,
+  60: 75,
+};
+
+const dayGrid = document.getElementById('meeting-day-grid');
 const durationButtons = Array.from(document.querySelectorAll('[data-duration]'));
 const timeGrid = document.getElementById('meeting-time-grid');
 const summaryDay = document.getElementById('meeting-summary-day');
@@ -29,20 +31,125 @@ const emailInput = document.getElementById('meeting-email');
 const companyInput = document.getElementById('meeting-company');
 const subjectInput = document.getElementById('meeting-subject');
 
-function setActive(buttons, activeButton) {
+function getSelectedDayData() {
+  return availabilityDays.find((day) => day.date === selected.day) || null;
+}
+
+function getSelectedSlot() {
+  const day = getSelectedDayData();
+  if (!day) return null;
+  return day.slots.find((slot) => slot.time === selected.time) || null;
+}
+
+function setActive(buttons, activeValue, getValue) {
   buttons.forEach((button) => {
-    button.classList.toggle('is-active', button === activeButton);
+    button.classList.toggle('is-active', getValue(button) === activeValue);
   });
 }
 
+function syncDurationButtons() {
+  const selectedSlot = getSelectedSlot();
+  durationButtons.forEach((button) => {
+    const duration = Number(button.dataset.duration);
+    const allowed = !selectedSlot || selectedSlot.supported_durations.includes(duration);
+    button.disabled = !allowed;
+    button.style.opacity = allowed ? '1' : '0.45';
+    button.style.cursor = allowed ? 'pointer' : 'not-allowed';
+  });
+
+  if (selectedSlot && selected.duration && !selectedSlot.supported_durations.includes(selected.duration)) {
+    selected.duration = null;
+    selected.price = null;
+  }
+}
+
 function updateSummary() {
-  summaryDay.textContent = selected.day || 'Choose a day';
+  summaryDay.textContent = selected.dayLabel || 'Choose a day';
   summaryTime.textContent = selected.time || 'Choose an hour';
   summaryDuration.textContent = selected.duration ? `${selected.duration} minutes` : 'Choose a duration';
   summaryPrice.textContent = selected.price === null ? '-' : selected.price === 0 ? 'Free' : `$${selected.price}`;
 
   confirmLink.disabled = !(selected.day && selected.time && selected.duration);
 }
+
+function renderDays() {
+  dayGrid.innerHTML = '';
+
+  if (!availabilityDays.length) {
+    dayGrid.innerHTML = '<p class="section-copy">No available days are configured right now. Check back later or contact TrkElnIt directly.</p>';
+    return;
+  }
+
+  availabilityDays.forEach((day) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'meeting-chip';
+    button.textContent = day.label;
+    button.dataset.date = day.date;
+    button.addEventListener('click', () => {
+      selected.day = day.date;
+      selected.dayLabel = day.label;
+      selected.time = null;
+      renderDays();
+      renderTimes();
+      syncDurationButtons();
+      updateSummary();
+    });
+    if (selected.day === day.date) {
+      button.classList.add('is-active');
+    }
+    dayGrid.appendChild(button);
+  });
+}
+
+function renderTimes() {
+  timeGrid.innerHTML = '';
+  const day = getSelectedDayData();
+  if (!day) {
+    timeGrid.innerHTML = '<p class="section-copy">Choose a day first.</p>';
+    return;
+  }
+
+  const slots = selected.duration
+    ? day.slots.filter((slot) => slot.supported_durations.includes(selected.duration))
+    : day.slots;
+
+  if (!slots.length) {
+    timeGrid.innerHTML = '<p class="section-copy">No hours are available for this selection.</p>';
+    return;
+  }
+
+  slots.forEach((slot) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'meeting-chip';
+    button.textContent = slot.time;
+    button.dataset.time = slot.time;
+    button.addEventListener('click', () => {
+      selected.time = slot.time;
+      renderTimes();
+      syncDurationButtons();
+      updateSummary();
+    });
+    if (selected.time === slot.time) {
+      button.classList.add('is-active');
+    }
+    timeGrid.appendChild(button);
+  });
+}
+
+durationButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    const duration = Number(button.dataset.duration);
+    if (button.disabled) return;
+    selected.duration = duration;
+    selected.price = DURATION_PRICES[duration] ?? Number(button.dataset.price);
+    renderTimes();
+    syncDurationButtons();
+    setActive(durationButtons, selected.duration, (node) => Number(node.dataset.duration));
+    updateSummary();
+  });
+});
 
 async function loadPrefill() {
   try {
@@ -60,42 +167,27 @@ async function loadPrefill() {
   }
 }
 
-function renderTimes(day) {
-  timeGrid.innerHTML = '';
-  const slots = DAY_SLOTS[day] || [];
-  slots.forEach((slot) => {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'meeting-chip';
-    button.textContent = slot;
-    button.dataset.time = slot;
-    button.addEventListener('click', () => {
-      selected.time = slot;
-      setActive(Array.from(timeGrid.querySelectorAll('.meeting-chip')), button);
-      updateSummary();
+async function loadAvailability() {
+  try {
+    const resp = await fetch(`${API_BASE_URL}/calendar/availability`, {
+      credentials: 'include',
     });
-    timeGrid.appendChild(button);
-  });
+    if (!resp.ok) {
+      throw new Error(`Availability error ${resp.status}`);
+    }
+    const data = await resp.json();
+    availabilityDays = data.days || [];
+    renderDays();
+    renderTimes();
+    syncDurationButtons();
+    updateSummary();
+  } catch (err) {
+    dayGrid.innerHTML = '<p class="section-copy">Availability could not be loaded right now.</p>';
+    timeGrid.innerHTML = '';
+    bookingStatus.textContent = err.message || 'Availability could not be loaded.';
+    bookingStatus.classList.remove('hidden');
+  }
 }
-
-dayButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    selected.day = button.dataset.day;
-    selected.time = null;
-    setActive(dayButtons, button);
-    renderTimes(selected.day);
-    updateSummary();
-  });
-});
-
-durationButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    selected.duration = Number(button.dataset.duration);
-    selected.price = Number(button.dataset.price);
-    setActive(durationButtons, button);
-    updateSummary();
-  });
-});
 
 async function submitBooking() {
   if (!(selected.day && selected.time && selected.duration)) {
@@ -124,16 +216,17 @@ async function submitBooking() {
         email: emailInput.value.trim(),
         company: companyInput.value.trim(),
         subject: subjectInput.value.trim() || null,
-        day: selected.day,
+        day: selected.dayLabel,
         time: selected.time,
         duration_minutes: selected.duration,
         price: selected.price,
       }),
     });
+    const payload = await resp.json().catch(() => ({}));
     if (!resp.ok) {
-      throw new Error(`Booking error ${resp.status}`);
+      throw new Error(payload.detail || `Booking error ${resp.status}`);
     }
-    const booking = await resp.json();
+    const booking = payload;
     if (booking.price > 0) {
       bookingStatus.textContent = 'Booking saved. Redirecting to Stripe checkout...';
       const checkoutResp = await fetch(`${API_BASE_URL}/chat/meeting-bookings/${booking.id}/checkout`, {
@@ -162,4 +255,5 @@ async function submitBooking() {
 confirmLink.addEventListener('click', submitBooking);
 
 loadPrefill();
+loadAvailability();
 updateSummary();
