@@ -24,6 +24,10 @@ const summaryDuration = document.getElementById('meeting-summary-duration');
 const summaryPrice = document.getElementById('meeting-summary-price');
 const confirmLink = document.getElementById('meeting-confirm');
 const bookingStatus = document.getElementById('meeting-booking-status');
+const nameInput = document.getElementById('meeting-name');
+const emailInput = document.getElementById('meeting-email');
+const companyInput = document.getElementById('meeting-company');
+const subjectInput = document.getElementById('meeting-subject');
 
 function setActive(buttons, activeButton) {
   buttons.forEach((button) => {
@@ -38,6 +42,22 @@ function updateSummary() {
   summaryPrice.textContent = selected.price === null ? '-' : selected.price === 0 ? 'Free' : `$${selected.price}`;
 
   confirmLink.disabled = !(selected.day && selected.time && selected.duration);
+}
+
+async function loadPrefill() {
+  try {
+    const resp = await fetch(`${API_BASE_URL}/chat/meeting-bookings/prefill`, {
+      credentials: 'include',
+    });
+    if (!resp.ok) return;
+    const data = await resp.json();
+    if (data.name) nameInput.value = data.name;
+    if (data.email) emailInput.value = data.email;
+    if (data.company) companyInput.value = data.company;
+    if (data.subject) subjectInput.value = data.subject;
+  } catch {
+    // Manual booking should still work without prefill.
+  }
 }
 
 function renderTimes(day) {
@@ -84,6 +104,12 @@ async function submitBooking() {
     return;
   }
 
+  if (!nameInput.value.trim() || !emailInput.value.trim() || !companyInput.value.trim()) {
+    bookingStatus.textContent = 'Enter your name, email, and company before confirming.';
+    bookingStatus.classList.remove('hidden');
+    return;
+  }
+
   confirmLink.disabled = true;
   bookingStatus.textContent = 'Saving booking...';
   bookingStatus.classList.remove('hidden');
@@ -94,6 +120,10 @@ async function submitBooking() {
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        name: nameInput.value.trim(),
+        email: emailInput.value.trim(),
+        company: companyInput.value.trim(),
+        subject: subjectInput.value.trim() || null,
         day: selected.day,
         time: selected.time,
         duration_minutes: selected.duration,
@@ -131,4 +161,5 @@ async function submitBooking() {
 
 confirmLink.addEventListener('click', submitBooking);
 
+loadPrefill();
 updateSummary();

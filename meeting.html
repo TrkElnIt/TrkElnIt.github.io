@@ -24,6 +24,29 @@
         <h3>Choose a day, then choose an hour</h3>
         <p class="section-copy">Frontend booking flow for now. Next step is wiring these slots to a real calendar backend.</p>
 
+        <div class="meeting-step" style="margin-bottom:24px;">
+          <div class="meeting-step-label">Customer</div>
+          <h4>Your details</h4>
+          <form id="meeting-customer-form">
+            <label>
+              Name
+              <input id="meeting-name" type="text" placeholder="Your name" />
+            </label>
+            <label>
+              Email
+              <input id="meeting-email" type="email" placeholder="you@example.com" />
+            </label>
+            <label>
+              Company
+              <input id="meeting-company" type="text" placeholder="Your company" />
+            </label>
+            <label>
+              Meeting topic
+              <textarea id="meeting-subject" placeholder="What do you want to discuss?"></textarea>
+            </label>
+          </form>
+        </div>
+
         <div class="meeting-picker">
           <div class="meeting-step">
             <div class="meeting-step-label">Step 1</div>
