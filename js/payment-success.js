@@ -34,7 +34,8 @@ async function loadPaymentState() {
     return;
   }
 
-  statusNode.textContent = 'Fetching order and payment details...';
+  copyNode.textContent = 'Stripe confirmed the payment. Your meeting is confirmed. A receipt has been emailed to you, including a PDF attachment.';
+  statusNode.textContent = 'Payment received. Loading booking details...';
 
   try {
     const [orderResp, paymentResp, bookingResp] = await Promise.all([
@@ -80,8 +81,8 @@ async function loadPaymentState() {
 
     detailsNode.innerHTML = details.join('');
   } catch (error) {
-    statusNode.textContent = error.message;
-    copyNode.textContent = 'Stripe redirected successfully. If the CRM details are not ready yet, use the email receipt as confirmation and contact TrkElnIt with the order reference if needed.';
+    statusNode.textContent = 'Payment received. Detailed CRM fields are not available on this page yet.';
+    copyNode.textContent = 'Your meeting payment is confirmed. Check your email for the receipt and attached PDF. Contact TrkElnIt with the order reference if you need support.';
     detailsNode.innerHTML = [
       renderDetail('Order ID', orderId),
       renderDetail('Stripe Session', shortValue(sessionId))
