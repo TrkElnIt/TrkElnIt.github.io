@@ -30,6 +30,7 @@ const nameInput = document.getElementById('meeting-name');
 const emailInput = document.getElementById('meeting-email');
 const companyInput = document.getElementById('meeting-company');
 const subjectInput = document.getElementById('meeting-subject');
+let availabilityLoadFailed = false;
 
 function getSelectedDayData() {
   return availabilityDays.find((day) => day.date === selected.day) || null;
@@ -51,7 +52,10 @@ function syncDurationButtons() {
   const selectedSlot = getSelectedSlot();
   durationButtons.forEach((button) => {
     const duration = Number(button.dataset.duration);
-    const allowed = !selectedSlot || selectedSlot.supported_durations.includes(duration);
+    const allowed =
+      !availabilityLoadFailed &&
+      !!selected.day &&
+      (!!selectedSlot && selectedSlot.supported_durations.includes(duration));
     button.disabled = !allowed;
     button.style.opacity = allowed ? '1' : '0.45';
     button.style.cursor = allowed ? 'pointer' : 'not-allowed';
@@ -69,7 +73,7 @@ function updateSummary() {
   summaryDuration.textContent = selected.duration ? `${selected.duration} minutes` : 'Choose a duration';
   summaryPrice.textContent = selected.price === null ? '-' : selected.price === 0 ? 'Free' : `$${selected.price}`;
 
-  confirmLink.disabled = !(selected.day && selected.time && selected.duration);
+  confirmLink.disabled = availabilityLoadFailed || !(selected.day && selected.time && selected.duration);
 }
 
 function renderDays() {
@@ -176,14 +180,24 @@ async function loadAvailability() {
       throw new Error(`Availability error ${resp.status}`);
     }
     const data = await resp.json();
+    availabilityLoadFailed = false;
     availabilityDays = data.days || [];
     renderDays();
     renderTimes();
     syncDurationButtons();
     updateSummary();
   } catch (err) {
+    availabilityLoadFailed = true;
+    availabilityDays = [];
+    selected.day = null;
+    selected.dayLabel = null;
+    selected.time = null;
+    selected.duration = null;
+    selected.price = null;
     dayGrid.innerHTML = '<p class="section-copy">Availability could not be loaded right now.</p>';
-    timeGrid.innerHTML = '';
+    timeGrid.innerHTML = '<p class="section-copy">Hours will appear after availability is loaded and a day is selected.</p>';
+    syncDurationButtons();
+    updateSummary();
     bookingStatus.textContent = err.message || 'Availability could not be loaded.';
     bookingStatus.classList.remove('hidden');
   }
@@ -254,6 +268,7 @@ async function submitBooking() {
 
 confirmLink.addEventListener('click', submitBooking);
 
+syncDurationButtons();
 loadPrefill();
 loadAvailability();
 updateSummary();
