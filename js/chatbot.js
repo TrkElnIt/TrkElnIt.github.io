@@ -3,6 +3,10 @@ import { API_BASE_URL } from './apiConfig.js';
 const CHAT_HISTORY_KEY = 'trk_chat_history_v1';
 const QUICK_ACTIONS = [
   {
+    label: 'Ask TrkElnIt',
+    intent: null,
+  },
+  {
     label: 'Schedule a Meeting',
     intent: 'I want to schedule a meeting.',
   },
@@ -304,7 +308,7 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
     });
 
     floatingEl.insertBefore(actionRail, toggleBtn);
-    toggleBtn.innerHTML = '<span class="chat-toggle-plus">+</span><span>Ask TrkElnIt</span>';
+    toggleBtn.textContent = 'Ask TrkElnIt';
   }
 
   const inputRow = panel.querySelector('.chat-input-row');
