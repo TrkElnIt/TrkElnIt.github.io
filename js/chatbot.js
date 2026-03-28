@@ -204,6 +204,12 @@ const errorEl = document.getElementById('chat-error');
 const floatingEl = document.querySelector('.chat-floating');
 let attachmentStatusEl = null;
 let greeted = conversationHistory.length > 0;
+let actionRail = null;
+
+function setActionRailOpen(open) {
+  if (!floatingEl) return;
+  floatingEl.classList.toggle('menu-open', Boolean(open));
+}
 
 function updateAttachmentState() {
   const attachmentInput = document.getElementById('chat-attachment-input');
@@ -232,7 +238,7 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
 
   const openPanel = async () => {
     panel.classList.remove('hidden');
-    toggleBtn.classList.add('hidden');
+    setActionRailOpen(false);
     if (!hydrated) {
       let meta = null;
       try {
@@ -272,9 +278,7 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
 
   const closePanel = () => {
     panel.classList.add('hidden');
-    if (!floatingEl?.querySelector('.chat-action-rail')) {
-      toggleBtn.classList.remove('hidden');
-    }
+    setActionRailOpen(false);
   };
 
   const triggerIntent = async (intent) => {
@@ -293,7 +297,7 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
   };
 
   if (floatingEl) {
-    const actionRail = document.createElement('div');
+    actionRail = document.createElement('div');
     actionRail.className = 'chat-action-rail';
 
     QUICK_ACTIONS.forEach((action) => {
@@ -308,7 +312,7 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
     });
 
     floatingEl.insertBefore(actionRail, toggleBtn);
-    toggleBtn.classList.add('hidden');
+    toggleBtn.innerHTML = '<span class="chat-toggle-plus">+</span><span>Get started</span>';
   }
 
   const inputRow = panel.querySelector('.chat-input-row');
@@ -342,7 +346,13 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
     panel.insertBefore(attachmentStatusEl, inputRow);
   }
 
-  toggleBtn.addEventListener('click', openPanel);
+  toggleBtn.addEventListener('click', () => {
+    if (!panel.classList.contains('hidden')) {
+      closePanel();
+      return;
+    }
+    setActionRailOpen(!floatingEl?.classList.contains('menu-open'));
+  });
   closeBtn.addEventListener('click', closePanel);
 
   sendBtn.addEventListener('click', () =>
@@ -350,5 +360,11 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
   );
   inputEl.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') handleSend(inputEl, sendBtn, logEl, errorEl);
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!floatingEl) return;
+    if (floatingEl.contains(event.target)) return;
+    setActionRailOpen(false);
   });
 }
