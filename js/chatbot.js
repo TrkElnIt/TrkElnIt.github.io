@@ -10,14 +10,6 @@ const QUICK_ACTIONS = [
     label: 'Request a Quote',
     intent: 'I want a quote for my project.',
   },
-  {
-    label: 'Upload Requirements',
-    intent: 'I want to share project requirements.',
-  },
-  {
-    label: 'Ask TrkElnIt',
-    intent: null,
-  },
 ];
 
 function loadPersistedHistory() {
@@ -312,7 +304,7 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
     });
 
     floatingEl.insertBefore(actionRail, toggleBtn);
-    toggleBtn.innerHTML = '<span class="chat-toggle-plus">+</span><span>Get started</span>';
+    toggleBtn.innerHTML = '<span class="chat-toggle-plus">+</span><span>Ask TrkElnIt</span>';
   }
 
   const inputRow = panel.querySelector('.chat-input-row');
