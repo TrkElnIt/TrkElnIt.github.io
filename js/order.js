@@ -3,8 +3,9 @@ const packageSelect = document.getElementById('package');
 const summary = document.getElementById('order-summary');
 const form = document.getElementById('order-form');
 const submitButton = document.getElementById('order-submit');
-const payButton = document.getElementById('order-pay');
 const statusEl = document.getElementById('order-status');
+const attachmentInput = document.getElementById('order-attachments');
+const attachmentStatusEl = document.getElementById('order-attachment-status');
 
 const PACKAGE_DETAILS = {
   'Discovery + Architecture': {
@@ -35,32 +36,55 @@ function setOrderStatus(message, isError = false) {
   statusEl.style.color = isError ? '#ff6b6b' : '';
 }
 
+function getAttachmentLabel() {
+  if (!attachmentInput?.files?.length) return 'No files attached';
+  if (attachmentInput.files.length === 1) {
+    return `1 file attached: ${attachmentInput.files[0].name}`;
+  }
+  return `${attachmentInput.files.length} files attached`;
+}
+
+function updateAttachmentState() {
+  if (!attachmentStatusEl) return;
+  attachmentStatusEl.textContent = getAttachmentLabel();
+}
+
+function updateSummary() {
+  if (!packageSelect || !summary) return;
+  const value = packageSelect.value || 'Custom solution';
+  summary.textContent = `Selected engagement: ${value} | ${getAttachmentLabel()}`;
+}
+
 function buildPayload() {
   const data = new FormData(form);
   const packageName = data.get('package') || 'Custom solution';
   const details = PACKAGE_DETAILS[packageName] || PACKAGE_DETAILS['Custom solution'];
+  const brief = data.get('brief') || '';
+  const budget = data.get('budget') || 'Not specified';
   return {
     customer_name: data.get('company') || 'Website customer',
     customer_email: data.get('email') || '',
     customer_company: data.get('company') || '',
     service_type: details.service_type,
     package_name: packageName,
-    description: data.get('brief') || `Budget range: ${data.get('budget') || 'Not specified'}`,
+    description: `${brief}${brief ? '\n\n' : ''}Budget range: ${budget}`,
     amount: details.amount,
     currency: details.currency,
     source: 'website',
+    budget,
   };
 }
 
 if (packageSelect && summary) {
-  const updateSummary = () => {
-    const value = packageSelect.value || 'Custom solution';
-    const details = PACKAGE_DETAILS[value] || PACKAGE_DETAILS['Custom solution'];
-    summary.textContent = `Selected engagement: ${value} | Deposit: ${details.amount} ${details.currency}`;
-  };
   packageSelect.addEventListener('change', updateSummary);
+  attachmentInput?.addEventListener('change', () => {
+    updateAttachmentState();
+    updateSummary();
+  });
   updateSummary();
 }
+
+updateAttachmentState();
 
 if (form && submitButton) {
   form.addEventListener('submit', async (event) => {
@@ -71,41 +95,48 @@ if (form && submitButton) {
       return;
     }
     submitButton.disabled = true;
-    setOrderStatus('Submitting order request...');
+    submitButton.textContent = 'Submitting...';
+    setOrderStatus('Submitting your request...');
     try {
+      const requestBody = new FormData();
+      Object.entries(payload).forEach(([key, value]) => {
+        if (key !== 'budget') {
+          requestBody.append(key, value);
+        }
+      });
+      if (attachmentInput?.files?.length) {
+        Array.from(attachmentInput.files).forEach((file) => {
+          requestBody.append('attachments', file);
+        });
+      }
       const resp = await fetch(`${API_BASE_URL}/payments/orders`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: requestBody,
       });
-      const data = await resp.json();
-      if (!resp.ok) {
-        throw new Error(data.detail || `Order request failed (${resp.status})`);
+      const responseText = await resp.text();
+      let data = {};
+      if (responseText) {
+        try {
+          data = JSON.parse(responseText);
+        } catch (parseError) {
+          data = { detail: responseText };
+        }
       }
-      setOrderStatus(`Order request saved. Reference: ${data.id}`);
+      if (!resp.ok) {
+        const detailMessage = Array.isArray(data.detail)
+          ? data.detail.map((item) => item.msg || item.detail || JSON.stringify(item)).join(', ')
+          : data.detail;
+        throw new Error(detailMessage || `Request failed (${resp.status})`);
+      }
+      form.reset();
+      updateAttachmentState();
+      updateSummary();
+      setOrderStatus('Request received. We will review it and reply by email.');
     } catch (err) {
-      setOrderStatus(err.message || 'Order request failed.', true);
+      setOrderStatus(err.message || 'Unable to submit your request right now.', true);
     } finally {
       submitButton.disabled = false;
-    }
-  });
-}
-
-if (form && payButton) {
-  payButton.addEventListener('click', async () => {
-    const payload = buildPayload();
-    if (!payload.customer_email) {
-      setOrderStatus('Email is required before Stripe checkout.', true);
-      return;
-    }
-    payButton.disabled = true;
-    setOrderStatus('Redirecting to Stripe checkout...');
-    try {
-      await window.startStripeCheckout('custom-order', payload);
-    } catch (err) {
-      setOrderStatus(err.message || 'Stripe checkout failed.', true);
-    } finally {
-      payButton.disabled = false;
+      submitButton.textContent = 'Submit request';
     }
   });
 }
