@@ -299,16 +299,6 @@ img {
   flex-direction: column;
   align-items: flex-end;
   gap: 8px;
-  opacity: 0;
-  transform: translateY(10px);
-  pointer-events: none;
-  transition: opacity 180ms ease, transform 180ms ease;
-}
-
-.chat-floating.menu-open .chat-action-rail {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
 }
 
 .chat-action-button {

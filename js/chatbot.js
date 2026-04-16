@@ -4,7 +4,7 @@ const CHAT_HISTORY_KEY = 'trk_chat_history_v1';
 const QUICK_ACTIONS = [
   {
     label: 'Ask TrkElnIt',
-    intent: null,
+    intent: '__general__',
   },
   {
     label: 'Schedule a Meeting',
@@ -200,12 +200,6 @@ const errorEl = document.getElementById('chat-error');
 const floatingEl = document.querySelector('.chat-floating');
 let attachmentStatusEl = null;
 let greeted = conversationHistory.length > 0;
-let actionRail = null;
-
-function setActionRailOpen(open) {
-  if (!floatingEl) return;
-  floatingEl.classList.toggle('menu-open', Boolean(open));
-}
 
 function updateAttachmentState() {
   const attachmentInput = document.getElementById('chat-attachment-input');
@@ -234,7 +228,6 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
 
   const openPanel = async () => {
     panel.classList.remove('hidden');
-    setActionRailOpen(false);
     if (!hydrated) {
       let meta = null;
       try {
@@ -274,7 +267,6 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
 
   const closePanel = () => {
     panel.classList.add('hidden');
-    setActionRailOpen(false);
   };
 
   const triggerIntent = async (intent) => {
@@ -286,14 +278,14 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
     }
 
     await openPanel();
-    if (!intent) return;
+    if (!intent || intent === '__general__') return;
 
     inputEl.value = intent;
     await handleSend(inputEl, sendBtn, logEl, errorEl, { reset: true });
   };
 
   if (floatingEl) {
-    actionRail = document.createElement('div');
+    const actionRail = document.createElement('div');
     actionRail.className = 'chat-action-rail';
 
     QUICK_ACTIONS.forEach((action) => {
@@ -308,7 +300,7 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
     });
 
     floatingEl.insertBefore(actionRail, toggleBtn);
-    toggleBtn.textContent = 'Ask TrkElnIt';
+    toggleBtn.classList.add('hidden');
   }
 
   const inputRow = panel.querySelector('.chat-input-row');
@@ -342,13 +334,7 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
     panel.insertBefore(attachmentStatusEl, inputRow);
   }
 
-  toggleBtn.addEventListener('click', () => {
-    if (!panel.classList.contains('hidden')) {
-      closePanel();
-      return;
-    }
-    setActionRailOpen(!floatingEl?.classList.contains('menu-open'));
-  });
+  toggleBtn.addEventListener('click', openPanel);
   closeBtn.addEventListener('click', closePanel);
 
   sendBtn.addEventListener('click', () =>
@@ -356,11 +342,5 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
   );
   inputEl.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') handleSend(inputEl, sendBtn, logEl, errorEl);
-  });
-
-  document.addEventListener('click', (event) => {
-    if (!floatingEl) return;
-    if (floatingEl.contains(event.target)) return;
-    setActionRailOpen(false);
   });
 }
