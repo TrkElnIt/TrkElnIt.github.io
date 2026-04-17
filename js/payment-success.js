@@ -38,38 +38,40 @@ async function loadPaymentState() {
   statusNode.textContent = 'Payment received. Loading booking details...';
 
   try {
-    const [orderResp, paymentResp, bookingResp] = await Promise.all([
-      fetch(`${API_BASE_URL}/payments/orders/${orderId}`, { credentials: 'include' }),
-      fetch(`${API_BASE_URL}/payments/orders/${orderId}/payment`, { credentials: 'include' }),
-      fetch(`${API_BASE_URL}/chat/meeting-bookings/by-order/${orderId}`, { credentials: 'include' })
-    ]);
+    if (!sessionId) {
+      throw new Error('Missing Stripe session reference.');
+    }
 
-    if (!orderResp.ok || !paymentResp.ok) {
+    const successResp = await fetch(
+      `${API_BASE_URL}/payments/public/success-details?order_id=${encodeURIComponent(orderId)}&session_id=${encodeURIComponent(sessionId)}`,
+      { credentials: 'include' }
+    );
+
+    if (!successResp.ok) {
       throw new Error('Unable to load the Stripe order details from the CRM.');
     }
 
-    const order = await orderResp.json();
-    const payment = await paymentResp.json();
-    const booking = bookingResp.ok ? await bookingResp.json() : null;
+    const details = await successResp.json();
+    const booking = details.booking || null;
 
     copyNode.textContent = booking
       ? 'Your payment has been recorded and the meeting booking is confirmed.'
-      : 'The order has been recorded in the TrkElnIt CRM. Use the references below if you need support or want to confirm delivery timing.';
-    statusNode.textContent = `Order status: ${order.status} • Payment status: ${payment.status}`;
+      : 'The order has been recorded by TrkElnIt. Use the references below if you need support or want to confirm delivery timing.';
+    statusNode.textContent = `Order status: ${details.order_status} • Payment status: ${details.payment_status}`;
 
-    const details = [
-      renderDetail('Order ID', order.id),
-      renderDetail('Package', order.package_name),
-      renderDetail('Amount', `${order.amount} ${order.currency}`),
-      renderDetail('Customer', order.customer_name),
-      renderDetail('Stripe Session', shortValue(sessionId || order.stripe_session_id)),
-      renderDetail('Payment Intent', shortValue(payment.provider_payment_id)),
-      renderDetail('Created', formatTimestamp(order.created_at)),
-      renderDetail('Paid At', formatTimestamp(payment.paid_at))
+    const detailCards = [
+      renderDetail('Order ID', details.order_id),
+      renderDetail('Package', details.package_name),
+      renderDetail('Amount', `${details.amount} ${details.currency}`),
+      renderDetail('Customer', details.customer_name),
+      renderDetail('Stripe Session', shortValue(sessionId || details.stripe_session_id)),
+      renderDetail('Payment Intent', shortValue(details.stripe_payment_intent_id)),
+      renderDetail('Created', formatTimestamp(details.created_at)),
+      renderDetail('Paid At', formatTimestamp(details.paid_at))
     ];
 
     if (booking) {
-      details.splice(
+      detailCards.splice(
         3,
         0,
         renderDetail('Meeting Day', booking.meeting_day),
@@ -79,7 +81,7 @@ async function loadPaymentState() {
       );
     }
 
-    detailsNode.innerHTML = details.join('');
+    detailsNode.innerHTML = detailCards.join('');
   } catch (error) {
     statusNode.textContent = 'Payment received. Detailed CRM fields are not available on this page yet.';
     copyNode.textContent = 'Your meeting payment is confirmed. Check your email for the receipt and attached PDF. Contact TrkElnIt with the order reference if you need support.';
