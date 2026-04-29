@@ -52,7 +52,7 @@ function updateAttachmentState() {
 function updateSummary() {
   if (!packageSelect || !summary) return;
   const value = packageSelect.value || 'Custom solution';
-  summary.textContent = `Selected engagement: ${value} | ${getAttachmentLabel()}`;
+  summary.textContent = `Selected quote scope: ${value} | ${getAttachmentLabel()}`;
 }
 
 function buildPayload() {
@@ -68,10 +68,8 @@ function buildPayload() {
     service_type: details.service_type,
     package_name: packageName,
     description: `${brief}${brief ? '\n\n' : ''}Budget range: ${budget}`,
-    amount: details.amount,
-    currency: details.currency,
+    budget_range: budget,
     source: 'website',
-    budget,
   };
 }
 
@@ -96,20 +94,18 @@ if (form && submitButton) {
     }
     submitButton.disabled = true;
     submitButton.textContent = 'Submitting...';
-    setOrderStatus('Submitting your request...');
+    setOrderStatus('Submitting your quote request...');
     try {
       const requestBody = new FormData();
       Object.entries(payload).forEach(([key, value]) => {
-        if (key !== 'budget') {
-          requestBody.append(key, value);
-        }
+        requestBody.append(key, value);
       });
       if (attachmentInput?.files?.length) {
         Array.from(attachmentInput.files).forEach((file) => {
           requestBody.append('attachments', file);
         });
       }
-      const resp = await fetch(`${API_BASE_URL}/payments/orders`, {
+      const resp = await fetch(`${API_BASE_URL}/quote-requests`, {
         method: 'POST',
         body: requestBody,
       });
@@ -131,12 +127,12 @@ if (form && submitButton) {
       form.reset();
       updateAttachmentState();
       updateSummary();
-      setOrderStatus('Request received. We will review it and reply by email.');
+      setOrderStatus('Quote request received. We will review it and reply by email.');
     } catch (err) {
-      setOrderStatus(err.message || 'Unable to submit your request right now.', true);
+      setOrderStatus(err.message || 'Unable to submit your quote request right now.', true);
     } finally {
       submitButton.disabled = false;
-      submitButton.textContent = 'Submit request';
+      submitButton.textContent = 'Submit quote request';
     }
   });
 }
