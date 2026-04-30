@@ -270,7 +270,7 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
   };
 
   const triggerIntent = async (intent) => {
-    if (intent) {
+    if (intent && intent !== '__general__') {
       await resetChatSession();
       logEl.innerHTML = '';
       hydrated = true;
@@ -291,7 +291,7 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
     QUICK_ACTIONS.forEach((action) => {
       const button = document.createElement('button');
       button.type = 'button';
-      button.className = action.intent ? 'chat-action-button' : 'chat-action-button primary';
+      button.className = action.intent === '__general__' ? 'chat-action-button primary' : 'chat-action-button';
       button.textContent = action.label;
       button.addEventListener('click', () => {
         triggerIntent(action.intent);
