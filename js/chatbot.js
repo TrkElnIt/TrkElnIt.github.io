@@ -3,16 +3,16 @@ import { API_BASE_URL } from './apiConfig.js';
 const CHAT_HISTORY_KEY = 'trk_chat_history_v1';
 const QUICK_ACTIONS = [
   {
-    label: 'Ask TrkElnIt',
-    intent: '__general__',
-  },
-  {
     label: 'Schedule a Meeting',
     intent: 'I want to schedule a meeting.',
   },
   {
     label: 'Request a Quote',
     intent: 'I want a quote for my project.',
+  },
+  {
+    label: 'Ask TrkElnIt',
+    intent: '__general__',
   },
 ];
 
