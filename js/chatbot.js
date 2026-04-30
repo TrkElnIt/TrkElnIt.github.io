@@ -270,7 +270,7 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
   };
 
   const triggerIntent = async (intent) => {
-    if (intent && intent !== '__general__') {
+    if (intent) {
       await resetChatSession();
       logEl.innerHTML = '';
       hydrated = true;
