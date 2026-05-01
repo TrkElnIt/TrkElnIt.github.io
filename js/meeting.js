@@ -33,6 +33,7 @@ const summaryTime = document.getElementById('meeting-summary-time');
 const summaryDuration = document.getElementById('meeting-summary-duration');
 const summaryPrice = document.getElementById('meeting-summary-price');
 const confirmButton = document.getElementById('meeting-confirm');
+const nextTimeButton = document.getElementById('meeting-next-time');
 const reviewButton = document.getElementById('meeting-review');
 const backDayButton = document.getElementById('meeting-back-day');
 const backTimeButton = document.getElementById('meeting-back-time');
@@ -131,6 +132,9 @@ function updateSummary() {
   summaryDuration.textContent = selected.duration ? `${selected.duration} minutes` : 'Choose a duration';
   summaryPrice.textContent = selected.price === null ? '-' : selected.price === 0 ? 'Free' : `$${selected.price}`;
 
+  if (nextTimeButton) {
+    nextTimeButton.disabled = availabilityLoadFailed || !selected.day;
+  }
   if (reviewButton) {
     reviewButton.disabled = availabilityLoadFailed || !(selected.day && selected.time && selected.duration);
   }
@@ -202,7 +206,6 @@ function renderDays() {
         renderTimes();
         syncDurationButtons();
         updateSummary();
-        setWizardStep('time');
       });
     }
 
@@ -302,6 +305,14 @@ durationButtons.forEach((button) => {
 
 if (backDayButton) {
   backDayButton.addEventListener('click', () => setWizardStep('day'));
+}
+
+if (nextTimeButton) {
+  nextTimeButton.addEventListener('click', () => {
+    if (nextTimeButton.disabled) return;
+    clearStatus();
+    setWizardStep('time');
+  });
 }
 
 if (backTimeButton) {
