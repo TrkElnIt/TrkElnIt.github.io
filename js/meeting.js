@@ -33,12 +33,20 @@ const summaryTime = document.getElementById('meeting-summary-time');
 const summaryDuration = document.getElementById('meeting-summary-duration');
 const summaryPrice = document.getElementById('meeting-summary-price');
 const confirmButton = document.getElementById('meeting-confirm');
+const reviewButton = document.getElementById('meeting-review');
+const backDayButton = document.getElementById('meeting-back-day');
+const backTimeButton = document.getElementById('meeting-back-time');
 const bookingStatus = document.getElementById('meeting-booking-status');
 const nameInput = document.getElementById('meeting-name');
 const emailInput = document.getElementById('meeting-email');
 const companyInput = document.getElementById('meeting-company');
 const subjectInput = document.getElementById('meeting-subject');
+const selectedDayLabel = document.getElementById('meeting-selected-day-label');
+const wizardShell = document.querySelector('.meeting-wizard-shell');
+const panels = Array.from(document.querySelectorAll('[data-meeting-panel]'));
+const progressDots = Array.from(document.querySelectorAll('[data-step-dot]'));
 let availabilityLoadFailed = false;
+let activeStep = 'day';
 
 function parseDate(dateText) {
   const [year, month, day] = dateText.split('-').map(Number);
@@ -81,6 +89,19 @@ function clearStatus() {
   bookingStatus.classList.remove('is-error');
 }
 
+function setWizardStep(step, options = {}) {
+  activeStep = step;
+  panels.forEach((panel) => {
+    panel.classList.toggle('is-hidden', panel.dataset.meetingPanel !== step);
+  });
+  progressDots.forEach((dot) => {
+    dot.classList.toggle('is-active', dot.dataset.stepDot === step);
+  });
+  if (options.scroll !== false && wizardShell) {
+    wizardShell.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
 function syncDurationButtons() {
   const selectedSlot = getSelectedSlot();
   durationButtons.forEach((button) => {
@@ -102,11 +123,17 @@ function syncDurationButtons() {
 }
 
 function updateSummary() {
+  if (selectedDayLabel) {
+    selectedDayLabel.textContent = selected.dayLabel || 'Choose a day';
+  }
   summaryDay.textContent = selected.dayLabel || 'Choose a day';
   summaryTime.textContent = selected.time || 'Choose an hour';
   summaryDuration.textContent = selected.duration ? `${selected.duration} minutes` : 'Choose a duration';
   summaryPrice.textContent = selected.price === null ? '-' : selected.price === 0 ? 'Free' : `$${selected.price}`;
 
+  if (reviewButton) {
+    reviewButton.disabled = availabilityLoadFailed || !(selected.day && selected.time && selected.duration);
+  }
   confirmButton.disabled = availabilityLoadFailed || !(selected.day && selected.time && selected.duration);
 }
 
@@ -168,11 +195,14 @@ function renderDays() {
         selected.day = available.date;
         selected.dayLabel = available.label || formatDayLabel(date);
         selected.time = null;
+        selected.duration = null;
+        selected.price = null;
         clearStatus();
         renderDays();
         renderTimes();
         syncDurationButtons();
         updateSummary();
+        setWizardStep('time');
       });
     }
 
@@ -269,6 +299,22 @@ durationButtons.forEach((button) => {
     updateSummary();
   });
 });
+
+if (backDayButton) {
+  backDayButton.addEventListener('click', () => setWizardStep('day'));
+}
+
+if (backTimeButton) {
+  backTimeButton.addEventListener('click', () => setWizardStep('time'));
+}
+
+if (reviewButton) {
+  reviewButton.addEventListener('click', () => {
+    if (reviewButton.disabled) return;
+    clearStatus();
+    setWizardStep('confirm');
+  });
+}
 
 function withSession(url) {
   if (!chatSessionId) return url;
@@ -390,6 +436,7 @@ async function submitBooking() {
 
 confirmButton.addEventListener('click', submitBooking);
 
+setWizardStep('day', { scroll: false });
 syncDurationButtons();
 loadPrefill();
 loadAvailability();
