@@ -15,6 +15,12 @@ const QUICK_ACTIONS = [
     intent: '__general__',
   },
 ];
+const WELCOME_MESSAGE =
+  "Hi, I'm TrkElnIt's assistant. I can help you request a quote, schedule a meeting, or explain what TrkElnIt can build. What do you need?";
+const API_HEADERS = {
+  'Content-Type': 'application/json',
+  'ngrok-skip-browser-warning': 'true',
+};
 
 function loadPersistedHistory() {
   try {
@@ -59,6 +65,7 @@ function hydrateFromTranscript(transcript) {
 let sessionMeta = null;
 const sessionMetaPromise = fetch(`${API_BASE_URL}/chat/session`, {
   credentials: 'include',
+  headers: { 'ngrok-skip-browser-warning': 'true' },
 })
   .then(async (resp) => {
     if (!resp.ok) return null;
@@ -76,7 +83,7 @@ async function sendMessageWithOptions(message, options = {}) {
   const resp = await fetch(`${API_BASE_URL}/chat/`, {
     method: 'POST',
     credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
+    headers: API_HEADERS,
     body: JSON.stringify({
       message,
       history: conversationHistory,
@@ -95,6 +102,7 @@ async function resetChatSession() {
   const resp = await fetch(`${API_BASE_URL}/chat/session/reset`, {
     method: 'POST',
     credentials: 'include',
+    headers: { 'ngrok-skip-browser-warning': 'true' },
   });
   if (!resp.ok) throw new Error(`Session reset error ${resp.status}`);
   const data = await resp.json();
@@ -254,11 +262,7 @@ if (panel && toggleBtn && closeBtn && logEl && inputEl && sendBtn) {
           `Hi ${sessionMeta.client_name}! Would you like to continue where we stopped or start something new?${topicLine}`
         );
       } else {
-        appendMessage(
-          logEl,
-          'bot',
-          "Hello! I'm TrkElnIt's assistant. Tell me a bit about your project and I'll help however I can."
-        );
+        appendMessage(logEl, 'bot', WELCOME_MESSAGE);
       }
       greeted = true;
     }
