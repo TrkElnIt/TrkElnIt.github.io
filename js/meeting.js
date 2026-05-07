@@ -14,9 +14,9 @@ const chatSessionId = params.get('session_id');
 
 const DURATION_PRICES = {
   15: 0,
-  30: 25,
-  45: 50,
-  60: 75,
+  30: 0,
+  45: 0,
+  60: 0,
 };
 
 const API_HEADERS = {
@@ -396,26 +396,7 @@ async function submitBooking() {
     if (!resp.ok) {
       throw new Error(payload.detail || `Booking error ${resp.status}`);
     }
-    const booking = payload;
-    if (booking.price > 0) {
-      setStatus('Booking saved. Redirecting to Stripe checkout...');
-      const checkoutResp = await fetch(`${API_BASE_URL}/chat/meeting-bookings/${booking.id}/checkout`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: API_HEADERS,
-      });
-      const checkoutData = await checkoutResp.json().catch(() => ({}));
-      if (!checkoutResp.ok) {
-        throw new Error(checkoutData.detail || `Stripe checkout error ${checkoutResp.status}`);
-      }
-      if (!checkoutData.checkout_url) {
-        throw new Error('Stripe checkout URL was not returned.');
-      }
-      window.location.href = checkoutData.checkout_url;
-      return;
-    }
-
-    setStatus('Booking saved. Your free 15-minute meeting is confirmed pending review.');
+    setStatus('Booking saved. TrkElnIt will review and confirm by email.');
   } catch (err) {
     setStatus(err.message || 'Failed to save booking.', true);
   } finally {
