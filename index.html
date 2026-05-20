@@ -3,172 +3,108 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Rafik Khelifa | Automation, AI & Backend Portfolio</title>
-  <meta name="description" content="Searchable project portfolio for automation, AI agents, RAG systems, FastAPI backends, Android CRM apps, data workflows, and production infrastructure." />
-  <link rel="stylesheet" href="css/portfolio.css?v=20260520-dashboard" />
+  <title>TrkElnIt | Project Portfolio</title>
+  <meta name="description" content="Project portfolio for automation, AI systems, FastAPI backends, CRM tools, document intelligence, mobile apps, and data workflows." />
+  <link rel="stylesheet" href="css/portfolio.css?v=20260520-simple" />
 </head>
 <body class="portfolio-shell">
   <header class="portfolio-topbar">
-    <a class="brand-lockup" href="/" aria-label="Rafik Khelifa portfolio home">
-      <span class="mark"><img src="logo.png" alt="TrkElnIt" /></span>
-      <span>
-        <strong>TrkElnIt</strong>
-        <small>Automation portfolio</small>
-      </span>
+    <a class="brand-lockup" href="/" aria-label="TrkElnIt portfolio home">
+      <span class="code-mark">&lt;/&gt;</span>
+      <strong>TrkElnIt</strong>
     </a>
 
     <nav class="portfolio-nav" aria-label="Portfolio navigation">
+      <a href="#top">Home</a>
       <a class="active" href="#projects">Projects</a>
       <a href="#services">Services</a>
-      <a href="#workflow">About</a>
-      <a href="#assistant">Assistant</a>
+      <a href="#about">About</a>
       <a href="mailto:rafik.khelifa.toudjine@gmail.com">Contact</a>
     </nav>
 
-    <a class="github-link" href="https://github.com/TrkElnIt" target="_blank" rel="noopener">GitHub</a>
+    <div class="top-actions">
+      <a class="resume-link" href="mailto:rafik.khelifa.toudjine@gmail.com?subject=Resume request">Resume</a>
+      <a class="icon-link" href="https://github.com/TrkElnIt" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
+      <a class="icon-link" href="https://www.linkedin.com/" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
+    </div>
   </header>
 
-  <main class="portfolio-page">
-    <section class="hero-board" aria-labelledby="portfolio-title">
-      <div class="hero-copy">
-        <span class="role-pill">Senior Python Developer</span>
-        <h1 id="portfolio-title">Automation, AI & Backend Systems</h1>
-        <p>I build reliable automation, intelligent systems, and scalable backends that turn complex workflows into measurable results.</p>
-        <div class="skill-pills" aria-label="Core capabilities">
-          <span>Python Expertise</span>
-          <span>AI & Automation</span>
-          <span>APIs & Integrations</span>
-          <span>Reliable & Secure</span>
-        </div>
-      </div>
-
-      <div class="system-visual" aria-label="System architecture illustration">
-        <div class="visual-plane"></div>
-        <div class="visual-node node-agent">AI</div>
-        <div class="visual-node node-python">Py</div>
-        <div class="visual-node node-api">API</div>
-        <div class="visual-node node-db">DB</div>
-        <div class="visual-node node-doc">RAG</div>
-        <svg class="visual-lines" viewBox="0 0 520 260" aria-hidden="true">
-          <path d="M105 70 L260 126 L415 76" />
-          <path d="M260 126 L130 195" />
-          <path d="M260 126 L400 198" />
-          <path d="M260 126 L260 44" />
-        </svg>
-      </div>
-
-      <aside class="featured-card" data-featured-panel aria-label="Featured project"></aside>
+  <main class="portfolio-page" id="top">
+    <section class="library-intro" id="projects" aria-labelledby="library-title">
+      <h1 id="library-title">Project Library <span data-project-count>0</span></h1>
+      <p>A collection of systems I have built to solve real-world business, automation, data, and backend problems.</p>
     </section>
 
-    <section class="project-library" id="projects" aria-labelledby="library-title">
-      <div class="section-title-row">
-        <div>
-          <h2 id="library-title">Project Library <span data-project-count>0</span></h2>
-          <p>Search projects by name, technology, industry, workflow, or problem solved.</p>
-        </div>
-        <div class="view-toggle" aria-label="Project view mode">
-          <button class="active" type="button" data-view-button="cards">Card View</button>
-          <button type="button" data-view-button="list">List View</button>
-        </div>
-      </div>
+    <div class="portfolio-layout">
+      <section class="project-area" aria-label="Searchable project portfolio">
+        <form class="portfolio-search" data-portfolio-search-form>
+          <input data-portfolio-search-input type="search" placeholder="Search projects..." autocomplete="off" />
+          <button type="submit">Search</button>
+        </form>
 
-      <form class="portfolio-search" data-portfolio-search-form>
-        <input data-portfolio-search-input type="search" placeholder="Search projects by name, tech stack, or problem solved..." autocomplete="off" />
-        <button type="submit">Search</button>
-      </form>
+        <div class="topic-filter" data-portfolio-topics aria-label="Project filters"></div>
+        <div class="portfolio-status" data-portfolio-status>Loading portfolio records...</div>
+        <div class="project-grid" data-portfolio-grid></div>
+      </section>
 
-      <div class="topic-filter" data-portfolio-topics aria-label="Project topic filters"></div>
-      <div class="portfolio-status" data-portfolio-status>Loading portfolio records...</div>
-      <div class="project-grid" data-portfolio-grid></div>
+      <aside class="portfolio-assistant" id="assistant" aria-label="Project assistant">
+        <div class="assistant-head">
+          <div class="assistant-avatar">&lt;/&gt;</div>
+          <div>
+            <strong>Ask about my projects</strong>
+            <span>Search approved project summaries</span>
+          </div>
+          <button type="button" data-assistant-minimize aria-label="Close assistant">x</button>
+        </div>
+        <div class="assistant-log" data-portfolio-assistant-log></div>
+        <div class="assistant-actions">
+          <button type="button" data-portfolio-quick="What projects use AI?">What projects use AI?</button>
+          <button type="button" data-portfolio-quick="Show me backend API projects.">Show me backend/API projects</button>
+          <button type="button" data-portfolio-quick="Which projects use Python?">Which projects use Python?</button>
+        </div>
+        <form class="assistant-form" data-portfolio-assistant-form>
+          <input data-portfolio-assistant-input type="text" placeholder="Type your question..." autocomplete="off" />
+          <button type="submit" aria-label="Ask">Send</button>
+        </form>
+      </aside>
+    </div>
+
+    <section class="service-strip" id="services" aria-label="Services">
+      <article>
+        <span>01</span>
+        <strong>AI automation</strong>
+        <p>Agents, RAG assistants, structured outputs, and human review workflows.</p>
+      </article>
+      <article>
+        <span>02</span>
+        <strong>Backend/API</strong>
+        <p>FastAPI, PostgreSQL, auth, payments, notifications, and deployment.</p>
+      </article>
+      <article>
+        <span>03</span>
+        <strong>CRM and mobile</strong>
+        <p>Client intake, quotes, meetings, invoices, Android CRM, and dashboards.</p>
+      </article>
+      <article>
+        <span>04</span>
+        <strong>Document AI</strong>
+        <p>PDF parsing, validation, embeddings, vector search, and retrieval workflows.</p>
+      </article>
     </section>
 
-    <section class="domain-strip" id="services" aria-labelledby="services-title">
-      <div class="section-title-row compact">
-        <div>
-          <h2 id="services-title">Services and domains</h2>
-          <p>Reusable patterns across automation, CRM, data, mobile, and document intelligence.</p>
-        </div>
-      </div>
-      <div class="domain-grid">
-        <article>
-          <span>01</span>
-          <strong>AI automation</strong>
-          <p>Agents, RAG assistants, orchestration, structured outputs, and human review gates.</p>
-        </article>
-        <article>
-          <span>02</span>
-          <strong>Backend/API systems</strong>
-          <p>FastAPI, PostgreSQL, auth, payments, notifications, deployment, and admin APIs.</p>
-        </article>
-        <article>
-          <span>03</span>
-          <strong>CRM and operations</strong>
-          <p>Client intake, quotes, meetings, invoices, mobile CRM screens, and dashboards.</p>
-        </article>
-        <article>
-          <span>04</span>
-          <strong>Data and documents</strong>
-          <p>PDF parsing, validation, embeddings, search, sports data grading, and reporting.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="workflow-board" id="workflow" aria-labelledby="workflow-title">
-      <div class="section-title-row compact">
-        <div>
-          <h2 id="workflow-title">How the portfolio works</h2>
-          <p>Private repos stay private. README files and approved notes become sanitized portfolio records.</p>
-        </div>
-      </div>
-      <div class="workflow-steps">
-        <article>
-          <span>1</span>
-          <strong>README extraction</strong>
-          <p>Project summaries, stacks, features, and problem statements are extracted from documentation.</p>
-        </article>
-        <article>
-          <span>2</span>
-          <strong>Sanitization</strong>
-          <p>Private code, secrets, client details, and sensitive notes are removed before publishing.</p>
-        </article>
-        <article>
-          <span>3</span>
-          <strong>Portfolio search</strong>
-          <p>Visitors search by industry, stack, workflow, and implementation pattern.</p>
-        </article>
-        <article>
-          <span>4</span>
-          <strong>RAG assistant</strong>
-          <p>The assistant answers only from approved summaries and vector-indexed records.</p>
-        </article>
-      </div>
+    <section class="about-panel" id="about">
+      <h2>How this portfolio works</h2>
+      <p>Private repositories stay private. Public descriptions are built from sanitized README summaries, project notes, stack details, and problem statements. The assistant answers only from approved portfolio records.</p>
     </section>
   </main>
 
-  <aside class="portfolio-assistant" id="assistant" aria-label="Portfolio assistant">
-    <div class="assistant-head">
-      <div class="assistant-avatar">AI</div>
-      <div>
-        <strong>Ask about Rafik's Projects</strong>
-        <span>Approved portfolio summaries only</span>
-      </div>
-      <button type="button" data-assistant-minimize aria-label="Minimize assistant">−</button>
-    </div>
-    <div class="assistant-log" data-portfolio-assistant-log></div>
-    <div class="assistant-actions">
-      <button type="button" data-portfolio-quick="Show me AI automation projects.">AI automation projects</button>
-      <button type="button" data-portfolio-quick="Which projects use FastAPI and PostgreSQL?">FastAPI stack</button>
-      <button type="button" data-portfolio-quick="Show projects for finance, trading, and documents.">Finance examples</button>
-    </div>
-    <form class="assistant-form" data-portfolio-assistant-form>
-      <input data-portfolio-assistant-input type="text" placeholder="Ask about project examples..." autocomplete="off" />
-      <button type="submit">Ask</button>
-    </form>
-    <p class="assistant-note">I do not expose private source code or confidential client data.</p>
-  </aside>
+  <footer class="portfolio-footer">
+    <span>© 2026 TrkElnIt</span>
+    <span>Built with Python, FastAPI, PostgreSQL, Android, and AI workflow systems.</span>
+  </footer>
 
   <button class="assistant-fab" type="button" data-assistant-open>Ask</button>
 
-  <script type="module" src="js/portfolio.js?v=20260520-dashboard"></script>
+  <script type="module" src="js/portfolio.js?v=20260520-simple"></script>
 </body>
 </html>

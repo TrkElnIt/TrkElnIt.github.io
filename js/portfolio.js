@@ -213,11 +213,17 @@ function renderFeatured(project = state.projects[0]) {
 
 function renderTopics(projects) {
   if (!topicList) return;
-  const preferred = ['All', 'AI automation', 'CRM', 'finance / trading', 'construction', 'e-commerce', 'healthcare', 'document intelligence', 'chatbots / messaging', 'mobile apps', 'backend / APIs'];
-  const discovered = [...new Set(projects.flatMap(project => [project.industry, ...project.topics]).filter(Boolean))];
-  const topics = [...new Set([...preferred, ...discovered])].slice(0, 24);
+  const topics = [
+    { label: 'All', query: 'All' },
+    { label: 'AI Automation', query: 'ai automation' },
+    { label: 'Backend/API', query: 'fastapi' },
+    { label: 'Scraping', query: 'scraping' },
+    { label: 'Trading', query: 'trading' },
+    { label: 'CRM', query: 'crm' },
+    { label: 'Document AI', query: 'document' }
+  ];
   topicList.innerHTML = topics.map(topic => `
-    <button class="${topic === state.activeTopic ? 'active' : ''}" type="button" data-topic="${escapeHtml(topic)}">${escapeHtml(topic)}</button>
+    <button class="${topic.query === state.activeTopic ? 'active' : ''}" type="button" data-topic="${escapeHtml(topic.query)}">${escapeHtml(topic.label)}</button>
   `).join('');
   topicList.querySelectorAll('[data-topic]').forEach(button => {
     button.addEventListener('click', () => {
@@ -248,7 +254,7 @@ function projectCard(project, index) {
           <span>${escapeHtml(stats.repos)} refs</span>
           <span>${escapeHtml(stats.views)} views</span>
         </div>
-        <button class="detail-button" type="button" data-project-index="${index}">View details</button>
+        <button class="detail-button" type="button" data-project-index="${index}">View Project</button>
       </div>
     </article>
   `;
@@ -277,9 +283,9 @@ function renderProjects(projects) {
 function applyLocalFilter(query = '') {
   const needle = query.trim().toLowerCase();
   const filtered = state.projects.filter(project => {
-    const topicText = [project.industry, ...project.topics].join(' ').toLowerCase();
-    const matchesTopic = state.activeTopic === 'All' || topicText.includes(state.activeTopic.toLowerCase());
-    return matchesTopic && (!needle || searchableText(project).includes(needle));
+    const haystack = searchableText(project);
+    const matchesTopic = state.activeTopic === 'All' || haystack.includes(state.activeTopic.toLowerCase());
+    return matchesTopic && (!needle || haystack.includes(needle));
   });
   state.filtered = filtered;
   state.activeIndex = 0;
@@ -387,7 +393,7 @@ async function init() {
   }
   renderTopics(state.projects);
   applyLocalFilter('');
-  addMessage('assistant', 'Hi. Ask about AI automation, FastAPI, RAG, CRM, Android, finance, trading, construction, ecommerce, healthcare, or backend architecture.');
+  addMessage('assistant', 'Here are some things you can ask.');
 }
 
 searchForm?.addEventListener('submit', event => {
