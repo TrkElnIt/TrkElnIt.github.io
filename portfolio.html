@@ -5,13 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TrkElnIt | Project Portfolio</title>
   <meta name="description" content="Project portfolio for automation, AI systems, FastAPI backends, CRM tools, document intelligence, mobile apps, and data workflows." />
-  <link rel="stylesheet" href="css/portfolio.css?v=20260520-simple" />
+  <link rel="stylesheet" href="css/portfolio.css?v=20260520-logo-chatbox" />
 </head>
 <body class="portfolio-shell">
   <header class="portfolio-topbar">
     <a class="brand-lockup" href="/" aria-label="TrkElnIt portfolio home">
-      <span class="code-mark">&lt;/&gt;</span>
-      <strong>TrkElnIt</strong>
+      <span class="brand-logo"><img src="TrkElnIt.png" alt="TrkElnIt" /></span>
+      <span>
+        <strong>TrkElnIt</strong>
+        <small>Project portfolio</small>
+      </span>
     </a>
 
     <nav class="portfolio-nav" aria-label="Portfolio navigation">
@@ -47,26 +50,6 @@
         <div class="project-grid" data-portfolio-grid></div>
       </section>
 
-      <aside class="portfolio-assistant" id="assistant" aria-label="Project assistant">
-        <div class="assistant-head">
-          <div class="assistant-avatar">&lt;/&gt;</div>
-          <div>
-            <strong>Ask about my projects</strong>
-            <span>Search approved project summaries</span>
-          </div>
-          <button type="button" data-assistant-minimize aria-label="Close assistant">x</button>
-        </div>
-        <div class="assistant-log" data-portfolio-assistant-log></div>
-        <div class="assistant-actions">
-          <button type="button" data-portfolio-quick="What projects use AI?">What projects use AI?</button>
-          <button type="button" data-portfolio-quick="Show me backend API projects.">Show me backend/API projects</button>
-          <button type="button" data-portfolio-quick="Which projects use Python?">Which projects use Python?</button>
-        </div>
-        <form class="assistant-form" data-portfolio-assistant-form>
-          <input data-portfolio-assistant-input type="text" placeholder="Type your question..." autocomplete="off" />
-          <button type="submit" aria-label="Ask">Send</button>
-        </form>
-      </aside>
     </div>
 
     <section class="service-strip" id="services" aria-label="Services">
@@ -103,8 +86,29 @@
     <span>Built with Python, FastAPI, PostgreSQL, Android, and AI workflow systems.</span>
   </footer>
 
-  <button class="assistant-fab" type="button" data-assistant-open>Ask</button>
+  <aside class="portfolio-assistant minimized" id="assistant" aria-label="Project assistant">
+    <div class="assistant-head">
+      <div class="assistant-avatar"><img src="TrkElnIt.png" alt="" /></div>
+      <div>
+        <strong>Ask about my projects</strong>
+        <span>Search approved project summaries</span>
+      </div>
+      <button type="button" data-assistant-minimize aria-label="Close assistant">x</button>
+    </div>
+    <div class="assistant-log" data-portfolio-assistant-log></div>
+    <div class="assistant-actions">
+      <button type="button" data-portfolio-quick="What projects use AI?">What projects use AI?</button>
+      <button type="button" data-portfolio-quick="Show me backend API projects.">Show me backend/API projects</button>
+      <button type="button" data-portfolio-quick="Which projects use Python?">Which projects use Python?</button>
+    </div>
+    <form class="assistant-form" data-portfolio-assistant-form>
+      <input data-portfolio-assistant-input type="text" placeholder="Ask about project examples..." autocomplete="off" />
+      <button type="submit" aria-label="Ask">Ask</button>
+    </form>
+  </aside>
 
-  <script type="module" src="js/portfolio.js?v=20260520-simple"></script>
+  <button class="assistant-fab visible" type="button" data-assistant-open>Ask TrkElnIt</button>
+
+  <script type="module" src="js/portfolio.js?v=20260520-logo-chatbox"></script>
 </body>
 </html>

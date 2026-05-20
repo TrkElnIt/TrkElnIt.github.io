@@ -430,6 +430,7 @@ assistantMinimize?.addEventListener('click', () => {
 assistantOpen?.addEventListener('click', () => {
   assistantPanel?.classList.remove('minimized');
   assistantOpen?.classList.remove('visible');
+  assistantInput?.focus();
 });
 
 init();
