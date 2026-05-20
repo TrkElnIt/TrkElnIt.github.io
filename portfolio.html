@@ -3,116 +3,172 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Rafik Khelifa — TrkElnIt Portfolio</title>
-  <meta name="description" content="A searchable portfolio of AI systems, automation workflows, backend platforms, mobile CRM tools, RAG pipelines, and production infrastructure projects by Rafik Khelifa / TrkElnIt." />
-  <link rel="stylesheet" href="css/portfolio.css?v=20260520-standalone" />
+  <title>Rafik Khelifa | Automation, AI & Backend Portfolio</title>
+  <meta name="description" content="Searchable project portfolio for automation, AI agents, RAG systems, FastAPI backends, Android CRM apps, data workflows, and production infrastructure." />
+  <link rel="stylesheet" href="css/portfolio.css?v=20260520-dashboard" />
 </head>
-<body class="portfolio-page">
-  <header class="portfolio-nav">
-    <a class="portfolio-brand" href="/" aria-label="TrkElnIt portfolio home">
-      <img src="logo.png" alt="TrkElnIt" />
+<body class="portfolio-shell">
+  <header class="portfolio-topbar">
+    <a class="brand-lockup" href="/" aria-label="Rafik Khelifa portfolio home">
+      <span class="mark"><img src="logo.png" alt="TrkElnIt" /></span>
       <span>
-        <strong>Rafik Khelifa</strong>
-        <em>TrkElnIt project portfolio</em>
+        <strong>TrkElnIt</strong>
+        <small>Automation portfolio</small>
       </span>
     </a>
-    <nav aria-label="Portfolio navigation">
-      <a href="#search">Search</a>
-      <a href="#projects">Projects</a>
+
+    <nav class="portfolio-nav" aria-label="Portfolio navigation">
+      <a class="active" href="#projects">Projects</a>
+      <a href="#services">Services</a>
+      <a href="#workflow">About</a>
       <a href="#assistant">Assistant</a>
       <a href="mailto:rafik.khelifa.toudjine@gmail.com">Contact</a>
     </nav>
+
+    <a class="github-link" href="https://github.com/TrkElnIt" target="_blank" rel="noopener">GitHub</a>
   </header>
 
-  <main>
-    <section class="portfolio-hero" id="top">
+  <main class="portfolio-page">
+    <section class="hero-board" aria-labelledby="portfolio-title">
       <div class="hero-copy">
-        <p class="eyebrow">Private repo memory, public project map</p>
-        <h1>Search the systems I have built across AI, automation, data, mobile, and backend work.</h1>
-        <p class="hero-lead">
-          This is not the TrkElnIt business website. This is a technical portfolio designed to turn project READMEs,
-          sanitized repo notes, stacks, industries, and delivery patterns into a searchable knowledge base.
-        </p>
-        <div class="hero-actions">
-          <a href="#search">Search projects</a>
-          <a href="#assistant">Ask the portfolio AI</a>
+        <span class="role-pill">Senior Python Developer</span>
+        <h1 id="portfolio-title">Automation, AI & Backend Systems</h1>
+        <p>I build reliable automation, intelligent systems, and scalable backends that turn complex workflows into measurable results.</p>
+        <div class="skill-pills" aria-label="Core capabilities">
+          <span>Python Expertise</span>
+          <span>AI & Automation</span>
+          <span>APIs & Integrations</span>
+          <span>Reliable & Secure</span>
         </div>
       </div>
-      <aside class="hero-board" aria-label="Portfolio knowledge base plan">
-        <div class="board-row"><span>Source</span><strong>GitHub READMEs + sanitized project notes</strong></div>
-        <div class="board-row"><span>Search</span><strong>Industry, stack, workflow, problem type</strong></div>
-        <div class="board-row"><span>RAG</span><strong>pgvector-backed portfolio assistant</strong></div>
-        <div class="board-row"><span>Scope</span><strong>Finance, trading, construction, ecommerce, healthcare, CRM, mobile</strong></div>
-      </aside>
+
+      <div class="system-visual" aria-label="System architecture illustration">
+        <div class="visual-plane"></div>
+        <div class="visual-node node-agent">AI</div>
+        <div class="visual-node node-python">Py</div>
+        <div class="visual-node node-api">API</div>
+        <div class="visual-node node-db">DB</div>
+        <div class="visual-node node-doc">RAG</div>
+        <svg class="visual-lines" viewBox="0 0 520 260" aria-hidden="true">
+          <path d="M105 70 L260 126 L415 76" />
+          <path d="M260 126 L130 195" />
+          <path d="M260 126 L400 198" />
+          <path d="M260 126 L260 44" />
+        </svg>
+      </div>
+
+      <aside class="featured-card" data-featured-panel aria-label="Featured project"></aside>
     </section>
 
-    <section class="portfolio-intent" aria-label="Portfolio topics">
-      <article><strong>AI Agents</strong><span>Lead intake, seller bots, routing, escalation, assistant workflows.</span></article>
-      <article><strong>RAG & Documents</strong><span>Parsing, chunking, embeddings, pgvector search, grounded answers.</span></article>
-      <article><strong>Business Systems</strong><span>CRM, invoices, meetings, payments, notifications, admin mobile tools.</span></article>
-      <article><strong>Data Products</strong><span>Sports stats, finance/trading datasets, automated validation, APIs.</span></article>
+    <section class="project-library" id="projects" aria-labelledby="library-title">
+      <div class="section-title-row">
+        <div>
+          <h2 id="library-title">Project Library <span data-project-count>0</span></h2>
+          <p>Search projects by name, technology, industry, workflow, or problem solved.</p>
+        </div>
+        <div class="view-toggle" aria-label="Project view mode">
+          <button class="active" type="button" data-view-button="cards">Card View</button>
+          <button type="button" data-view-button="list">List View</button>
+        </div>
+      </div>
+
+      <form class="portfolio-search" data-portfolio-search-form>
+        <input data-portfolio-search-input type="search" placeholder="Search projects by name, tech stack, or problem solved..." autocomplete="off" />
+        <button type="submit">Search</button>
+      </form>
+
+      <div class="topic-filter" data-portfolio-topics aria-label="Project topic filters"></div>
+      <div class="portfolio-status" data-portfolio-status>Loading portfolio records...</div>
+      <div class="project-grid" data-portfolio-grid></div>
     </section>
 
-    <section class="portfolio-workbench" id="search">
-      <div class="section-heading">
-        <p class="eyebrow">Search layer</p>
-        <h2>Find projects by industry, stack, or workflow.</h2>
+    <section class="domain-strip" id="services" aria-labelledby="services-title">
+      <div class="section-title-row compact">
+        <div>
+          <h2 id="services-title">Services and domains</h2>
+          <p>Reusable patterns across automation, CRM, data, mobile, and document intelligence.</p>
+        </div>
       </div>
-
-      <div class="portfolio-toolbar">
-        <form class="portfolio-search-box" data-portfolio-search-form>
-          <input data-portfolio-search-input type="search" placeholder="Try: finance RAG, FastAPI CRM, Android updates, construction workflow, ecommerce automation..." autocomplete="off" />
-          <button type="submit">Search</button>
-        </form>
-        <div class="portfolio-status" data-portfolio-status>Loading portfolio records...</div>
+      <div class="domain-grid">
+        <article>
+          <span>01</span>
+          <strong>AI automation</strong>
+          <p>Agents, RAG assistants, orchestration, structured outputs, and human review gates.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <strong>Backend/API systems</strong>
+          <p>FastAPI, PostgreSQL, auth, payments, notifications, deployment, and admin APIs.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <strong>CRM and operations</strong>
+          <p>Client intake, quotes, meetings, invoices, mobile CRM screens, and dashboards.</p>
+        </article>
+        <article>
+          <span>04</span>
+          <strong>Data and documents</strong>
+          <p>PDF parsing, validation, embeddings, search, sports data grading, and reporting.</p>
+        </article>
       </div>
-
-      <div class="portfolio-topics" data-portfolio-topics aria-label="Portfolio topic filters"></div>
     </section>
 
-    <section class="portfolio-main" id="projects">
-      <div>
-        <div class="section-heading compact">
-          <p class="eyebrow">Project records</p>
-          <h2>Portfolio map</h2>
+    <section class="workflow-board" id="workflow" aria-labelledby="workflow-title">
+      <div class="section-title-row compact">
+        <div>
+          <h2 id="workflow-title">How the portfolio works</h2>
+          <p>Private repos stay private. README files and approved notes become sanitized portfolio records.</p>
         </div>
-        <div class="portfolio-grid" data-portfolio-grid></div>
       </div>
-
-      <aside class="portfolio-assistant" id="assistant" aria-label="Portfolio assistant">
-        <div class="portfolio-assistant-header">
-          <span class="assistant-dot"></span>
-          <div>
-            <strong>Portfolio Assistant</strong>
-            <em>Ask about projects, industries, stacks, and delivery patterns.</em>
-          </div>
-        </div>
-        <div class="portfolio-assistant-log" data-portfolio-assistant-log></div>
-        <div class="portfolio-quick-row">
-          <button class="portfolio-quick-button" type="button" data-portfolio-quick="Show examples related to finance, trading, and document parsing.">Finance examples</button>
-          <button class="portfolio-quick-button" type="button" data-portfolio-quick="Which projects use FastAPI, PostgreSQL, and pgvector?">Backend stack</button>
-          <button class="portfolio-quick-button" type="button" data-portfolio-quick="Show CRM, scheduling, Android, and notification projects.">CRM + mobile</button>
-        </div>
-        <form class="portfolio-assistant-form" data-portfolio-assistant-form>
-          <input data-portfolio-assistant-input type="text" placeholder="Ask about project examples..." autocomplete="off" />
-          <button type="submit">Ask</button>
-        </form>
-      </aside>
+      <div class="workflow-steps">
+        <article>
+          <span>1</span>
+          <strong>README extraction</strong>
+          <p>Project summaries, stacks, features, and problem statements are extracted from documentation.</p>
+        </article>
+        <article>
+          <span>2</span>
+          <strong>Sanitization</strong>
+          <p>Private code, secrets, client details, and sensitive notes are removed before publishing.</p>
+        </article>
+        <article>
+          <span>3</span>
+          <strong>Portfolio search</strong>
+          <p>Visitors search by industry, stack, workflow, and implementation pattern.</p>
+        </article>
+        <article>
+          <span>4</span>
+          <strong>RAG assistant</strong>
+          <p>The assistant answers only from approved summaries and vector-indexed records.</p>
+        </article>
+      </div>
     </section>
   </main>
 
-  <footer class="portfolio-footer">
-    <div>
-      <strong>Rafik Khelifa / TrkElnIt</strong>
-      <span>AI systems, backend automation, RAG, mobile CRM, and production infrastructure.</span>
+  <aside class="portfolio-assistant" id="assistant" aria-label="Portfolio assistant">
+    <div class="assistant-head">
+      <div class="assistant-avatar">AI</div>
+      <div>
+        <strong>Ask about Rafik's Projects</strong>
+        <span>Approved portfolio summaries only</span>
+      </div>
+      <button type="button" data-assistant-minimize aria-label="Minimize assistant">−</button>
     </div>
-    <div class="footer-links">
-      <a href="https://trkelnit.com/">Business site</a>
-      <a href="mailto:rafik.khelifa.toudjine@gmail.com">Email</a>
-      <a href="#top">Top</a>
+    <div class="assistant-log" data-portfolio-assistant-log></div>
+    <div class="assistant-actions">
+      <button type="button" data-portfolio-quick="Show me AI automation projects.">AI automation projects</button>
+      <button type="button" data-portfolio-quick="Which projects use FastAPI and PostgreSQL?">FastAPI stack</button>
+      <button type="button" data-portfolio-quick="Show projects for finance, trading, and documents.">Finance examples</button>
     </div>
-  </footer>
+    <form class="assistant-form" data-portfolio-assistant-form>
+      <input data-portfolio-assistant-input type="text" placeholder="Ask about project examples..." autocomplete="off" />
+      <button type="submit">Ask</button>
+    </form>
+    <p class="assistant-note">I do not expose private source code or confidential client data.</p>
+  </aside>
 
-  <script type="module" src="js/portfolio.js?v=20260520-standalone"></script>
+  <button class="assistant-fab" type="button" data-assistant-open>Ask</button>
+
+  <script type="module" src="js/portfolio.js?v=20260520-dashboard"></script>
 </body>
 </html>
