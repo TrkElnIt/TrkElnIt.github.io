@@ -2,27 +2,83 @@ import { API_BASE_URL } from './apiConfig.js';
 
 const fallbackProjects = [
   {
-    title: 'TrkElnIt production platform',
-    summary: 'Production business platform with public website, FastAPI backend, PostgreSQL, Cloudflare, Caddy, email, payments-ready flow, and Android CRM operations.',
-    industry: 'Professional services',
-    topics: ['CRM', 'FastAPI', 'PostgreSQL', 'Android', 'Cloudflare'],
-    stack: ['Python', 'FastAPI', 'PostgreSQL', 'Kotlin'],
+    title: 'Production business CRM platform',
+    summary: 'FastAPI and PostgreSQL backend with public intake, clients, invoices, payments, meetings, notifications, admin authentication, Cloudflare, Caddy, Resend email, and Android CRM operations.',
+    industry: 'Business operations',
+    topics: ['CRM', 'FastAPI', 'PostgreSQL', 'Android', 'Cloudflare', 'Notifications'],
+    stack: ['Python', 'FastAPI', 'PostgreSQL', 'Kotlin', 'Cloudflare', 'Caddy'],
+    featured: true
+  },
+  {
+    title: 'Android CRM admin app',
+    summary: 'Mobile admin app for clients, invoices, orders, payments, proposals, meetings, availability control, AI assistant, update notifications, and production API access.',
+    industry: 'Mobile operations',
+    topics: ['Android', 'Kotlin', 'CRM', 'Firebase', 'Admin', 'Updates'],
+    stack: ['Kotlin', 'Jetpack Compose', 'Retrofit', 'Firebase', 'FastAPI'],
     featured: true
   },
   {
     title: 'Meeting booking and availability engine',
-    summary: 'Website booking flow connected to CRM-managed weekly availability, blockouts, durations, checkout, and notifications.',
-    industry: 'Scheduling and operations',
-    topics: ['Calendar', 'Meetings', 'CRM', 'Notifications'],
+    summary: 'Calendar-style booking flow connected to CRM-managed weekly availability, selectable times, durations, checkout, booking records, update/cancel controls, and email notifications.',
+    industry: 'Scheduling and services',
+    topics: ['Calendar', 'Meetings', 'Availability', 'CRM', 'Stripe', 'Notifications'],
     stack: ['FastAPI', 'PostgreSQL', 'JavaScript', 'Kotlin'],
     featured: true
   },
   {
     title: 'Document intelligence pipeline',
-    summary: 'Document parsing pattern for invoices, statements, PDFs, attachments, structured extraction, validation, and workflow routing.',
+    summary: 'Pattern for parsing invoices, statements, PDFs, attachments, and forms into structured records with validation, chunking, embeddings, and retrieval-ready storage.',
     industry: 'Finance and document operations',
-    topics: ['Document parsing', 'PDF', 'RAG', 'Validation'],
-    stack: ['Python', 'PostgreSQL', 'pgvector'],
+    topics: ['Document parsing', 'PDF', 'RAG', 'Embeddings', 'Validation', 'pgvector'],
+    stack: ['Python', 'PostgreSQL', 'pgvector', 'OpenAI embeddings'],
+    featured: false
+  },
+  {
+    title: 'Portfolio RAG knowledge base',
+    summary: 'Portfolio system designed to convert GitHub project READMEs and sanitized repo notes into searchable records, vector chunks, and a project-specific assistant.',
+    industry: 'Developer portfolio',
+    topics: ['GitHub', 'README', 'RAG', 'pgvector', 'Search', 'Chatbot'],
+    stack: ['Python', 'FastAPI', 'PostgreSQL', 'pgvector', 'JavaScript'],
+    featured: true
+  },
+  {
+    title: 'Seller-bot and channel automation',
+    summary: 'Chat automation pattern where a seller can switch the bot into different modes such as taking orders, booking meetings, answering FAQs, and routing human escalation.',
+    industry: 'Sales and messaging',
+    topics: ['Chatbot', 'Seller bot', 'Slack', 'Meta', 'Telegram', 'Webhook'],
+    stack: ['Python', 'FastAPI', 'Webhooks', 'LLM', 'PostgreSQL'],
+    featured: false
+  },
+  {
+    title: 'Sports data grading and delivery system',
+    summary: 'Data workflow for sports player props, result grading, missing-stat detection, source fallback, win/loss evaluation, and report-ready records.',
+    industry: 'Sports data and trading',
+    topics: ['Sports data', 'Trading', 'Validation', 'MLB', 'ETL', 'Reporting'],
+    stack: ['Python', 'Data pipelines', 'APIs', 'CSV', 'Validation'],
+    featured: false
+  },
+  {
+    title: 'Construction and industrial workflow patterns',
+    summary: 'Reusable automation concepts for intake, documents, quotes, field notes, scheduling, supplier records, and internal workflow routing in construction or industrial operations.',
+    industry: 'Construction and industrial',
+    topics: ['Construction', 'Industrial', 'Workflow', 'Documents', 'Scheduling', 'CRM'],
+    stack: ['FastAPI', 'PostgreSQL', 'RAG', 'Mobile admin'],
+    featured: false
+  },
+  {
+    title: 'Ecommerce and service-order automation',
+    summary: 'Order/request intake flow with structured project briefs, attachments, CRM records, quote workflow, notifications, and optional payment handoff.',
+    industry: 'Ecommerce and service businesses',
+    topics: ['Ecommerce', 'Order intake', 'Quote request', 'Attachments', 'Payments', 'CRM'],
+    stack: ['JavaScript', 'FastAPI', 'PostgreSQL', 'Stripe', 'Resend'],
+    featured: false
+  },
+  {
+    title: 'Healthcare-style document and intake workflow',
+    summary: 'Privacy-conscious pattern for structured intake, document classification, human review gates, and retrieval-limited assistant responses for sensitive operations.',
+    industry: 'Healthcare and regulated workflows',
+    topics: ['Healthcare', 'Intake', 'Documents', 'Human review', 'RAG', 'Compliance'],
+    stack: ['Python', 'FastAPI', 'PostgreSQL', 'pgvector'],
     featured: false
   }
 ];
@@ -65,9 +121,13 @@ function escapeHtml(value) {
     .replace(/'/g, '&#039;');
 }
 
+function searchableText(project) {
+  return [project.title, project.summary, project.industry, ...project.topics, ...project.stack].join(' ').toLowerCase();
+}
+
 function renderTopics(projects) {
   if (!topicList) return;
-  const topics = ['All', ...new Set(projects.flatMap(project => project.topics).filter(Boolean))].slice(0, 18);
+  const topics = ['All', ...new Set(projects.flatMap(project => project.topics).filter(Boolean))].slice(0, 22);
   topicList.innerHTML = topics.map(topic => `
     <button class="portfolio-topic ${topic === state.activeTopic ? 'is-active' : ''}" type="button" data-topic="${escapeHtml(topic)}">${escapeHtml(topic)}</button>
   `).join('');
@@ -81,8 +141,8 @@ function renderTopics(projects) {
 }
 
 function projectCard(project) {
-  const topics = project.topics.slice(0, 5).map(topic => `<span class="portfolio-pill">${escapeHtml(topic)}</span>`).join('');
-  const stack = project.stack.slice(0, 6).join(' · ');
+  const topics = project.topics.slice(0, 6).map(topic => `<span class="portfolio-pill">${escapeHtml(topic)}</span>`).join('');
+  const stack = project.stack.slice(0, 7).join(' · ');
   return `
     <article class="portfolio-card ${project.featured ? 'portfolio-card-featured' : ''}">
       <div>
@@ -111,12 +171,12 @@ function applyLocalFilter(query = '') {
   const needle = query.trim().toLowerCase();
   const filtered = state.projects.filter(project => {
     const matchesTopic = state.activeTopic === 'All' || project.topics.some(topic => topic.toLowerCase() === state.activeTopic.toLowerCase());
-    const haystack = [project.title, project.summary, project.industry, ...project.topics, ...project.stack].join(' ').toLowerCase();
-    return matchesTopic && (!needle || haystack.includes(needle));
+    return matchesTopic && (!needle || searchableText(project).includes(needle));
   });
   state.filtered = filtered;
   renderProjects(filtered);
-  setStatus(`${filtered.length} public portfolio records`);
+  setStatus(`${filtered.length} portfolio records`);
+  return filtered;
 }
 
 async function fetchProjects() {
@@ -131,27 +191,47 @@ async function runSearch(query) {
     applyLocalFilter(trimmed);
     return;
   }
-  setStatus('Searching portfolio vectors...');
+  setStatus('Searching portfolio knowledge base...');
   try {
     const response = await fetch(`${API_BASE_URL}/portfolio/search?q=${encodeURIComponent(trimmed)}&limit=12`);
     if (!response.ok) throw new Error(`Search ${response.status}`);
     const data = await response.json();
     const projects = (data.results || []).map(item => normalizeProject(item.project));
-    renderProjects(projects);
-    setStatus(`${projects.length} matches · ${data.used_vector_search ? 'vector search' : 'text fallback'}`);
+    renderProjects(projects.length ? projects : applyLocalFilter(trimmed));
+    setStatus(`${projects.length || state.filtered.length} matches · ${data.used_vector_search ? 'vector search' : 'text search'}`);
   } catch (error) {
-    applyLocalFilter(trimmed);
-    setStatus('API search unavailable, using local portfolio filter.');
+    const projects = applyLocalFilter(trimmed);
+    setStatus(`${projects.length} local matches · API search fallback`);
   }
 }
 
 function addMessage(role, content) {
-  if (!assistantLog) return;
+  if (!assistantLog) return null;
   const div = document.createElement('div');
   div.className = `portfolio-message ${role}`;
   div.textContent = content;
   assistantLog.appendChild(div);
   assistantLog.scrollTop = assistantLog.scrollHeight;
+  return div;
+}
+
+function localPortfolioAnswer(message) {
+  const query = message.toLowerCase();
+  const terms = query.split(/[^a-z0-9]+/).filter(term => term.length > 2);
+  const ranked = state.projects
+    .map(project => {
+      const text = searchableText(project);
+      const score = terms.reduce((total, term) => total + (text.includes(term) ? 1 : 0), 0);
+      return { project, score };
+    })
+    .filter(item => item.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3)
+    .map(item => item.project);
+
+  const matches = ranked.length ? ranked : state.projects.filter(project => project.featured).slice(0, 3);
+  const bullets = matches.map(project => `- ${project.title}: ${project.summary}`).join('\n');
+  return `Relevant portfolio examples:\n${bullets}\n\nThis answer is from the public portfolio records. The production RAG layer can give deeper answers once the private README ingestion is connected.`;
 }
 
 async function askPortfolio(message) {
@@ -160,8 +240,7 @@ async function askPortfolio(message) {
   addMessage('user', trimmed);
   state.history.push({ role: 'user', content: trimmed });
   assistantInput.value = '';
-  addMessage('assistant', 'Searching the portfolio records...');
-  const placeholder = assistantLog?.lastElementChild;
+  const placeholder = addMessage('assistant', 'Searching portfolio records...');
   try {
     const response = await fetch(`${API_BASE_URL}/portfolio/ask`, {
       method: 'POST',
@@ -170,27 +249,28 @@ async function askPortfolio(message) {
     });
     if (!response.ok) throw new Error(`Ask ${response.status}`);
     const data = await response.json();
-    if (placeholder) placeholder.textContent = data.answer || 'No answer returned.';
-    state.history.push({ role: 'assistant', content: data.answer || '' });
+    const answer = data.answer || localPortfolioAnswer(trimmed);
+    if (placeholder) placeholder.textContent = answer;
+    state.history.push({ role: 'assistant', content: answer });
   } catch (error) {
-    if (placeholder) {
-      placeholder.textContent = 'Portfolio assistant is not available right now. The project cards and search still work from the public portfolio records.';
-    }
+    const answer = localPortfolioAnswer(trimmed);
+    if (placeholder) placeholder.textContent = answer;
+    state.history.push({ role: 'assistant', content: answer });
   }
 }
 
 async function init() {
   try {
     const projects = await fetchProjects();
-    state.projects = (projects.length ? projects : fallbackProjects).map(normalizeProject);
-    setStatus(`${state.projects.length} public portfolio records loaded from API`);
+    state.projects = (Array.isArray(projects) && projects.length ? projects : fallbackProjects).map(normalizeProject);
+    setStatus(`${state.projects.length} portfolio records loaded`);
   } catch (error) {
     state.projects = fallbackProjects.map(normalizeProject);
-    setStatus('Using local portfolio records until the API is ingested.');
+    setStatus(`${state.projects.length} local portfolio records loaded`);
   }
   renderTopics(state.projects);
   applyLocalFilter('');
-  addMessage('assistant', 'Ask about industries, project examples, stack choices, document parsing, CRM, scheduling, or data pipelines. I answer from sanitized portfolio records only.');
+  addMessage('assistant', 'Ask about project examples, industries, stacks, RAG, CRM, Android, finance, trading, construction, ecommerce, healthcare, or backend architecture.');
 }
 
 searchForm?.addEventListener('submit', event => {
