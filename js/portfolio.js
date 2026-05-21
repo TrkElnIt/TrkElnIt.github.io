@@ -254,7 +254,7 @@ async function askAssistant(question) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'omit',
-      body: JSON.stringify({ question: clean })
+      body: JSON.stringify({ message: clean })
     });
     if (!response.ok) throw new Error(`Ask API ${response.status}`);
     const data = await response.json();
