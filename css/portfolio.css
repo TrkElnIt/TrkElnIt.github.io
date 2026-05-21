@@ -135,15 +135,20 @@ button { cursor: pointer; }
 .icon-link {
   display: inline-grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   border-radius: 8px;
   color: var(--ink);
-  font-size: 0.82rem;
-  font-weight: 950;
   background: #fff;
   border: 1px solid transparent;
 }
+
+.icon-link svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
 .icon-link:hover { border-color: var(--line); background: var(--soft); }
 
 .portfolio-page {
