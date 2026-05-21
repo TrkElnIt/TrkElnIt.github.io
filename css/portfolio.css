@@ -68,18 +68,23 @@ button { cursor: pointer; }
   letter-spacing: 0;
 }
 
-.brand-mark {
+.brand-logo {
   display: inline-grid;
   place-items: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
   background: #000;
-  color: #fff;
-  font-size: 0.82rem;
-  font-weight: 950;
-  letter-spacing: -0.08em;
+  overflow: hidden;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.10);
+}
+
+.brand-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 8px;
+  background: #000;
 }
 
 .portfolio-nav {
