@@ -135,8 +135,8 @@ button { cursor: pointer; }
 .icon-link {
   display: inline-grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 42px;
+  height: 42px;
   border-radius: 8px;
   color: var(--ink);
   background: #fff;
@@ -144,9 +144,13 @@ button { cursor: pointer; }
 }
 
 .icon-link svg {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   fill: currentColor;
+}
+
+.linkedin-link {
+  color: #0a66c2;
 }
 
 .icon-link:hover { border-color: var(--line); background: var(--soft); }
