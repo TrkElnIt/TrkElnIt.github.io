@@ -1,7 +1,7 @@
 :root {
-  --brand-logo-size: 92px;
-  --brand-logo-size-mobile: 68px;
-  --brand-gap: 14px;
+  --brand-logo-size: 64px;
+  --brand-logo-size-mobile: 48px;
+  --brand-gap: 18px;
   --brand-text: #111111;
   --brand-muted: #5f6775;
 }
@@ -24,23 +24,24 @@
   flex: 0 0 var(--brand-logo-size);
   overflow: hidden;
   border: 0;
-  border-radius: 50%;
-  background: #000000;
-  box-shadow: none;
+  border-radius: 14px;
+  background: #050505;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
 }
 
 .brand-logo {
-  width: 100%;
-  height: 100%;
-  min-width: 100%;
-  min-height: 100%;
-  max-width: 100%;
-  max-height: 100%;
+  width: 66%;
+  height: 66%;
+  min-width: 0;
+  min-height: 0;
+  max-width: 66%;
+  max-height: 66%;
   display: block;
-  object-fit: cover;
-  transform: scale(1.34);
+  margin: 17%;
+  object-fit: contain;
+  transform: none;
   transform-origin: center center;
-  filter: contrast(1.08);
+  filter: none;
 }
 
 .brand-copy {
@@ -51,25 +52,21 @@
 
 .brand-context {
   color: var(--brand-text);
-  font-size: 1.04rem;
+  font-size: 1.75rem;
   font-weight: 800;
-  letter-spacing: 0;
-  line-height: 1.15;
+  letter-spacing: -0.04em;
+  line-height: 1;
 }
 
 .brand-tagline {
-  max-width: 230px;
+  max-width: 250px;
   color: var(--brand-muted);
-  font-size: 0.88rem;
+  font-size: 0.94rem;
   line-height: 1.25;
 }
 
-.brand--site .brand-context {
-  display: none;
-}
-
 .brand--site .brand-tagline {
-  max-width: 240px;
+  max-width: 255px;
 }
 
 .brand--crm .brand-tagline {
@@ -85,8 +82,15 @@
     --brand-logo-size: var(--brand-logo-size-mobile);
   }
 
+  .brand-logo-shell {
+    border-radius: 12px;
+  }
+
+  .brand-context {
+    font-size: 1.35rem;
+  }
+
   .brand--site .brand-tagline {
-    max-width: 190px;
-    font-size: 0.82rem;
+    display: none;
   }
 }
