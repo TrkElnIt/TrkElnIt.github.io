@@ -5,14 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TrkElnIt Portfolio | Project Library</title>
   <meta name="description" content="Search TrkElnIt project examples across AI automation, backend systems, CRM, trading, document intelligence, and mobile workflows." />
-  <link rel="icon" href="logo.png" />
-  <link rel="stylesheet" href="css/portfolio.css?v=20260521-portfolio-final" />
+  <link rel="icon" type="image/png" href="assets/brand/logo.png" />
+  <link rel="stylesheet" href="css/portfolio.css?v=20260607-brand-system" />
+  <link rel="stylesheet" href="css/brand.css?v=20260607-brand-system" />
 </head>
 <body>
   <header class="portfolio-topbar">
     <div class="topbar-inner">
-      <a class="brand-logo-shell" href="https://trkelnit.github.io/" aria-label="TrkElnIt portfolio home">
-        <img class="brand-logo" src="logo.png" alt="TrkElnIt" />
+      <a class="brand brand--site brand--portfolio" href="https://trkelnit.github.io/" aria-label="TrkElnIt portfolio home">
+        <span class="brand-logo-shell">
+          <img class="brand-logo" src="assets/brand/logo.png" alt="TrkElnIt logo" />
+        </span>
+        <span class="brand-copy">
+          <span class="brand-tagline">AI systems & workflow infrastructure</span>
+        </span>
       </a>
 
       <nav class="portfolio-nav" aria-label="Portfolio navigation">
@@ -39,7 +45,7 @@
     <section class="portfolio-hero" id="projects">
       <div class="page-shell">
         <div class="hero-copy">
-          <p class="eyebrow"><span></span>Private repo memory, public project map</p>
+          <p class="eyebrow"><span></span>AI systems & workflow infrastructure</p>
           <h1>Project Library <span id="projectCount">0</span></h1>
           <p class="hero-subtitle">A searchable collection of systems built across AI automation, backend APIs, CRM, document intelligence, trading, ecommerce, mobile, and workflow operations.</p>
         </div>
@@ -48,7 +54,7 @@
           <div class="library-tools">
             <label class="search-box" for="projectSearch">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 19.59-5.08-5.08a7.5 7.5 0 1 0-1.41 1.41L19.59 21 21 19.59ZM4 10.5a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0Z" /></svg>
-              <input id="projectSearch" type="search" placeholder="Search projects by stack, industry, workflow, or problem..." autocomplete="off" />
+              <input id="projectSearch" type="search" placeholder="Search projects..." autocomplete="off" />
             </label>
             <button class="search-action" id="semanticSearchButton" type="button">Search</button>
           </div>

@@ -21,13 +21,14 @@ body {
     radial-gradient(circle at 92% 14%, rgba(232, 236, 240, 0.9), transparent 24rem),
     linear-gradient(180deg, #fff 0%, #f7f8f9 100%);
   font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow-x: hidden;
 }
 
 a { color: inherit; text-decoration: none; }
 button, input { font: inherit; }
 
 .page-shell {
-  width: min(1500px, calc(100% - 80px));
+  width: min(1280px, calc(100% - 64px));
   margin: 0 auto;
 }
 
@@ -41,40 +42,22 @@ button, input { font: inherit; }
 }
 
 .topbar-inner {
-  min-height: 154px;
-  width: min(1500px, calc(100% - 80px));
+  min-height: 128px;
+  width: min(1280px, calc(100% - 64px));
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 180px 1fr 170px;
+  display: flex;
   align-items: center;
-  gap: 28px;
-}
-
-.brand-logo-shell {
-  width: 120px;
-  height: 120px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  overflow: hidden;
-  background: #000;
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.12);
-}
-
-.brand-logo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: scale(1.32);
-  filter: contrast(1.12) brightness(1.08);
+  justify-content: space-between;
+  gap: 30px;
 }
 
 .portfolio-nav {
   display: flex;
-  justify-content: center;
-  gap: 46px;
+  justify-content: flex-end;
+  gap: 34px;
   height: 100%;
   align-items: center;
+  margin-left: auto;
 }
 
 .portfolio-nav a {
@@ -87,9 +70,9 @@ button, input { font: inherit; }
   content: "";
   position: absolute;
   left: 50%;
-  bottom: -54px;
-  width: 70px;
-  height: 4px;
+  bottom: -47px;
+  width: 54px;
+  height: 3px;
   border-radius: 999px;
   background: #000;
   transform: translateX(-50%);
@@ -99,12 +82,12 @@ button, input { font: inherit; }
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 22px;
+  gap: 12px;
 }
 
 .social-link {
-  width: 48px;
-  height: 48px;
+  width: 38px;
+  height: 38px;
   display: grid;
   place-items: center;
   border-radius: 50%;
@@ -117,8 +100,8 @@ button, input { font: inherit; }
 }
 
 .social-link svg {
-  width: 31px;
-  height: 31px;
+  width: 24px;
+  height: 24px;
   display: block;
 }
 
@@ -126,8 +109,7 @@ button, input { font: inherit; }
 .linkedin-link svg { fill: var(--blue); }
 
 .portfolio-hero {
-  min-height: calc(100vh - 154px);
-  padding: 92px 0 120px;
+  padding: 72px 0 110px;
 }
 
 .hero-copy {
@@ -135,14 +117,14 @@ button, input { font: inherit; }
 }
 
 .eyebrow {
-  margin: 0 0 26px;
+  margin: 0 0 22px;
   display: flex;
   align-items: center;
   gap: 14px;
   color: #172033;
   font-size: 14px;
   font-weight: 900;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -154,10 +136,10 @@ button, input { font: inherit; }
 
 h1 {
   margin: 0;
-  font-size: clamp(64px, 8vw, 118px);
-  line-height: 0.88;
-  letter-spacing: -0.075em;
-  font-weight: 950;
+  font-size: clamp(48px, 5.8vw, 82px);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  font-weight: 900;
 }
 
 h1 span {
@@ -543,31 +525,101 @@ h1 span {
 
 @media (max-width: 1100px) {
   .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .topbar-inner { grid-template-columns: 150px 1fr 140px; }
-  .brand-logo-shell { width: 104px; height: 104px; }
 }
 
 @media (max-width: 760px) {
-  .page-shell, .topbar-inner { width: min(100% - 32px, 1500px); }
-  .topbar-inner {
-    min-height: 112px;
-    grid-template-columns: 84px 1fr auto;
-    gap: 12px;
+  .page-shell {
+    width: 100%;
+    max-width: none;
+    padding-right: 16px;
+    padding-left: 16px;
   }
-  .brand-logo-shell { width: 78px; height: 78px; }
-  .brand-logo { transform: scale(1.36); }
-  .portfolio-nav { gap: 22px; justify-content: flex-start; }
-  .portfolio-nav a.active::after { bottom: -36px; width: 44px; }
-  .top-actions { gap: 8px; }
+  .topbar-inner {
+    width: 100%;
+    max-width: none;
+    padding: 16px;
+  }
+  .topbar-inner {
+    min-height: 96px;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .portfolio-nav {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 22px;
+    order: 3;
+  }
+  .portfolio-nav a.active::after { bottom: -14px; width: 42px; }
+  .top-actions { display: none; }
   .social-link { width: 38px; height: 38px; }
   .social-link svg { width: 25px; height: 25px; }
-  .portfolio-hero { padding: 52px 0 90px; }
-  h1 { font-size: clamp(58px, 18vw, 86px); }
-  .hero-subtitle { font-size: 17px; }
+  .portfolio-hero {
+    width: 100%;
+    padding: 44px 0 84px;
+  }
+  .library-panel,
+  .portfolio-hero {
+    max-width: 100%;
+  }
+  .library-panel,
+  .library-tools,
+  .hero-copy,
+  .hero-subtitle {
+    width: min(100%, calc(100vw - 32px));
+    max-width: calc(100vw - 32px);
+  }
+  .hero-copy { max-width: 100%; }
+  .eyebrow {
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .eyebrow span {
+    flex: 0 0 44px;
+  }
+  h1 {
+    max-width: 100%;
+    font-size: clamp(34px, 9.4vw, 40px);
+    line-height: 1.04;
+    letter-spacing: -0.035em;
+  }
+  h1 span {
+    min-width: 28px;
+    height: 28px;
+    margin-left: 8px;
+    font-size: 13px;
+  }
+  .hero-subtitle {
+    max-width: 100%;
+    font-size: 16px;
+    overflow-wrap: break-word;
+  }
   .library-tools { display: grid; }
-  .search-box { max-width: none; }
-  .search-action { width: 100%; }
+  .search-box {
+    width: min(100%, calc(100vw - 32px));
+    max-width: calc(100vw - 32px);
+  }
+  .search-action {
+    width: min(100%, calc(100vw - 32px));
+    max-width: calc(100vw - 32px);
+  }
   .project-grid { grid-template-columns: 1fr; }
-  .assistant-fab { right: 16px; bottom: 18px; }
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: auto;
+    gap: 12px;
+    padding: 22px 0 92px;
+  }
+  .assistant-fab {
+    left: auto;
+    right: 16px;
+    bottom: 18px;
+    width: fit-content;
+    min-width: 152px;
+    max-width: calc(100vw - 32px);
+  }
   .portfolio-assistant { right: 16px; bottom: 86px; }
 }

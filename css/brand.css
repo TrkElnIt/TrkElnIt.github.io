@@ -1,0 +1,92 @@
+:root {
+  --brand-logo-size: 76px;
+  --brand-logo-size-mobile: 58px;
+  --brand-gap: 14px;
+  --brand-text: #111111;
+  --brand-muted: #5f6775;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--brand-gap);
+  min-width: 0;
+}
+
+.brand-logo-shell {
+  width: var(--brand-logo-size);
+  height: var(--brand-logo-size);
+  min-width: var(--brand-logo-size);
+  min-height: var(--brand-logo-size);
+  max-width: var(--brand-logo-size);
+  max-height: var(--brand-logo-size);
+  display: block;
+  flex: 0 0 var(--brand-logo-size);
+  overflow: hidden;
+  border: 0;
+  border-radius: 50%;
+  background: #000000;
+  box-shadow: none;
+}
+
+.brand-logo {
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  object-fit: cover;
+  transform: scale(1.34);
+  transform-origin: center center;
+  filter: contrast(1.08);
+}
+
+.brand-copy {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.brand-context {
+  color: var(--brand-text);
+  font-size: 1.04rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.15;
+}
+
+.brand-tagline {
+  max-width: 230px;
+  color: var(--brand-muted);
+  font-size: 0.88rem;
+  line-height: 1.25;
+}
+
+.brand--site .brand-context {
+  display: none;
+}
+
+.brand--site .brand-tagline {
+  max-width: 240px;
+}
+
+.brand--crm .brand-tagline {
+  max-width: 220px;
+}
+
+.brand--icon-only .brand-copy {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  :root {
+    --brand-logo-size: var(--brand-logo-size-mobile);
+  }
+
+  .brand--site .brand-tagline {
+    max-width: 190px;
+    font-size: 0.82rem;
+  }
+}
