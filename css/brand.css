@@ -69,6 +69,39 @@
   max-width: 255px;
 }
 
+.brand--site {
+  --brand-logo-size: 64px;
+  --brand-gap: 16px;
+}
+
+.brand--site .brand-logo-shell {
+  overflow: visible;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.brand--site .brand-logo {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+}
+
+.brand--site .brand-copy {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.brand--site .brand-tagline {
+  max-width: none;
+  padding-left: 18px;
+  border-left: 1px solid #cfd4dc;
+  white-space: nowrap;
+}
+
 .brand--crm .brand-tagline {
   max-width: 220px;
 }
@@ -88,6 +121,16 @@
 
   .brand-context {
     font-size: 1.35rem;
+  }
+
+  .brand--site {
+    --brand-logo-size: var(--brand-logo-size-mobile);
+    --brand-gap: 14px;
+  }
+
+  .brand--site .brand-copy {
+    display: grid;
+    gap: 2px;
   }
 
   .brand--site .brand-tagline {
