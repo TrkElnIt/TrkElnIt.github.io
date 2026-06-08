@@ -90,16 +90,18 @@
 }
 
 .brand--site .brand-copy {
-  display: flex;
+  display: grid;
   align-items: center;
-  gap: 18px;
+  gap: 5px;
 }
 
 .brand--site .brand-tagline {
   max-width: none;
-  padding-left: 18px;
-  border-left: 1px solid #cfd4dc;
+  padding-left: 0;
+  border-left: 0;
   white-space: nowrap;
+  font-size: 0.82rem;
+  line-height: 1;
 }
 
 .site-header .brand--site .brand-context {
