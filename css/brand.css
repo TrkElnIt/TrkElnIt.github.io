@@ -70,8 +70,8 @@
 }
 
 .brand--site {
-  --brand-logo-size: 64px;
-  --brand-gap: 16px;
+  --brand-logo-size: 76px;
+  --brand-gap: 18px;
 }
 
 .brand--site .brand-logo-shell {
@@ -92,7 +92,7 @@
 .brand--site .brand-copy {
   display: grid;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
 }
 
 .brand--site .brand-tagline {
@@ -100,13 +100,14 @@
   padding-left: 0;
   border-left: 0;
   white-space: nowrap;
-  font-size: 0.82rem;
+  color: #6b7280;
+  font-size: 0.94rem;
   line-height: 1;
 }
 
 .site-header .brand--site .brand-context {
-  font-size: 1.55rem;
-  font-weight: 700;
+  font-size: 2.125rem;
+  font-weight: 800;
 }
 
 .brand--crm .brand-tagline {
