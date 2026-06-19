@@ -108,25 +108,19 @@ button, input { font: inherit; }
 .github-link svg { fill: #050505; }
 .linkedin-link svg { fill: var(--blue); }
 
-.wordmark-link span {
-  display: grid;
-  place-items: center;
+.wordmark-link img {
+  display: block;
   width: 28px;
   height: 28px;
+  object-fit: contain;
+}
+
+.upwork-link img {
   border-radius: 7px;
-  color: #fff;
-  font-size: 13px;
-  font-weight: 950;
-  letter-spacing: 0;
-  line-height: 1;
 }
 
-.upwork-link span {
-  background: #14a800;
-}
-
-.fiverr-link span {
-  background: #1dbf73;
+.fiverr-link img {
+  border-radius: 50%;
 }
 
 .portfolio-hero {
@@ -587,12 +581,11 @@ h1 span {
   }
   .social-link { width: 32px; height: 32px; }
   .social-link svg { width: 21px; height: 21px; }
-  .wordmark-link span {
+  .wordmark-link img {
     width: 24px;
     height: 24px;
-    border-radius: 6px;
-    font-size: 11px;
   }
+  .upwork-link img { border-radius: 6px; }
   .portfolio-hero {
     width: 100%;
     padding: 44px 0 84px;
