@@ -97,17 +97,28 @@ function normalizeProject(project, index) {
   const category = String(pick(project, ['category', 'topic', 'domain'], tags[0] || 'Backend/API'));
   const title = String(pick(project, ['title', 'name', 'repo', 'repository'], `Project ${index + 1}`));
   const summary = String(pick(project, ['summary', 'description', 'problem', 'readme_summary'], 'Portfolio record imported from project README.'));
+  const id = String(pick(project, ['id', 'slug', 'repo'], title.toLowerCase().replace(/[^a-z0-9]+/g, '-')));
 
   return {
-    id: pick(project, ['id', 'slug', 'repo'], title.toLowerCase().replace(/[^a-z0-9]+/g, '-')),
+    id,
+    slug: String(pick(project, ['slug', 'repo', 'id'], id)),
     title,
     category,
     industry: String(pick(project, ['industry', 'sector', 'category'], category)),
     summary,
+    description: String(pick(project, ['description', 'details', 'readme', 'notes'], '')),
     tags: [...new Set([...tags, ...stack].filter(Boolean))].slice(0, 7),
     stack,
+    repoName: String(pick(project, ['repo_name', 'repoName', 'repo'], '')),
+    repoUrl: String(pick(project, ['repo_url', 'repoUrl', 'url'], '')),
+    status: String(pick(project, ['status'], 'production')),
+    visibility: String(pick(project, ['visibility'], 'public')),
     featured: Boolean(project.featured || index === 0)
   };
+}
+
+function projectDetailUrl(project) {
+  return `project.html?project=${encodeURIComponent(project.slug || project.id)}`;
 }
 
 async function fetchProjects() {
@@ -163,8 +174,9 @@ function renderProjects() {
   els.grid.innerHTML = state.filtered.map((project, index) => {
     const initials = project.title.split(/\s+/).filter(Boolean).slice(0, 2).map((word) => word[0]).join('').toUpperCase();
     const tags = project.tags.length ? project.tags : project.stack;
+    const detailUrl = projectDetailUrl(project);
     return `
-      <article class="project-card ${project.featured || index === 0 ? 'featured' : ''}">
+      <article class="project-card ${project.featured || index === 0 ? 'featured' : ''}" data-project-url="${escapeHtml(detailUrl)}" role="link" tabindex="0" aria-label="Open ${escapeHtml(project.title)} project page">
         <div class="project-head">
           <div class="project-icon">${escapeHtml(initials || 'TE')}</div>
           <div>
@@ -175,7 +187,10 @@ function renderProjects() {
         <p>${escapeHtml(project.summary)}</p>
         <div class="project-tags">${tags.slice(0, 6).map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</div>
         <div class="project-meta">Stack: ${escapeHtml((project.stack.length ? project.stack : tags).slice(0, 4).join(' · ') || 'Project README')}</div>
-        <button class="project-link" type="button" data-project="${escapeHtml(project.title)}">Ask about this project -></button>
+        <div class="project-actions">
+          <a class="project-link" href="${escapeHtml(detailUrl)}">Open project -></a>
+          <button class="project-link project-ask" type="button" data-project="${escapeHtml(project.title)}">Ask</button>
+        </div>
       </article>
     `;
   }).join('');
@@ -184,6 +199,18 @@ function renderProjects() {
     button.addEventListener('click', () => {
       openAssistant();
       askAssistant(`Tell me about ${button.dataset.project}.`);
+    });
+  });
+
+  els.grid.querySelectorAll('.project-card[data-project-url]').forEach((card) => {
+    card.addEventListener('click', (event) => {
+      if (event.target.closest('a, button')) return;
+      window.location.href = card.dataset.projectUrl;
+    });
+    card.addEventListener('keydown', (event) => {
+      if (!['Enter', ' '].includes(event.key) || event.target.closest('a, button')) return;
+      event.preventDefault();
+      window.location.href = card.dataset.projectUrl;
     });
   });
 }

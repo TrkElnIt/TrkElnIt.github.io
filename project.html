@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TrkElnIt Portfolio | Project Library</title>
-  <meta name="description" content="Search TrkElnIt project examples across AI automation, backend systems, CRM, trading, document intelligence, and mobile workflows." />
+  <title>TrkElnIt Portfolio | Project Detail</title>
+  <meta name="description" content="Detailed TrkElnIt portfolio project page with stack, topics, summary, and project assistant." />
   <link rel="icon" type="image/svg+xml" href="assets/brand/app-icon.svg?v=20260609-traced-logo" />
   <link rel="stylesheet" href="css/portfolio.css?v=20260628-project-pages" />
   <link rel="stylesheet" href="css/brand.css?v=20260609-traced-logo" />
@@ -23,7 +23,7 @@
       </a>
 
       <nav class="portfolio-nav" aria-label="Portfolio navigation">
-        <a class="active" href="#projects">Projects</a>
+        <a href="index.html#projects">Projects</a>
         <a href="https://trkelnit.com/contact.html">Contact</a>
       </nav>
 
@@ -48,28 +48,51 @@
     </div>
   </header>
 
-  <main>
-    <section class="portfolio-hero" id="projects">
-      <div class="page-shell">
-        <div class="hero-copy">
-          <p class="eyebrow"><span></span>AI systems & workflow infrastructure</p>
-          <h1>Project Library <span id="projectCount">0</span></h1>
-          <p class="hero-subtitle">A searchable collection of systems built across AI automation, backend APIs, CRM, document intelligence, trading, ecommerce, mobile, and workflow operations.</p>
+  <main class="project-detail-page">
+    <section class="project-detail-hero">
+      <div class="page-shell project-detail-shell">
+        <a class="back-link" href="index.html#projects">Back to project library</a>
+        <p class="eyebrow"><span></span><strong id="projectIndustry">Project</strong></p>
+        <h1 id="projectTitle">Loading project...</h1>
+        <p class="hero-subtitle" id="projectSummary">Loading approved portfolio record.</p>
+        <div class="project-detail-actions">
+          <button class="search-action" id="projectAskButton" type="button">Ask about this project</button>
+          <a class="detail-secondary-link" id="projectRepoLink" href="#" target="_blank" rel="noreferrer" hidden>View repository</a>
         </div>
+      </div>
+    </section>
 
-        <section class="library-panel" aria-label="Project library">
-          <div class="library-tools">
-            <label class="search-box" for="projectSearch">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 19.59-5.08-5.08a7.5 7.5 0 1 0-1.41 1.41L19.59 21 21 19.59ZM4 10.5a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0Z" /></svg>
-              <input id="projectSearch" type="search" placeholder="Search projects..." autocomplete="off" />
-            </label>
-            <button class="search-action" id="semanticSearchButton" type="button">Search</button>
-          </div>
+    <section class="project-detail-content">
+      <div class="page-shell project-detail-grid">
+        <article class="project-detail-panel">
+          <p class="eyebrow"><span></span>Overview</p>
+          <div class="project-long-copy" id="projectDescription">Loading project details.</div>
+        </article>
 
-          <div class="topic-filter" id="topicFilter" aria-label="Project filters"></div>
-          <p class="library-status" id="libraryStatus">Loading portfolio records...</p>
-          <div class="project-grid" id="projectGrid"></div>
-        </section>
+        <aside class="project-detail-side">
+          <article class="project-detail-panel">
+            <h2>Stack</h2>
+            <div class="project-tags detail-tags" id="projectStack"></div>
+          </article>
+          <article class="project-detail-panel">
+            <h2>Topics</h2>
+            <div class="project-tags detail-tags" id="projectTopics"></div>
+          </article>
+          <article class="project-detail-panel">
+            <h2>Record</h2>
+            <div class="project-record-list" id="projectMeta"></div>
+          </article>
+        </aside>
+      </div>
+    </section>
+
+    <section class="project-detail-content project-related-section">
+      <div class="page-shell">
+        <div class="project-section-head">
+          <p class="eyebrow"><span></span>Related work</p>
+          <h2>More projects in this area</h2>
+        </div>
+        <div class="project-grid project-related-grid" id="relatedProjects"></div>
       </div>
     </section>
   </main>
@@ -80,23 +103,23 @@
     <div class="assistant-header">
       <div class="assistant-mark" aria-hidden="true">TE</div>
       <div>
-        <strong>Ask about my projects</strong>
-        <span>Search approved README summaries</span>
+        <strong>Ask about this project</strong>
+        <span id="assistantProjectLabel">Portfolio project</span>
       </div>
-      <button id="assistantClose" type="button" aria-label="Close assistant">×</button>
+      <button id="assistantClose" type="button" aria-label="Close assistant">x</button>
     </div>
 
     <div class="assistant-body" id="assistantBody">
-      <div class="assistant-message bot">Ask about project examples, stack choices, industries, document parsing, CRM, scheduling, trading, or backend automation.</div>
+      <div class="assistant-message bot">Ask about this project while you review the project page.</div>
       <div class="quick-questions">
-        <button type="button" data-question="What projects use AI automation?">What projects use AI?</button>
-        <button type="button" data-question="Show me backend API projects.">Show backend/API projects</button>
-        <button type="button" data-question="Which projects use Python and FastAPI?">Which projects use Python?</button>
+        <button type="button" data-question="What problem does this project solve?">What does it solve?</button>
+        <button type="button" data-question="Which stack and libraries are used?">Which stack is used?</button>
+        <button type="button" data-question="How is this project relevant for clients?">Why is it relevant?</button>
       </div>
     </div>
 
     <form class="assistant-input" id="assistantForm">
-      <input id="assistantQuestion" type="text" placeholder="Ask about project examples..." autocomplete="off" />
+      <input id="assistantQuestion" type="text" placeholder="Ask about this project..." autocomplete="off" />
       <button type="submit">Ask</button>
     </form>
   </aside>
@@ -104,11 +127,11 @@
   <footer class="portfolio-footer">
     <div class="page-shell footer-inner">
       <span>TrkElnIt project portfolio</span>
-      <a href="https://trkelnit.com/">Business site</a>
+      <a href="index.html#projects">Project library</a>
       <a href="https://trkelnit.com/contact.html">Contact</a>
     </div>
   </footer>
 
-  <script type="module" src="js/portfolio.js?v=20260628-project-pages"></script>
+  <script type="module" src="js/project.js?v=20260628-project-pages"></script>
 </body>
 </html>

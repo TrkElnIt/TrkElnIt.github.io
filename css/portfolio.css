@@ -277,6 +277,19 @@ h1 span {
   border-radius: var(--radius);
   background: var(--panel);
   box-shadow: 0 18px 50px rgba(16, 24, 40, 0.08);
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.project-card[data-project-url] {
+  cursor: pointer;
+}
+
+.project-card[data-project-url]:hover,
+.project-card[data-project-url]:focus-visible {
+  transform: translateY(-3px);
+  border-color: #111827;
+  box-shadow: 0 22px 62px rgba(16, 24, 40, 0.13);
+  outline: none;
 }
 
 .project-card.featured {
@@ -356,6 +369,12 @@ h1 span {
   font-size: 13px;
 }
 
+.project-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
 .project-link {
   width: fit-content;
   border: 0;
@@ -364,6 +383,165 @@ h1 span {
   background: transparent;
   font-weight: 950;
   cursor: pointer;
+}
+
+.project-ask {
+  color: #526173;
+}
+
+.project-detail-page {
+  min-height: 100vh;
+}
+
+.project-detail-hero {
+  padding: 64px 0 70px;
+  border-bottom: 1px solid var(--line);
+}
+
+.project-detail-shell {
+  max-width: 1040px;
+}
+
+.back-link {
+  display: inline-flex;
+  margin-bottom: 32px;
+  color: #526173;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.back-link:hover {
+  color: #000;
+}
+
+.project-detail-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 30px;
+}
+
+.detail-secondary-link {
+  min-height: 56px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 22px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fff;
+  font-weight: 950;
+}
+
+.detail-secondary-link:hover {
+  border-color: #000;
+}
+
+.project-detail-content {
+  padding: 44px 0;
+}
+
+.project-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 24px;
+  align-items: start;
+}
+
+.project-detail-panel {
+  padding: 26px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  box-shadow: 0 18px 50px rgba(16, 24, 40, 0.08);
+}
+
+.project-detail-panel h2 {
+  margin: 0 0 18px;
+  font-size: 22px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.project-detail-side {
+  position: sticky;
+  top: 150px;
+  display: grid;
+  gap: 18px;
+}
+
+.project-long-copy {
+  display: grid;
+  gap: 18px;
+}
+
+.project-long-copy p {
+  margin: 0;
+  color: #344054;
+  font-size: 17px;
+  line-height: 1.72;
+}
+
+.detail-tags {
+  margin-top: 0;
+}
+
+.project-record-list {
+  display: grid;
+  gap: 14px;
+}
+
+.project-record-list div {
+  display: grid;
+  gap: 5px;
+  padding-bottom: 13px;
+  border-bottom: 1px solid var(--line);
+}
+
+.project-record-list div:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.project-record-list span {
+  color: #667085;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.project-record-list strong {
+  color: #101828;
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.empty-state {
+  margin: 0;
+  color: #667085;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.project-section-head {
+  max-width: 760px;
+  margin-bottom: 24px;
+}
+
+.project-section-head h2 {
+  margin: 0;
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.project-related-section {
+  padding-top: 20px;
+  padding-bottom: 90px;
+}
+
+.project-related-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .assistant-fab {
@@ -540,6 +718,13 @@ h1 span {
 
 @media (max-width: 1100px) {
   .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .project-detail-grid {
+    grid-template-columns: 1fr;
+  }
+  .project-detail-side {
+    position: static;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 760px) {
@@ -638,6 +823,32 @@ h1 span {
     max-width: calc(100vw - 32px);
   }
   .project-grid { grid-template-columns: 1fr; }
+  .project-actions {
+    flex-wrap: wrap;
+  }
+  .project-detail-hero {
+    padding: 38px 0 48px;
+  }
+  .project-detail-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .detail-secondary-link {
+    justify-content: center;
+  }
+  .project-detail-content {
+    padding: 28px 0;
+  }
+  .project-detail-panel {
+    padding: 20px;
+    border-radius: 18px;
+  }
+  .project-detail-side {
+    grid-template-columns: 1fr;
+  }
+  .project-long-copy p {
+    font-size: 16px;
+  }
   .footer-inner {
     display: grid;
     grid-template-columns: 1fr;
