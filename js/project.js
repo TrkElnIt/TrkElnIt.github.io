@@ -138,14 +138,106 @@ function renderTags(container, items, emptyText) {
     : `<p class="empty-state">${escapeHtml(emptyText)}</p>`;
 }
 
+function splitSentences(value) {
+  return String(value || '')
+    .replace(/\s+/g, ' ')
+    .match(/[^.!?]+[.!?]+|[^.!?]+$/g)
+    ?.map((sentence) => sentence.trim())
+    .filter((sentence) => sentence.length > 24) || [];
+}
+
+function pickSentences(sentences, keywords, limit = 5) {
+  const selected = [];
+  const seen = new Set();
+  for (const sentence of sentences) {
+    const lowered = sentence.toLowerCase();
+    if (!keywords.some((keyword) => lowered.includes(keyword))) continue;
+    const key = lowered.slice(0, 90);
+    if (seen.has(key)) continue;
+    selected.push(sentence);
+    seen.add(key);
+    if (selected.length >= limit) break;
+  }
+  return selected;
+}
+
+function renderList(items) {
+  if (!items.length) return '';
+  return `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+}
+
 function renderDescription(project) {
-  const blocks = String(project.description || project.summary)
-    .split(/\n{2,}/)
-    .map((part) => part.trim())
-    .filter(Boolean);
-  els.description.innerHTML = blocks.length
-    ? blocks.map((part) => `<p>${escapeHtml(part)}</p>`).join('')
-    : `<p>${escapeHtml(project.summary)}</p>`;
+  const details = String(project.description || project.summary || '').trim();
+  const sentences = splitSentences(details);
+  const overview = sentences.slice(0, 3).join(' ') || project.summary;
+  const workflow = pickSentences(sentences, [
+    'extract',
+    'collect',
+    'navigate',
+    'open',
+    'load',
+    'scroll',
+    'normalize',
+    'detect',
+    'match',
+    'update',
+    'generate',
+    'automate',
+    'workflow',
+    'supports',
+  ], 6);
+  const technical = pickSentences(sentences, [
+    'technically',
+    'python',
+    'playwright',
+    'fastapi',
+    'beautifulsoup',
+    'pandas',
+    'requests',
+    'ollama',
+    'openai',
+    'postgresql',
+    'api',
+    'browser',
+    'llm',
+  ], 5);
+  const outputs = pickSentences(sentences, [
+    'csv',
+    'json',
+    'export',
+    'records',
+    'dataset',
+    'dashboard',
+    'report',
+    'notification',
+    'crm',
+    'spreadsheet',
+  ], 5);
+  const stack = project.stack.length
+    ? `<div class="project-tags detail-tags">${project.stack.map((item) => `<span>${escapeHtml(item)}</span>`).join('')}</div>`
+    : '<p class="empty-state">Stack data is not listed for this project.</p>';
+
+  els.description.innerHTML = `
+    <section class="project-copy-section">
+      <h2>What it solves</h2>
+      <p>${escapeHtml(overview)}</p>
+    </section>
+    <section class="project-copy-section">
+      <h2>Workflow and features</h2>
+      ${renderList(workflow.length ? workflow : [project.summary])}
+    </section>
+    <section class="project-copy-section">
+      <h2>Stack and libraries</h2>
+      ${stack}
+      ${technical.length ? renderList(technical) : ''}
+    </section>
+    ${outputs.length ? `
+      <section class="project-copy-section">
+        <h2>Outputs and delivery</h2>
+        ${renderList(outputs)}
+      </section>
+    ` : ''}
+  `;
 }
 
 function renderRelated(project) {
@@ -259,9 +351,6 @@ async function askAssistant(question) {
   if (!clean) return;
 
   const project = state.project;
-  const focusedQuestion = project
-    ? `${clean}\n\nFocus on this portfolio project: ${project.title}.`
-    : clean;
 
   appendMessage('user', clean);
   const pending = appendMessage('bot', 'Searching approved portfolio records...');
@@ -271,7 +360,11 @@ async function askAssistant(question) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'omit',
-      body: JSON.stringify({ message: focusedQuestion })
+      body: JSON.stringify({
+        message: clean,
+        project_slug: project?.slug || null,
+        project_title: project?.title || null,
+      })
     });
     if (!response.ok) throw new Error(`Ask API ${response.status}`);
     const data = await response.json();
