@@ -91,18 +91,29 @@ function pick(project, keys, fallback = '') {
   return fallback;
 }
 
+function cleanDisplayTitle(value) {
+  return String(value ?? '')
+    .replace(/[\u200d\ufe0f]/g, '')
+    .replace(/[\u2600-\u27bf]/g, '')
+    .replace(/[\u{1f000}-\u{1faff}]/gu, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 function normalizeProject(project, index) {
   const tags = toArray(pick(project, ['tags', 'topics', 'keywords'], []));
   const stack = toArray(pick(project, ['stack', 'technologies', 'tech_stack'], []));
   const category = String(pick(project, ['category', 'topic', 'domain'], tags[0] || 'Backend/API'));
-  const title = String(pick(project, ['title', 'name', 'repo', 'repository'], `Project ${index + 1}`));
+  const sourceTitle = String(pick(project, ['title', 'name', 'repo', 'repository'], `Project ${index + 1}`));
+  const title = cleanDisplayTitle(sourceTitle) || sourceTitle;
   const summary = String(pick(project, ['summary', 'description', 'problem', 'readme_summary'], 'Portfolio record imported from project README.'));
-  const id = String(pick(project, ['id', 'slug', 'repo'], title.toLowerCase().replace(/[^a-z0-9]+/g, '-')));
+  const id = String(pick(project, ['id', 'slug', 'repo'], sourceTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')));
 
   return {
     id,
     slug: String(pick(project, ['slug', 'repo', 'id'], id)),
     title,
+    sourceTitle,
     category,
     industry: String(pick(project, ['industry', 'sector', 'category'], category)),
     summary,
@@ -155,7 +166,7 @@ function matchesTopic(project) {
 
 function matchesSearch(project) {
   if (!state.query) return true;
-  const haystack = `${project.title} ${project.category} ${project.industry} ${project.summary} ${project.tags.join(' ')} ${project.stack.join(' ')}`.toLowerCase();
+  const haystack = `${project.title} ${project.sourceTitle} ${project.category} ${project.industry} ${project.summary} ${project.tags.join(' ')} ${project.stack.join(' ')}`.toLowerCase();
   return haystack.includes(state.query.toLowerCase());
 }
 

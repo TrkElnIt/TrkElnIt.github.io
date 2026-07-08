@@ -75,12 +75,22 @@ function pick(project, keys, fallback = '') {
   return fallback;
 }
 
+function cleanDisplayTitle(value) {
+  return String(value ?? '')
+    .replace(/[\u200d\ufe0f]/g, '')
+    .replace(/[\u2600-\u27bf]/g, '')
+    .replace(/[\u{1f000}-\u{1faff}]/gu, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 function normalizeProject(project, index) {
   const topics = toArray(pick(project, ['topics', 'tags', 'keywords'], []));
   const stack = toArray(pick(project, ['stack', 'technologies', 'tech_stack'], []));
   const category = String(pick(project, ['category', 'topic', 'domain'], topics[0] || 'Backend/API'));
-  const title = String(pick(project, ['title', 'name', 'repo', 'repository'], `Project ${index + 1}`));
-  const slug = String(pick(project, ['slug', 'repo', 'id'], slugify(title)));
+  const sourceTitle = String(pick(project, ['title', 'name', 'repo', 'repository'], `Project ${index + 1}`));
+  const title = cleanDisplayTitle(sourceTitle) || sourceTitle;
+  const slug = String(pick(project, ['slug', 'repo', 'id'], slugify(sourceTitle)));
   const summary = String(pick(project, ['summary', 'problem', 'readme_summary'], 'Portfolio record imported from project README.'));
   const description = String(pick(project, ['description', 'details', 'readme', 'notes'], summary));
 
@@ -88,6 +98,7 @@ function normalizeProject(project, index) {
     id: String(pick(project, ['id'], slug)),
     slug,
     title,
+    sourceTitle,
     category,
     industry: String(pick(project, ['industry', 'sector', 'category'], category)),
     summary,
@@ -127,6 +138,7 @@ function findProject(projects, slug) {
     slugify(project.slug) === clean ||
     slugify(project.id) === clean ||
     slugify(project.title) === clean ||
+    slugify(project.sourceTitle) === clean ||
     slugify(project.repoName) === clean
   ));
 }
@@ -363,7 +375,7 @@ async function askAssistant(question) {
       body: JSON.stringify({
         message: clean,
         project_slug: project?.slug || null,
-        project_title: project?.title || null,
+        project_title: project?.sourceTitle || project?.title || null,
       })
     });
     if (!response.ok) throw new Error(`Ask API ${response.status}`);
