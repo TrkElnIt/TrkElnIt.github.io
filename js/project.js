@@ -33,6 +33,8 @@ const els = {
   stack: document.getElementById('projectStack'),
   topics: document.getElementById('projectTopics'),
   meta: document.getElementById('projectMeta'),
+  diagramsSection: document.getElementById('projectDiagramsSection'),
+  diagrams: document.getElementById('projectDiagrams'),
   repoLink: document.getElementById('projectRepoLink'),
   related: document.getElementById('relatedProjects'),
   askButton: document.getElementById('projectAskButton'),
@@ -66,6 +68,33 @@ function toArray(value) {
   if (Array.isArray(value)) return value.filter(Boolean);
   if (typeof value === 'string' && value.trim()) return value.split(',').map((item) => item.trim()).filter(Boolean);
   return [];
+}
+
+function normalizeDiagrams(value) {
+  if (!value) return [];
+  const items = Array.isArray(value) ? value : [value];
+  return items
+    .map((item) => {
+      if (typeof item === 'string') {
+        return {
+          title: 'Architecture diagram',
+          image: item,
+          full: item,
+          description: 'System diagram for this project.'
+        };
+      }
+      if (!item || typeof item !== 'object') return null;
+      const image = item.image || item.image_url || item.imageUrl || item.png || item.url;
+      const full = item.full || item.full_url || item.fullUrl || item.svg || item.url || image;
+      if (!image) return null;
+      return {
+        title: String(item.title || item.name || 'Architecture diagram'),
+        image: String(image),
+        full: String(full || image),
+        description: String(item.description || item.summary || 'System diagram for this project.')
+      };
+    })
+    .filter(Boolean);
 }
 
 function pick(project, keys, fallback = '') {
@@ -108,6 +137,7 @@ function normalizeProject(project, index) {
     stack,
     repoName: String(pick(project, ['repo_name', 'repoName', 'repo'], '')),
     repoUrl: String(pick(project, ['repo_url', 'repoUrl', 'url'], '')),
+    diagrams: normalizeDiagrams(pick(project, ['diagrams', 'architecture_diagrams', 'architectureDiagrams', 'diagram_url', 'diagramUrl'], [])),
     status: String(pick(project, ['status'], 'production')),
     visibility: String(pick(project, ['visibility'], 'public')),
     featured: Boolean(project.featured || index === 0)
@@ -176,6 +206,144 @@ function pickSentences(sentences, keywords, limit = 5) {
 function renderList(items) {
   if (!items.length) return '';
   return `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+}
+
+function builtInDiagrams(project) {
+  const key = [
+    project.slug,
+    project.title,
+    project.sourceTitle,
+    project.repoName,
+    project.industry,
+    project.category
+  ].join(' ').toLowerCase();
+
+  const isTrkElnItPlatform = (
+    key.includes('production-business-crm-platform') ||
+    key.includes('trkelnit-platform') ||
+    key.includes('company platform') ||
+    key.includes('production platform') ||
+    key.includes('mobile crm') ||
+    key.includes('meeting booking') ||
+    key.includes('public chat') ||
+    key.includes('business crm') ||
+    (key.includes('crm') && (key.includes('platform') || key.includes('operations')))
+  );
+
+  if (!isTrkElnItPlatform) return [];
+
+  return [
+    {
+      title: 'Current TrkElnIt platform stack',
+      image: 'assets/diagrams/current-stack-map.png?v=20260708',
+      full: 'assets/diagrams/current-stack-map.svg?v=20260708',
+      description: 'Cloudflare, AWS Lightsail, Caddy, FastAPI, PostgreSQL, CRM, Android app, portfolio assistant, Browser Manager, integrations, and operations.'
+    }
+  ];
+}
+
+function projectFlow(project) {
+  const text = [
+    project.title,
+    project.summary,
+    project.description,
+    project.industry,
+    project.category,
+    project.stack.join(' '),
+    project.tags.join(' ')
+  ].join(' ').toLowerCase();
+
+  let source = 'User input / source data';
+  let engine = 'Backend workflow';
+  let storage = 'Structured records';
+  let output = 'Operational output';
+  let delivery = 'Client or internal workflow';
+
+  if (text.includes('scrap') || text.includes('playwright') || text.includes('browser')) {
+    source = 'Target websites / browser pages';
+    engine = 'Browser automation + extraction';
+    storage = 'Cleaned records / CSV / JSON';
+    output = 'Datasets, reports, or CRM-ready leads';
+  }
+
+  if (text.includes('crm') || text.includes('invoice') || text.includes('meeting') || text.includes('client')) {
+    source = 'Client requests / staff actions';
+    engine = 'FastAPI CRM workflow';
+    storage = 'PostgreSQL business records';
+    output = 'Clients, meetings, invoices, payments';
+    delivery = 'Private staff console / Android CRM';
+  }
+
+  if (text.includes('ai') || text.includes('llm') || text.includes('openai') || text.includes('rag')) {
+    engine = 'AI-assisted processing';
+    output = 'Generated answers, proposals, or decisions';
+  }
+
+  if (text.includes('android') || text.includes('mobile') || text.includes('kotlin')) {
+    source = 'Mobile user actions';
+    delivery = 'Android CRM app';
+  }
+
+  if (text.includes('trading') || text.includes('finance')) {
+    source = 'Market / financial data';
+    engine = 'Signal and analysis pipeline';
+    storage = 'Historical records and metrics';
+    output = 'Dashboards, alerts, or trade decisions';
+  }
+
+  if (text.includes('document') || text.includes('pdf') || text.includes('ocr')) {
+    source = 'PDFs / forms / attachments';
+    engine = 'Document parsing pipeline';
+    storage = 'Extracted structured fields';
+    output = 'Validated records and summaries';
+  }
+
+  return [
+    { label: '01', title: 'Input', value: source },
+    { label: '02', title: 'Processing', value: engine },
+    { label: '03', title: 'Storage', value: storage },
+    { label: '04', title: 'Output', value: output },
+    { label: '05', title: 'Delivery', value: delivery }
+  ];
+}
+
+function renderDiagrams(project) {
+  const diagrams = [...(project.diagrams || []), ...builtInDiagrams(project)];
+  if (!els.diagramsSection || !els.diagrams) return;
+
+  els.diagramsSection.hidden = false;
+  const flowItems = projectFlow(project).map((item) => `
+    <li>
+      <span>${escapeHtml(item.label)}</span>
+      <strong>${escapeHtml(item.title)}</strong>
+      <em>${escapeHtml(item.value)}</em>
+    </li>
+  `).join('');
+
+  const flowDiagram = `
+    <article class="project-flow-diagram" aria-label="Project workflow diagram">
+      <div class="project-flow-head">
+        <strong>Project workflow</strong>
+        <span>${escapeHtml(project.title)}</span>
+      </div>
+      <ol>${flowItems}</ol>
+    </article>
+  `;
+
+  const imageDiagrams = diagrams.map((diagram) => `
+    <figure class="project-diagram-card">
+      <a class="project-diagram-link" href="${escapeHtml(diagram.full || diagram.image)}" target="_blank" rel="noreferrer">
+        <img src="${escapeHtml(diagram.image)}" alt="${escapeHtml(diagram.title)}" loading="lazy" />
+      </a>
+      <figcaption>
+        <strong>${escapeHtml(diagram.title)}</strong>
+        <span>${escapeHtml(diagram.description)}</span>
+        <a href="${escapeHtml(diagram.full || diagram.image)}" target="_blank" rel="noreferrer">Open full diagram</a>
+      </figcaption>
+    </figure>
+  `).join('');
+
+  els.diagrams.innerHTML = flowDiagram + imageDiagrams;
 }
 
 function renderDescription(project) {
@@ -300,6 +468,7 @@ function renderProject(project) {
   renderDescription(project);
   renderTags(els.stack, project.stack, 'Stack data is not listed for this project.');
   renderTags(els.topics, project.topics.length ? project.topics : project.tags, 'Topics are not listed for this project.');
+  renderDiagrams(project);
   els.meta.innerHTML = [
     ['Industry', project.industry],
     ['Status', project.status],
@@ -324,6 +493,7 @@ function renderNotFound() {
   els.title.textContent = 'Project not found';
   els.summary.textContent = 'This project record was not found in the approved portfolio data.';
   els.description.innerHTML = '<p>Return to the project library and choose another project.</p>';
+  renderDiagrams({ diagrams: [] });
   els.askButton.hidden = true;
 }
 
