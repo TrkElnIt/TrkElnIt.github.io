@@ -364,25 +364,56 @@ function projectArchitecture(project) {
   };
 }
 
-function renderArchitectureMap(project) {
+function renderArchitectureSvg(project) {
   const diagram = projectArchitecture(project);
-  const groups = diagram.groups;
+  const groups = diagram.groups.slice(0, 5);
+  const nodeWidth = 172;
+  const nodeHeight = 122;
+  const nodeGap = 54;
+  const startX = 48;
+  const startY = 112;
+  const nodes = groups.map((group, index) => ({
+    ...group,
+    x: startX + index * (nodeWidth + nodeGap),
+    y: startY,
+    index
+  }));
+
+  const arrows = nodes.slice(0, -1).map((node, index) => {
+    const next = nodes[index + 1];
+    const y = node.y + nodeHeight / 2;
+    return `<path d="M ${node.x + nodeWidth + 12} ${y} L ${next.x - 12} ${y}" class="architecture-arrow" marker-end="url(#arrowhead)" />`;
+  }).join('');
 
   return `
-    <article class="project-architecture-map" aria-label="${escapeHtml(diagram.title)}">
-      <div class="project-architecture-head">
+    <article class="project-architecture-diagram" aria-label="${escapeHtml(diagram.title)}">
+      <div class="project-architecture-diagram-head">
         <strong>${escapeHtml(diagram.title)}</strong>
         <span>${escapeHtml(diagram.description)}</span>
       </div>
-      <div class="project-architecture-lanes">
-        ${groups.map((group) => `
-          <section class="project-architecture-lane">
-            <h3>${escapeHtml(group.title)}</h3>
-            <ul>
-              ${group.items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}
-            </ul>
-          </section>
-        `).join('')}
+      <div class="project-architecture-canvas" role="img" aria-label="${escapeHtml(diagram.title)} diagram">
+        <svg viewBox="0 0 1120 310" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#111827"></path>
+            </marker>
+          </defs>
+          <rect x="1" y="1" width="1118" height="308" rx="20" class="architecture-frame"></rect>
+          <text x="38" y="46" class="architecture-title">${escapeHtml(diagram.title)}</text>
+          <text x="38" y="72" class="architecture-subtitle">${escapeHtml(diagram.description)}</text>
+          ${arrows}
+          ${nodes.map((node) => `
+            <g>
+              <rect x="${node.x}" y="${node.y}" width="${nodeWidth}" height="${nodeHeight}" rx="16" class="architecture-node"></rect>
+              <circle cx="${node.x + 22}" cy="${node.y + 24}" r="12" class="architecture-number-bg"></circle>
+              <text x="${node.x + 22}" y="${node.y + 28}" class="architecture-number">${String(node.index + 1).padStart(2, '0')}</text>
+              <text x="${node.x + 42}" y="${node.y + 29}" class="architecture-node-title">${escapeHtml(node.title)}</text>
+              ${node.items.slice(0, 3).map((item, itemIndex) => `
+                <text x="${node.x + 18}" y="${node.y + 62 + itemIndex * 21}" class="architecture-node-line">${escapeHtml(item)}</text>
+              `).join('')}
+            </g>
+          `).join('')}
+        </svg>
       </div>
     </article>
   `;
@@ -393,7 +424,7 @@ function renderDiagrams(project) {
   if (!els.diagramsSection || !els.diagrams) return;
 
   els.diagramsSection.hidden = false;
-  const architectureHtml = renderArchitectureMap(project);
+  const architectureHtml = renderArchitectureSvg(project);
   const imageDiagrams = diagrams.map((diagram) => `
     <figure class="project-diagram-card">
       <a class="project-diagram-link" href="${escapeHtml(diagram.full || diagram.image)}" target="_blank" rel="noreferrer">
