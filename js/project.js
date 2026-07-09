@@ -234,102 +234,75 @@ function builtInDiagrams(project) {
 
   return [
     {
-      title: 'Current TrkElnIt platform stack',
-      image: 'assets/diagrams/current-stack-map.png?v=20260708',
-      full: 'assets/diagrams/current-stack-map.svg?v=20260708',
-      description: 'Cloudflare, AWS Lightsail, Caddy, FastAPI, PostgreSQL, CRM, Android app, portfolio assistant, Browser Manager, integrations, and operations.'
+      kind: 'platform-map',
+      title: 'Current production architecture',
+      description: 'How the public website, GitHub portfolio, CRM, Android app, backend, browser automation, and integrations fit together.'
     }
   ];
 }
 
-function projectFlow(project) {
-  const text = [
-    project.title,
-    project.summary,
-    project.description,
-    project.industry,
-    project.category,
-    project.stack.join(' '),
-    project.tags.join(' ')
-  ].join(' ').toLowerCase();
-
-  let source = 'User input / source data';
-  let engine = 'Backend workflow';
-  let storage = 'Structured records';
-  let output = 'Operational output';
-  let delivery = 'Client or internal workflow';
-
-  if (text.includes('scrap') || text.includes('playwright') || text.includes('browser')) {
-    source = 'Target websites / browser pages';
-    engine = 'Browser automation + extraction';
-    storage = 'Cleaned records / CSV / JSON';
-    output = 'Datasets, reports, or CRM-ready leads';
-  }
-
-  if (text.includes('crm') || text.includes('invoice') || text.includes('meeting') || text.includes('client')) {
-    source = 'Client requests / staff actions';
-    engine = 'FastAPI CRM workflow';
-    storage = 'PostgreSQL business records';
-    output = 'Clients, meetings, invoices, payments';
-    delivery = 'Private staff console / Android CRM';
-  }
-
-  if (text.includes('ai') || text.includes('llm') || text.includes('openai') || text.includes('rag')) {
-    engine = 'AI-assisted processing';
-    output = 'Generated answers, proposals, or decisions';
-  }
-
-  if (text.includes('android') || text.includes('mobile') || text.includes('kotlin')) {
-    source = 'Mobile user actions';
-    delivery = 'Android CRM app';
-  }
-
-  if (text.includes('trading') || text.includes('finance')) {
-    source = 'Market / financial data';
-    engine = 'Signal and analysis pipeline';
-    storage = 'Historical records and metrics';
-    output = 'Dashboards, alerts, or trade decisions';
-  }
-
-  if (text.includes('document') || text.includes('pdf') || text.includes('ocr')) {
-    source = 'PDFs / forms / attachments';
-    engine = 'Document parsing pipeline';
-    storage = 'Extracted structured fields';
-    output = 'Validated records and summaries';
-  }
-
-  return [
-    { label: '01', title: 'Input', value: source },
-    { label: '02', title: 'Processing', value: engine },
-    { label: '03', title: 'Storage', value: storage },
-    { label: '04', title: 'Output', value: output },
-    { label: '05', title: 'Delivery', value: delivery }
+function renderPlatformMap(diagram) {
+  const groups = [
+    {
+      title: 'Public channels',
+      items: ['trkelnit.com', 'trkelnit.github.io', 'crm.trkelnit.com', 'Android CRM']
+    },
+    {
+      title: 'Edge and routing',
+      items: ['Cloudflare DNS', 'AWS Lightsail', 'Caddy reverse proxy', 'HTTPS routing']
+    },
+    {
+      title: 'Application layer',
+      items: ['Static website', 'Portfolio project pages', 'FastAPI backend', 'Browser Manager']
+    },
+    {
+      title: 'Data and intelligence',
+      items: ['PostgreSQL', 'Portfolio records', 'OpenAI assistant', 'Proposal generator']
+    },
+    {
+      title: 'Operations',
+      items: ['GitHub', 'Deploy scripts', 'systemd services', 'Runbooks and logs']
+    }
   ];
+
+  return `
+    <article class="platform-architecture" aria-label="${escapeHtml(diagram.title)}">
+      <div class="platform-architecture-head">
+        <div>
+          <strong>${escapeHtml(diagram.title)}</strong>
+          <span>${escapeHtml(diagram.description)}</span>
+        </div>
+      </div>
+      <div class="platform-architecture-lanes">
+        ${groups.map((group) => `
+          <section class="platform-architecture-lane">
+            <h3>${escapeHtml(group.title)}</h3>
+            <ul>
+              ${group.items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}
+            </ul>
+          </section>
+        `).join('')}
+      </div>
+    </article>
+  `;
 }
 
 function renderDiagrams(project) {
-  const diagrams = [...(project.diagrams || []), ...builtInDiagrams(project)];
+  const builtIns = builtInDiagrams(project);
+  const diagrams = project.diagrams || [];
   if (!els.diagramsSection || !els.diagrams) return;
 
+  if (!builtIns.length && !diagrams.length) {
+    els.diagramsSection.hidden = true;
+    els.diagrams.innerHTML = '';
+    return;
+  }
+
   els.diagramsSection.hidden = false;
-  const flowItems = projectFlow(project).map((item) => `
-    <li>
-      <span>${escapeHtml(item.label)}</span>
-      <strong>${escapeHtml(item.title)}</strong>
-      <em>${escapeHtml(item.value)}</em>
-    </li>
-  `).join('');
-
-  const flowDiagram = `
-    <article class="project-flow-diagram" aria-label="Project workflow diagram">
-      <div class="project-flow-head">
-        <strong>Project workflow</strong>
-        <span>${escapeHtml(project.title)}</span>
-      </div>
-      <ol>${flowItems}</ol>
-    </article>
-  `;
-
+  const builtInDiagramsHtml = builtIns.map((diagram) => {
+    if (diagram.kind === 'platform-map') return renderPlatformMap(diagram);
+    return '';
+  }).join('');
   const imageDiagrams = diagrams.map((diagram) => `
     <figure class="project-diagram-card">
       <a class="project-diagram-link" href="${escapeHtml(diagram.full || diagram.image)}" target="_blank" rel="noreferrer">
@@ -343,7 +316,7 @@ function renderDiagrams(project) {
     </figure>
   `).join('');
 
-  els.diagrams.innerHTML = flowDiagram + imageDiagrams;
+  els.diagrams.innerHTML = builtInDiagramsHtml + imageDiagrams;
 }
 
 function renderDescription(project) {
