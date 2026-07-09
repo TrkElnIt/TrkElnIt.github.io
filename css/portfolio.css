@@ -584,12 +584,8 @@ h1 span {
   gap: 22px;
 }
 
-.static-architecture-diagram {
-  display: grid;
-  gap: 18px;
-}
-
-.static-architecture-canvas {
+.project-architecture-image-card {
+  margin: 0;
   overflow-x: auto;
   border: 1px solid var(--line);
   border-radius: 20px;
@@ -597,62 +593,15 @@ h1 span {
   box-shadow: 0 16px 44px rgba(16, 24, 40, 0.08);
 }
 
-.static-architecture-canvas svg {
+.project-architecture-image-card a {
+  display: block;
+}
+
+.project-architecture-image-card img {
   display: block;
   width: 100%;
-  min-width: 960px;
+  min-width: 1100px;
   height: auto;
-}
-
-.static-architecture-frame {
-  fill: #fff;
-  stroke: #d6dce5;
-  stroke-width: 1;
-}
-
-.static-architecture-title {
-  font-size: 21px;
-  font-weight: 900;
-  fill: #101828;
-}
-
-.static-architecture-subtitle {
-  font-size: 13px;
-  fill: #667085;
-}
-
-.static-architecture-arrow {
-  fill: none;
-  stroke: #111827;
-  stroke-width: 2;
-}
-
-.static-architecture-node {
-  fill: #f8fafc;
-  stroke: #cfd6e2;
-  stroke-width: 1.2;
-}
-
-.static-architecture-number-bg {
-  fill: #111827;
-}
-
-.static-architecture-number {
-  font-size: 10px;
-  font-weight: 900;
-  fill: #fff;
-  text-anchor: middle;
-}
-
-.static-architecture-node-title {
-  font-size: 14px;
-  font-weight: 900;
-  fill: #101828;
-}
-
-.static-architecture-node-line {
-  font-size: 12px;
-  fill: #475467;
 }
 
 .project-architecture-diagram {

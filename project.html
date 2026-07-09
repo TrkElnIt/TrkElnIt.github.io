@@ -6,7 +6,7 @@
   <title>TrkElnIt Portfolio | Project Detail</title>
   <meta name="description" content="Detailed TrkElnIt portfolio project page with stack, topics, summary, and project assistant." />
   <link rel="icon" type="image/svg+xml" href="assets/brand/app-icon.svg?v=20260609-traced-logo" />
-  <link rel="stylesheet" href="css/portfolio.css?v=20260709-static-architecture-svg" />
+  <link rel="stylesheet" href="css/portfolio.css?v=20260709-diagram-image" />
   <link rel="stylesheet" href="css/brand.css?v=20260609-traced-logo" />
 </head>
 <body>
@@ -67,78 +67,13 @@
         <article class="project-detail-panel project-diagram-panel">
           <div class="project-section-head project-section-head--compact">
             <p class="eyebrow"><span></span>Architecture</p>
-            <h2>Architecture map</h2>
+            <h2>Architecture diagram</h2>
           </div>
-          <div class="static-architecture-diagram" aria-label="Production platform architecture diagram">
-            <div class="static-architecture-canvas" role="img" aria-label="Production platform architecture diagram">
-              <svg viewBox="0 0 1120 330" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <marker id="staticArrowhead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#111827"></path>
-                  </marker>
-                </defs>
-
-                <rect x="1" y="1" width="1118" height="328" rx="22" class="static-architecture-frame"></rect>
-                <text x="38" y="48" class="static-architecture-title">Production platform architecture</text>
-                <text x="38" y="74" class="static-architecture-subtitle">Cloudflare, GitHub Pages, CRM, FastAPI, PostgreSQL, browser automation, and operations.</text>
-
-                <path d="M 220 180 L 275 180" class="static-architecture-arrow" marker-end="url(#staticArrowhead)"></path>
-                <path d="M 455 180 L 510 180" class="static-architecture-arrow" marker-end="url(#staticArrowhead)"></path>
-                <path d="M 690 180 L 745 180" class="static-architecture-arrow" marker-end="url(#staticArrowhead)"></path>
-                <path d="M 925 180 L 980 180" class="static-architecture-arrow" marker-end="url(#staticArrowhead)"></path>
-
-                <g>
-                  <rect x="40" y="116" width="180" height="132" rx="16" class="static-architecture-node"></rect>
-                  <circle cx="64" cy="142" r="12" class="static-architecture-number-bg"></circle>
-                  <text x="64" y="146" class="static-architecture-number">01</text>
-                  <text x="86" y="146" class="static-architecture-node-title">Public channels</text>
-                  <text x="58" y="181" class="static-architecture-node-line">trkelnit.com</text>
-                  <text x="58" y="204" class="static-architecture-node-line">trkelnit.github.io</text>
-                  <text x="58" y="227" class="static-architecture-node-line">CRM web + Android</text>
-                </g>
-
-                <g>
-                  <rect x="275" y="116" width="180" height="132" rx="16" class="static-architecture-node"></rect>
-                  <circle cx="299" cy="142" r="12" class="static-architecture-number-bg"></circle>
-                  <text x="299" y="146" class="static-architecture-number">02</text>
-                  <text x="321" y="146" class="static-architecture-node-title">Edge routing</text>
-                  <text x="293" y="181" class="static-architecture-node-line">Cloudflare DNS</text>
-                  <text x="293" y="204" class="static-architecture-node-line">AWS Lightsail</text>
-                  <text x="293" y="227" class="static-architecture-node-line">Caddy TLS proxy</text>
-                </g>
-
-                <g>
-                  <rect x="510" y="116" width="180" height="132" rx="16" class="static-architecture-node"></rect>
-                  <circle cx="534" cy="142" r="12" class="static-architecture-number-bg"></circle>
-                  <text x="534" y="146" class="static-architecture-number">03</text>
-                  <text x="556" y="146" class="static-architecture-node-title">Application layer</text>
-                  <text x="528" y="181" class="static-architecture-node-line">Static website</text>
-                  <text x="528" y="204" class="static-architecture-node-line">Portfolio pages</text>
-                  <text x="528" y="227" class="static-architecture-node-line">FastAPI backend</text>
-                </g>
-
-                <g>
-                  <rect x="745" y="116" width="180" height="132" rx="16" class="static-architecture-node"></rect>
-                  <circle cx="769" cy="142" r="12" class="static-architecture-number-bg"></circle>
-                  <text x="769" y="146" class="static-architecture-number">04</text>
-                  <text x="791" y="146" class="static-architecture-node-title">Data and AI</text>
-                  <text x="763" y="181" class="static-architecture-node-line">PostgreSQL</text>
-                  <text x="763" y="204" class="static-architecture-node-line">OpenAI assistant</text>
-                  <text x="763" y="227" class="static-architecture-node-line">Browser Manager</text>
-                </g>
-
-                <g>
-                  <rect x="980" y="116" width="100" height="132" rx="16" class="static-architecture-node"></rect>
-                  <circle cx="1004" cy="142" r="12" class="static-architecture-number-bg"></circle>
-                  <text x="1004" y="146" class="static-architecture-number">05</text>
-                  <text x="1026" y="146" class="static-architecture-node-title">Ops</text>
-                  <text x="998" y="181" class="static-architecture-node-line">GitHub</text>
-                  <text x="998" y="204" class="static-architecture-node-line">Deploy</text>
-                  <text x="998" y="227" class="static-architecture-node-line">Logs</text>
-                </g>
-              </svg>
-            </div>
-          </div>
+          <figure class="project-architecture-image-card">
+            <a href="assets/diagrams/current-stack-map.png?v=20260709-diagram-image" target="_blank" rel="noreferrer" aria-label="Open full architecture diagram">
+              <img src="assets/diagrams/current-stack-map.png?v=20260709-diagram-image" alt="TrkElnIt current full stack architecture diagram" />
+            </a>
+          </figure>
         </article>
       </div>
     </section>
@@ -213,6 +148,6 @@
     </div>
   </footer>
 
-  <script type="module" src="js/project.js?v=20260709-static-architecture-svg"></script>
+  <script type="module" src="js/project.js?v=20260709-diagram-image"></script>
 </body>
 </html>
