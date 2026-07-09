@@ -235,47 +235,148 @@ function builtInDiagrams(project) {
   return [
     {
       kind: 'platform-map',
-      title: 'Current production architecture',
+      title: 'Production platform map',
       description: 'How the public website, GitHub portfolio, CRM, Android app, backend, browser automation, and integrations fit together.'
     }
   ];
 }
 
-function renderPlatformMap(diagram) {
-  const groups = [
-    {
-      title: 'Public channels',
-      items: ['trkelnit.com', 'trkelnit.github.io', 'crm.trkelnit.com', 'Android CRM']
-    },
-    {
-      title: 'Edge and routing',
-      items: ['Cloudflare DNS', 'AWS Lightsail', 'Caddy reverse proxy', 'HTTPS routing']
-    },
-    {
-      title: 'Application layer',
-      items: ['Static website', 'Portfolio project pages', 'FastAPI backend', 'Browser Manager']
-    },
-    {
-      title: 'Data and intelligence',
-      items: ['PostgreSQL', 'Portfolio records', 'OpenAI assistant', 'Proposal generator']
-    },
-    {
-      title: 'Operations',
-      items: ['GitHub', 'Deploy scripts', 'systemd services', 'Runbooks and logs']
-    }
-  ];
+function projectArchitecture(project) {
+  const text = [
+    project.title,
+    project.summary,
+    project.description,
+    project.industry,
+    project.category,
+    project.stack.join(' '),
+    project.tags.join(' ')
+  ].join(' ').toLowerCase();
+
+  if (builtInDiagrams(project).length) {
+    return {
+      title: 'Production platform map',
+      description: 'Current TrkElnIt web, portfolio, CRM, backend, browser automation, and operations structure.',
+      groups: [
+        {
+          title: 'Public channels',
+          items: ['trkelnit.com', 'trkelnit.github.io', 'crm.trkelnit.com', 'Android CRM']
+        },
+        {
+          title: 'Edge and routing',
+          items: ['Cloudflare DNS', 'AWS Lightsail', 'Caddy reverse proxy', 'HTTPS routing']
+        },
+        {
+          title: 'Application layer',
+          items: ['Static website', 'Portfolio project pages', 'FastAPI backend', 'Browser Manager']
+        },
+        {
+          title: 'Data and intelligence',
+          items: ['PostgreSQL', 'Portfolio records', 'OpenAI assistant', 'Proposal generator']
+        },
+        {
+          title: 'Operations',
+          items: ['GitHub', 'Deploy scripts', 'systemd services', 'Runbooks and logs']
+        }
+      ]
+    };
+  }
+
+  if (text.includes('scrap') || text.includes('playwright') || text.includes('browser')) {
+    return {
+      title: 'Scraping system map',
+      description: 'High-level structure for this browser/data extraction project.',
+      groups: [
+        { title: 'Source', items: ['Target website pages', 'Search/listing screens', 'Detail pages'] },
+        { title: 'Automation', items: ['Python runner', 'Browser control', 'Retries / scrolling'] },
+        { title: 'Extraction', items: ['DOM parsing', 'Field cleanup', 'Deduplication'] },
+        { title: 'Storage', items: ['CSV / JSON export', 'Structured records', 'Optional database'] },
+        { title: 'Delivery', items: ['Lead dataset', 'Reports', 'Client handoff'] }
+      ]
+    };
+  }
+
+  if (text.includes('android') || text.includes('mobile') || text.includes('kotlin')) {
+    return {
+      title: 'Mobile app system map',
+      description: 'How the mobile client connects to backend services and operational data.',
+      groups: [
+        { title: 'Mobile client', items: ['Android app', 'Staff actions', 'Release checks'] },
+        { title: 'API layer', items: ['FastAPI endpoints', 'Auth/session checks', 'JSON responses'] },
+        { title: 'Business data', items: ['Clients', 'Meetings', 'Invoices / payments'] },
+        { title: 'Notifications', items: ['App updates', 'Backend alerts', 'Status messages'] },
+        { title: 'Operations', items: ['APK publishing', 'Version metadata', 'Server logs'] }
+      ]
+    };
+  }
+
+  if (text.includes('crm') || text.includes('invoice') || text.includes('meeting') || text.includes('client')) {
+    return {
+      title: 'CRM system map',
+      description: 'How client operations move through the website, backend, data store, and staff tools.',
+      groups: [
+        { title: 'Intake', items: ['Website forms', 'Quote requests', 'Meeting bookings'] },
+        { title: 'API layer', items: ['FastAPI backend', 'Validation', 'Protected routes'] },
+        { title: 'Data layer', items: ['PostgreSQL records', 'Clients', 'Invoices / payments'] },
+        { title: 'Staff tools', items: ['CRM web', 'Android CRM', 'Admin review'] },
+        { title: 'Integrations', items: ['Stripe', 'Email alerts', 'Chat assistant'] }
+      ]
+    };
+  }
+
+  if (text.includes('ai') || text.includes('llm') || text.includes('openai') || text.includes('rag')) {
+    return {
+      title: 'AI system map',
+      description: 'How project data, backend services, model calls, and user-facing outputs connect.',
+      groups: [
+        { title: 'Input', items: ['User request', 'Documents / records', 'Project context'] },
+        { title: 'Backend', items: ['FastAPI service', 'Prompt assembly', 'Guardrails'] },
+        { title: 'AI layer', items: ['OpenAI / LLM', 'RAG context', 'Structured output'] },
+        { title: 'Storage', items: ['PostgreSQL', 'Embeddings direction', 'Audit records'] },
+        { title: 'Output', items: ['Assistant answer', 'Proposal / report', 'Dashboard result'] }
+      ]
+    };
+  }
+
+  if (text.includes('trading') || text.includes('finance')) {
+    return {
+      title: 'Finance system map',
+      description: 'How financial data is collected, processed, stored, and surfaced.',
+      groups: [
+        { title: 'Market data', items: ['Prices', 'Signals', 'External feeds'] },
+        { title: 'Processing', items: ['Python analysis', 'Rules / models', 'Backtests'] },
+        { title: 'Storage', items: ['Historical data', 'Metrics', 'Strategy results'] },
+        { title: 'Interface', items: ['Dashboard', 'Alerts', 'Reports'] },
+        { title: 'Controls', items: ['Paper mode', 'Risk limits', 'Logs'] }
+      ]
+    };
+  }
+
+  return {
+    title: 'Project system map',
+    description: 'High-level architecture for this portfolio project.',
+    groups: [
+      { title: 'Input', items: ['User request', 'Source records', 'Project data'] },
+      { title: 'Application', items: project.stack.slice(0, 3).length ? project.stack.slice(0, 3) : ['Backend logic', 'Automation', 'Validation'] },
+      { title: 'Data', items: ['Structured records', 'Exports', 'Logs'] },
+      { title: 'Output', items: ['Dashboard', 'Report', 'Client deliverable'] },
+      { title: 'Operations', items: ['Configuration', 'Testing', 'Handoff'] }
+    ]
+  };
+}
+
+function renderArchitectureMap(project) {
+  const diagram = projectArchitecture(project);
+  const groups = diagram.groups;
 
   return `
-    <article class="platform-architecture" aria-label="${escapeHtml(diagram.title)}">
-      <div class="platform-architecture-head">
-        <div>
-          <strong>${escapeHtml(diagram.title)}</strong>
-          <span>${escapeHtml(diagram.description)}</span>
-        </div>
+    <article class="project-architecture-map" aria-label="${escapeHtml(diagram.title)}">
+      <div class="project-architecture-head">
+        <strong>${escapeHtml(diagram.title)}</strong>
+        <span>${escapeHtml(diagram.description)}</span>
       </div>
-      <div class="platform-architecture-lanes">
+      <div class="project-architecture-lanes">
         ${groups.map((group) => `
-          <section class="platform-architecture-lane">
+          <section class="project-architecture-lane">
             <h3>${escapeHtml(group.title)}</h3>
             <ul>
               ${group.items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}
@@ -288,21 +389,11 @@ function renderPlatformMap(diagram) {
 }
 
 function renderDiagrams(project) {
-  const builtIns = builtInDiagrams(project);
   const diagrams = project.diagrams || [];
   if (!els.diagramsSection || !els.diagrams) return;
 
-  if (!builtIns.length && !diagrams.length) {
-    els.diagramsSection.hidden = true;
-    els.diagrams.innerHTML = '';
-    return;
-  }
-
   els.diagramsSection.hidden = false;
-  const builtInDiagramsHtml = builtIns.map((diagram) => {
-    if (diagram.kind === 'platform-map') return renderPlatformMap(diagram);
-    return '';
-  }).join('');
+  const architectureHtml = renderArchitectureMap(project);
   const imageDiagrams = diagrams.map((diagram) => `
     <figure class="project-diagram-card">
       <a class="project-diagram-link" href="${escapeHtml(diagram.full || diagram.image)}" target="_blank" rel="noreferrer">
@@ -316,7 +407,7 @@ function renderDiagrams(project) {
     </figure>
   `).join('');
 
-  els.diagrams.innerHTML = builtInDiagramsHtml + imageDiagrams;
+  els.diagrams.innerHTML = architectureHtml + imageDiagrams;
 }
 
 function renderDescription(project) {
