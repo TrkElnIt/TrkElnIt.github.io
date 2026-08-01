@@ -209,34 +209,15 @@ function renderList(items) {
 }
 
 function builtInDiagrams(project) {
-  const key = [
-    project.slug,
-    project.title,
-    project.sourceTitle,
-    project.repoName,
-    project.industry,
-    project.category
-  ].join(' ').toLowerCase();
-
-  const isTrkElnItPlatform = (
-    key.includes('production-business-crm-platform') ||
-    key.includes('trkelnit-platform') ||
-    key.includes('company platform') ||
-    key.includes('production platform') ||
-    key.includes('mobile crm') ||
-    key.includes('meeting booking') ||
-    key.includes('public chat') ||
-    key.includes('business crm') ||
-    (key.includes('crm') && (key.includes('platform') || key.includes('operations')))
-  );
-
-  if (!isTrkElnItPlatform) return [];
+  const projectKey = slugify(project.slug || project.id || project.title || '');
+  if (projectKey !== 'trkelnit-production-platform') return [];
 
   return [
     {
-      kind: 'platform-map',
-      title: 'Production platform map',
-      description: 'How the public website, GitHub portfolio, CRM, Android app, backend, browser automation, and integrations fit together.'
+      title: 'Production platform architecture',
+      description: 'Current TrkElnIt web, portfolio, CRM, backend, browser automation, and operations architecture.',
+      image: 'assets/diagrams/current-stack-map.png?v=20260722-project-specific',
+      full: 'assets/diagrams/current-stack-map.png?v=20260722-project-specific'
     }
   ];
 }
@@ -420,12 +401,19 @@ function renderArchitectureSvg(project) {
 }
 
 function renderDiagrams(project) {
-  const diagrams = project.diagrams || [];
   if (!els.diagramsSection || !els.diagrams) return;
 
+  const projectDiagrams = Array.isArray(project.diagrams) ? project.diagrams : [];
+  const diagrams = projectDiagrams.length ? projectDiagrams : builtInDiagrams(project);
+
+  if (!diagrams.length) {
+    els.diagramsSection.hidden = true;
+    els.diagrams.innerHTML = '';
+    return;
+  }
+
   els.diagramsSection.hidden = false;
-  const architectureHtml = renderArchitectureSvg(project);
-  const imageDiagrams = diagrams.map((diagram) => `
+  els.diagrams.innerHTML = diagrams.map((diagram) => `
     <figure class="project-diagram-card">
       <a class="project-diagram-link" href="${escapeHtml(diagram.full || diagram.image)}" target="_blank" rel="noreferrer">
         <img src="${escapeHtml(diagram.image)}" alt="${escapeHtml(diagram.title)}" loading="lazy" />
@@ -437,8 +425,6 @@ function renderDiagrams(project) {
       </figcaption>
     </figure>
   `).join('');
-
-  els.diagrams.innerHTML = architectureHtml + imageDiagrams;
 }
 
 function renderDescription(project) {
