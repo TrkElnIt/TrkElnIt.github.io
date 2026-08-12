@@ -222,127 +222,160 @@ function builtInDiagrams(project) {
   ];
 }
 
+function compactDiagramText(value, maxLength = 24) {
+  const clean = String(value || '').replace(/\s+/g, ' ').trim();
+  if (clean.length <= maxLength) return clean;
+  return `${clean.slice(0, Math.max(1, maxLength - 1)).trimEnd()}…`;
+}
+
+function diagramItems(values, fallback = []) {
+  const items = [...values, ...fallback]
+    .map((value) => compactDiagramText(value))
+    .filter(Boolean);
+  return [...new Set(items)].slice(0, 3);
+}
+
+function stackFor(project, matcher, fallback = []) {
+  return diagramItems(
+    project.stack.filter((item) => matcher.test(String(item))),
+    fallback
+  );
+}
+
+function architectureGroup(title, items, fallback = []) {
+  return {
+    title: compactDiagramText(title, 20),
+    items: diagramItems(items, fallback)
+  };
+}
+
 function projectArchitecture(project) {
-  const text = [
+  const titleAndIndustry = [
+    project.slug,
     project.title,
-    project.summary,
-    project.description,
     project.industry,
-    project.category,
-    project.stack.join(' '),
+    project.category
+  ].join(' ').toLowerCase();
+  const identity = [
+    titleAndIndustry,
     project.tags.join(' ')
   ].join(' ').toLowerCase();
+  const text = [
+    identity,
+    project.summary,
+    project.description,
+    project.stack.join(' ')
+  ].join(' ').toLowerCase();
+  const title = `${compactDiagramText(project.title, 62)} architecture`;
+  const create = (kind, description, groups) => ({ kind, title, description, groups });
 
   if (builtInDiagrams(project).length) {
-    return {
-      title: 'Production platform map',
-      description: 'Current TrkElnIt web, portfolio, CRM, backend, browser automation, and operations structure.',
-      groups: [
-        {
-          title: 'Public channels',
-          items: ['trkelnit.com', 'trkelnit.github.io', 'crm.trkelnit.com', 'Android CRM']
-        },
-        {
-          title: 'Edge and routing',
-          items: ['Cloudflare DNS', 'AWS Lightsail', 'Caddy reverse proxy', 'HTTPS routing']
-        },
-        {
-          title: 'Application layer',
-          items: ['Static website', 'Portfolio project pages', 'FastAPI backend', 'Browser Manager']
-        },
-        {
-          title: 'Data and intelligence',
-          items: ['PostgreSQL', 'Portfolio records', 'OpenAI assistant', 'Proposal generator']
-        },
-        {
-          title: 'Operations',
-          items: ['GitHub', 'Deploy scripts', 'systemd services', 'Runbooks and logs']
-        }
-      ]
-    };
+    return create('platform', 'Production channels, application services, data, automation, and operations.', [
+      architectureGroup('Channels', ['Website', 'Portfolio', 'CRM web']),
+      architectureGroup('Edge', ['Cloudflare', 'Lightsail', 'Caddy']),
+      architectureGroup('Applications', ['FastAPI', 'Android CRM', 'Browser Manager']),
+      architectureGroup('Data & AI', ['PostgreSQL', 'OpenAI', 'Resume Studio']),
+      architectureGroup('Operations', ['GitHub Actions', 'systemd', 'Runbooks'])
+    ]);
   }
 
-  if (text.includes('scrap') || text.includes('playwright') || text.includes('browser')) {
-    return {
-      title: 'Scraping system map',
-      description: 'High-level structure for this browser/data extraction project.',
-      groups: [
-        { title: 'Source', items: ['Target website pages', 'Search/listing screens', 'Detail pages'] },
-        { title: 'Automation', items: ['Python runner', 'Browser control', 'Retries / scrolling'] },
-        { title: 'Extraction', items: ['DOM parsing', 'Field cleanup', 'Deduplication'] },
-        { title: 'Storage', items: ['CSV / JSON export', 'Structured records', 'Optional database'] },
-        { title: 'Delivery', items: ['Lead dataset', 'Reports', 'Client handoff'] }
-      ]
-    };
+  if (/autodesk|\bbim\b|\brevit\b|\bcad\b|\bdxf\b|construction|estimate/.test(titleAndIndustry)) {
+    return create('construction', 'Project-specific flow for design files, construction data, processing, and reviewed outputs.', [
+      architectureGroup('Design input', ['BIM / Revit files', 'Plans / PDFs', 'Estimate records']),
+      architectureGroup('Ingestion', stackFor(project, /Playwright|OCR|Google/i, ['Upload / API', 'File validation'])),
+      architectureGroup('Processing', stackFor(project, /Python|FastAPI|pgvector/i, ['Geometry / formulas', 'Data mapping'])),
+      architectureGroup('Project data', ['Elements / quantities', 'Structured JSON', 'Sheets / DXF']),
+      architectureGroup('Review output', ['Viewer / estimate', 'Exports', 'Human review'])
+    ]);
   }
 
-  if (text.includes('android') || text.includes('mobile') || text.includes('kotlin')) {
-    return {
-      title: 'Mobile app system map',
-      description: 'How the mobile client connects to backend services and operational data.',
-      groups: [
-        { title: 'Mobile client', items: ['Android app', 'Staff actions', 'Release checks'] },
-        { title: 'API layer', items: ['FastAPI endpoints', 'Auth/session checks', 'JSON responses'] },
-        { title: 'Business data', items: ['Clients', 'Meetings', 'Invoices / payments'] },
-        { title: 'Notifications', items: ['App updates', 'Backend alerts', 'Status messages'] },
-        { title: 'Operations', items: ['APK publishing', 'Version metadata', 'Server logs'] }
-      ]
-    };
+  if (/e-commerce|ecommerce|shopify|catalog|inventory|product|discogs|seller/.test(titleAndIndustry)) {
+    return create('commerce', 'Project-specific commerce flow from supplier or catalog sources to controlled updates and reports.', [
+      architectureGroup('Commerce source', ['Supplier / catalog', 'Product pages', 'Media / inventory']),
+      architectureGroup('Collection', stackFor(project, /Playwright|Requests|httpx/i, ['API / browser', 'Files / feeds'])),
+      architectureGroup('Processing', stackFor(project, /Python|Pandas|OpenAI|Ollama/i, ['Normalize / match', 'Business rules'])),
+      architectureGroup('Commerce API', stackFor(project, /Shopify|FastAPI|Stripe/i, ['Products / variants', 'Inventory state'])),
+      architectureGroup('Delivery', ['Catalog updates', 'CSV / reports', 'Operations log'])
+    ]);
   }
 
-  if (text.includes('crm') || text.includes('invoice') || text.includes('meeting') || text.includes('client')) {
-    return {
-      title: 'CRM system map',
-      description: 'How client operations move through the website, backend, data store, and staff tools.',
-      groups: [
-        { title: 'Intake', items: ['Website forms', 'Quote requests', 'Meeting bookings'] },
-        { title: 'API layer', items: ['FastAPI backend', 'Validation', 'Protected routes'] },
-        { title: 'Data layer', items: ['PostgreSQL records', 'Clients', 'Invoices / payments'] },
-        { title: 'Staff tools', items: ['CRM web', 'Android CRM', 'Admin review'] },
-        { title: 'Integrations', items: ['Stripe', 'Email alerts', 'Chat assistant'] }
-      ]
-    };
+  if (/document|ocr|pdf|questionnaire|tender|invoice|medical/.test(titleAndIndustry)) {
+    return create('document-intelligence', 'Project-specific document ingestion, extraction, validation, and delivery pipeline.', [
+      architectureGroup('Documents', ['PDF / images', 'Forms / records', 'Supporting files']),
+      architectureGroup('Ingestion', stackFor(project, /Playwright|pypdf|OCR/i, ['Upload / retrieval', 'OCR / parsing'])),
+      architectureGroup('Intelligence', stackFor(project, /OpenAI|Ollama|LLM|pgvector/i, ['Classification', 'Field extraction'])),
+      architectureGroup('Validation', ['Typed fields', 'Quality warnings', 'Human review']),
+      architectureGroup('Delivery', stackFor(project, /PostgreSQL|Pandas|Excel/i, ['CSV / Excel', 'Structured records']))
+    ]);
   }
 
-  if (text.includes('ai') || text.includes('llm') || text.includes('openai') || text.includes('rag')) {
-    return {
-      title: 'AI system map',
-      description: 'How project data, backend services, model calls, and user-facing outputs connect.',
-      groups: [
-        { title: 'Input', items: ['User request', 'Documents / records', 'Project context'] },
-        { title: 'Backend', items: ['FastAPI service', 'Prompt assembly', 'Guardrails'] },
-        { title: 'AI layer', items: ['OpenAI / LLM', 'RAG context', 'Structured output'] },
-        { title: 'Storage', items: ['PostgreSQL', 'Embeddings direction', 'Audit records'] },
-        { title: 'Output', items: ['Assistant answer', 'Proposal / report', 'Dashboard result'] }
-      ]
-    };
+  if (/finance|trading|market|polymarket|alpaca|ema|price checker/.test(titleAndIndustry)) {
+    return create('finance', 'Project-specific market-data, analysis, control, storage, and reporting flow.', [
+      architectureGroup('Market input', ['Prices / listings', 'Ticker universe', 'Historical data']),
+      architectureGroup('Acquisition', stackFor(project, /Playwright|API|Python/i, ['API / browser', 'Scheduled jobs'])),
+      architectureGroup('Analysis', stackFor(project, /Pandas|Python/i, ['Signals / rules', 'Backtests'])),
+      architectureGroup('Controls', ['Validation', 'Risk / limits', 'Paper execution']),
+      architectureGroup('Results', ['Rankings', 'Reports / alerts', 'Stored metrics'])
+    ]);
   }
 
-  if (text.includes('trading') || text.includes('finance')) {
-    return {
-      title: 'Finance system map',
-      description: 'How financial data is collected, processed, stored, and surfaced.',
-      groups: [
-        { title: 'Market data', items: ['Prices', 'Signals', 'External feeds'] },
-        { title: 'Processing', items: ['Python analysis', 'Rules / models', 'Backtests'] },
-        { title: 'Storage', items: ['Historical data', 'Metrics', 'Strategy results'] },
-        { title: 'Interface', items: ['Dashboard', 'Alerts', 'Reports'] },
-        { title: 'Controls', items: ['Paper mode', 'Risk limits', 'Logs'] }
-      ]
-    };
+  if (/scrap|browser|auto-?bot|connect bot|coverage research/.test(titleAndIndustry)) {
+    return create('browser-automation', 'Project-specific browser session, extraction, processing, and delivery workflow.', [
+      architectureGroup('Target', ['Authenticated pages', 'Search / listings', 'Detail records']),
+      architectureGroup('Browser session', stackFor(project, /Playwright|Selenium|Camoufox/i, ['Persistent profile', 'Retries / scrolling'])),
+      architectureGroup('Extraction', stackFor(project, /BeautifulSoup|OCR|Requests/i, ['DOM / API fields', 'Screenshots'])),
+      architectureGroup('Processing', stackFor(project, /Pandas|OpenAI|Ollama/i, ['Normalize / dedupe', 'Validation'])),
+      architectureGroup('Delivery', ['CSV / JSON', 'Sheets / CRM', 'Run logs'])
+    ]);
   }
 
-  return {
-    title: 'Project system map',
-    description: 'High-level architecture for this portfolio project.',
-    groups: [
-      { title: 'Input', items: ['User request', 'Source records', 'Project data'] },
-      { title: 'Application', items: project.stack.slice(0, 3).length ? project.stack.slice(0, 3) : ['Backend logic', 'Automation', 'Validation'] },
-      { title: 'Data', items: ['Structured records', 'Exports', 'Logs'] },
-      { title: 'Output', items: ['Dashboard', 'Report', 'Client deliverable'] },
-      { title: 'Operations', items: ['Configuration', 'Testing', 'Handoff'] }
-    ]
-  };
+  if (/data pipeline|analytics|factors|facebook ads|sports data|lead intelligence/.test(titleAndIndustry)) {
+    return create('data-pipeline', 'Project-specific collection, normalization, analysis, storage, and delivery pipeline.', [
+      architectureGroup('Data sources', ['APIs / dashboards', 'Pages / feeds', 'Batch inputs']),
+      architectureGroup('Collection', stackFor(project, /Playwright|Requests|httpx|Python/i, ['Scheduled extraction', 'Retries'])),
+      architectureGroup('Transform', stackFor(project, /Pandas|Ollama|OpenAI/i, ['Normalize / dedupe', 'Metrics / rules'])),
+      architectureGroup('Storage', stackFor(project, /PostgreSQL|Google Cloud|Docker/i, ['CSV / database', 'Run state'])),
+      architectureGroup('Delivery', stackFor(project, /Telegram|Google/i, ['Reports / visuals', 'Sheets / messages']))
+    ]);
+  }
+
+  if (/android|mobile|kotlin|jetpack|retrofit/.test(titleAndIndustry)) {
+    return create('mobile', 'Project-specific mobile-client, API, business-data, notification, and release flow.', [
+      architectureGroup('Mobile client', stackFor(project, /Kotlin|Compose|Android/i, ['Staff interface', 'Local state'])),
+      architectureGroup('API client', stackFor(project, /Retrofit|Firebase/i, ['Auth headers', 'JSON requests'])),
+      architectureGroup('Backend', stackFor(project, /FastAPI|Python/i, ['Protected APIs', 'Validation'])),
+      architectureGroup('Business data', stackFor(project, /PostgreSQL/i, ['Clients / meetings', 'Invoices / status'])),
+      architectureGroup('Operations', ['Notifications', 'Release metadata', 'APK updates'])
+    ]);
+  }
+
+  if (/\bai\b|llm|agent|chat intake/.test(titleAndIndustry) || /openai|ollama|rag|n8n/.test(text)) {
+    return create('applied-ai', 'Project-specific context, orchestration, model, storage, and reviewed-action flow.', [
+      architectureGroup('Context', ['User / lead input', 'Documents / web', 'Business rules']),
+      architectureGroup('Orchestration', stackFor(project, /FastAPI|LangGraph|n8n|Python/i, ['Workflow state', 'Guardrails'])),
+      architectureGroup('Model layer', stackFor(project, /OpenAI|Ollama|LLM|LangChain/i, ['Prompt / retrieval', 'Typed response'])),
+      architectureGroup('Memory & data', stackFor(project, /PostgreSQL|pgvector/i, ['Context records', 'Audit state'])),
+      architectureGroup('Reviewed action', ['Answer / route', 'CRM / notification', 'Human escalation'])
+    ]);
+  }
+
+  if (/crm|meeting|booking|scheduling|operations|messaging/.test(titleAndIndustry)) {
+    return create('business-operations', 'Project-specific intake, API, business-data, staff-tool, and integration flow.', [
+      architectureGroup('Intake', ['Forms / requests', 'Bookings / messages', 'Staff actions']),
+      architectureGroup('API layer', stackFor(project, /FastAPI|Python/i, ['Authentication', 'Validation'])),
+      architectureGroup('Business data', stackFor(project, /PostgreSQL/i, ['Records / status', 'Scheduling state'])),
+      architectureGroup('Staff tools', stackFor(project, /JavaScript|Kotlin|Android/i, ['Web / mobile UI', 'Admin review'])),
+      architectureGroup('Integrations', stackFor(project, /Stripe|Resend|Firebase|Webhook/i, ['Email / alerts', 'External APIs']))
+    ]);
+  }
+
+  return create('software-workflow', 'Project-specific inputs, implementation stack, data handling, delivery, and operations.', [
+    architectureGroup('Inputs', ['User request', 'Source files', 'External records']),
+    architectureGroup('Application', project.stack.slice(0, 3), ['Python service', 'Workflow logic']),
+    architectureGroup('Processing', ['Validation', 'Transformation', 'Business rules']),
+    architectureGroup('Outputs', ['Structured records', 'Exports / UI', 'Client deliverable']),
+    architectureGroup('Operations', ['Configuration', 'Testing / logs', 'Deployment / handoff'])
+  ]);
 }
 
 function renderArchitectureSvg(project) {
@@ -367,7 +400,7 @@ function renderArchitectureSvg(project) {
   }).join('');
 
   return `
-    <article class="project-architecture-diagram" aria-label="${escapeHtml(diagram.title)}">
+    <article class="project-architecture-diagram" data-architecture-kind="${escapeHtml(diagram.kind)}" aria-label="${escapeHtml(diagram.title)}">
       <div class="project-architecture-diagram-head">
         <strong>${escapeHtml(diagram.title)}</strong>
         <span>${escapeHtml(diagram.description)}</span>
@@ -405,15 +438,10 @@ function renderDiagrams(project) {
 
   const projectDiagrams = Array.isArray(project.diagrams) ? project.diagrams : [];
   const diagrams = projectDiagrams.length ? projectDiagrams : builtInDiagrams(project);
-
-  if (!diagrams.length) {
-    els.diagramsSection.hidden = true;
-    els.diagrams.innerHTML = '';
-    return;
-  }
+  const architectureHtml = renderArchitectureSvg(project);
 
   els.diagramsSection.hidden = false;
-  els.diagrams.innerHTML = diagrams.map((diagram) => `
+  const imageDiagrams = diagrams.map((diagram) => `
     <figure class="project-diagram-card">
       <a class="project-diagram-link" href="${escapeHtml(diagram.full || diagram.image)}" target="_blank" rel="noreferrer">
         <img src="${escapeHtml(diagram.image)}" alt="${escapeHtml(diagram.title)}" loading="lazy" />
@@ -425,6 +453,7 @@ function renderDiagrams(project) {
       </figcaption>
     </figure>
   `).join('');
+  els.diagrams.innerHTML = architectureHtml + imageDiagrams;
 }
 
 function renderDescription(project) {
