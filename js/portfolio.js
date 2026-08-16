@@ -5,15 +5,36 @@ const FEATURED_SLUGS = [
   'trkelnit-production-platform',
   'crm-mobile-admin',
   'public-chat-intake-assistant',
-  'meeting-booking-availability-engine',
   'autodesk-bim-file-uploader',
-  'construction-estimate-automation',
   'records-ocr-workflow',
-  'tender-response-ai',
-  'sports-data-delivery-pipeline',
-  'shopify-inventory-sync',
-  'browser-automation-desktop-console'
+  'euribor-data-dashboard',
+  'power-bi-equipment-data-pipeline',
+  'real-time-browser-telemetry-pipeline'
 ];
+
+const CATEGORY_ICONS = {
+  platform: '<svg viewBox="0 0 48 48"><rect x="7" y="8" width="34" height="32" rx="7"/><path d="M7 18h34M18 18v22M24 25h10M24 31h7"/></svg>',
+  ai: '<svg viewBox="0 0 48 48"><path d="M24 7l3.2 8.8L36 19l-8.8 3.2L24 31l-3.2-8.8L12 19l8.8-3.2L24 7Z"/><path d="M36 29l1.8 4.8L43 36l-5.2 1.8L36 43l-1.8-5.2L29 36l5.2-2.2L36 29Z"/></svg>',
+  document: '<svg viewBox="0 0 48 48"><path d="M13 6h15l9 9v27H13V6Z"/><path d="M28 6v10h9M19 24h12M19 30h12M19 36h8"/></svg>',
+  construction: '<svg viewBox="0 0 48 48"><path d="M24 5 41 14 24 23 7 14 24 5Z"/><path d="M7 14v19l17 10 17-10V14M24 23v20"/></svg>',
+  data: '<svg viewBox="0 0 48 48"><ellipse cx="24" cy="10" rx="15" ry="6"/><path d="M9 10v10c0 3.3 6.7 6 15 6s15-2.7 15-6V10M9 20v10c0 3.3 6.7 6 15 6s15-2.7 15-6V20M9 30v8c0 3.3 6.7 6 15 6s15-2.7 15-6v-8"/></svg>',
+  finance: '<svg viewBox="0 0 48 48"><path d="M7 39h34M10 34l8-9 7 5 12-16"/><path d="M29 14h8v8"/></svg>',
+  bi: '<svg viewBox="0 0 48 48"><rect x="6" y="7" width="36" height="34" rx="7"/><path d="M13 33V23M21 33V16M29 33V26M37 33V12"/></svg>',
+  browser: '<svg viewBox="0 0 48 48"><rect x="5" y="7" width="38" height="34" rx="7"/><path d="M5 16h38M12 11.5h.1M18 11.5h.1M17 31l6-6 5 4 7-8"/></svg>',
+  ecommerce: '<svg viewBox="0 0 48 48"><path d="M11 17h26l-2 25H13l-2-25Z"/><path d="M18 18v-5a6 6 0 0 1 12 0v5"/></svg>',
+  mobile: '<svg viewBox="0 0 48 48"><rect x="14" y="4" width="20" height="40" rx="6"/><path d="M20 9h8M22 38h4"/></svg>',
+  healthcare: '<svg viewBox="0 0 48 48"><path d="M19 7h10v12h12v10H29v12H19V29H7V19h12V7Z"/></svg>',
+  public: '<svg viewBox="0 0 48 48"><path d="m7 17 17-10 17 10-17 10L7 17Z"/><path d="M11 22v13M19 27v8M29 27v8M37 22v13M7 40h34"/></svg>',
+  default: '<svg viewBox="0 0 48 48"><path d="m18 13-10 11 10 11M30 13l10 11-10 11M27 7l-6 34"/></svg>'
+};
+
+const CATEGORY_LABELS = {
+  platform: 'Business system', ai: 'AI system', document: 'Document workflow',
+  construction: 'Construction tech', data: 'Data pipeline', finance: 'Finance data',
+  bi: 'Business intelligence', browser: 'Browser automation', ecommerce: 'Ecommerce',
+  mobile: 'Mobile application', healthcare: 'Healthcare data', public: 'Public data',
+  default: 'Software delivery'
+};
 
 const PROJECT_PROFILES = {
   'trkelnit-production-platform': {
@@ -164,11 +185,14 @@ const fallbackProjects = [
   }
 ];
 
-const topicOrder = ['All', 'Private AI', 'Backend/API', 'Business platforms', 'Document AI', 'Construction', 'Data pipelines', 'Ecommerce', 'Browser automation', 'Mobile'];
-const state = { projects: [], filtered: [], topic: 'All', query: '', view: 'featured' };
+const topicOrder = ['All', 'AI & agents', 'Backend/API', 'Business platforms', 'Documents & OCR', 'Finance & BI', 'Construction', 'Data pipelines', 'Healthcare', 'Ecommerce', 'Browser automation', 'Mobile'];
+const state = { projects: [], filtered: [], topic: 'All', query: '', view: 'all' };
 
 const els = {
   count: document.getElementById('projectCount'),
+  systemCount: document.getElementById('systemCount'),
+  domainCount: document.getElementById('domainCount'),
+  productionCount: document.getElementById('productionCount'),
   grid: document.getElementById('projectGrid'),
   status: document.getElementById('libraryStatus'),
   filter: document.getElementById('topicFilter'),
@@ -215,6 +239,27 @@ function cleanDisplayTitle(value) {
     .trim();
 }
 
+function projectTheme(project) {
+  const text = `${project.slug || ''} ${project.title || ''} ${project.category || ''} ${project.industry || ''} ${(project.tags || []).join(' ')} ${(project.stack || []).join(' ')}`.toLowerCase();
+  if (/power bi|business intelligence|dashboard/.test(text)) return 'bi';
+  if (/health|medical|clinic|residency/.test(text)) return 'healthcare';
+  if (/finance|financial|trading|market|euribor|invoice|payment|bank/.test(text)) return 'finance';
+  if (/construction|bim|autodesk|revit|cad|dxf|estimate/.test(text)) return 'construction';
+  if (/document|ocr|pdf|tender|powerpoint|excel|publishing/.test(text)) return 'document';
+  if (/shopify|ecommerce|e-commerce|inventory|catalog|seller/.test(text)) return 'ecommerce';
+  if (/android|mobile|kotlin|compose/.test(text)) return 'mobile';
+  if (/browser|scrap|playwright|camoufox|selenium|directory|zillow|booking/.test(text)) return 'browser';
+  if (/public data|public record|arcgis|fmcsa|government/.test(text)) return 'public';
+  if (/\bai\b|llm|rag|agent|openai|ollama|langgraph/.test(text)) return 'ai';
+  if (/crm|platform|booking|operations|workspace|business system/.test(text)) return 'platform';
+  if (/data|pipeline|postgres|api|csv|json/.test(text)) return 'data';
+  return 'default';
+}
+
+function categoryIcon(project) {
+  return CATEGORY_ICONS[project.theme] || CATEGORY_ICONS.default;
+}
+
 function normalizeProject(project, index) {
   const tags = toArray(pick(project, ['tags', 'topics', 'keywords'], []));
   const stack = toArray(pick(project, ['stack', 'technologies', 'tech_stack'], []));
@@ -226,7 +271,7 @@ function normalizeProject(project, index) {
   const profile = PROJECT_PROFILES[slug] || {};
   const category = profile.category || String(pick(project, ['category', 'topic', 'domain'], tags[0] || 'Backend/API'));
 
-  return {
+  const normalized = {
     id,
     slug,
     title,
@@ -244,6 +289,9 @@ function normalizeProject(project, index) {
     role: profile.role || 'Design, implementation, validation, and delivery',
     featured: FEATURED_SLUGS.includes(slug)
   };
+  normalized.theme = projectTheme(normalized);
+  normalized.themeLabel = CATEGORY_LABELS[normalized.theme] || CATEGORY_LABELS.default;
+  return normalized;
 }
 
 function projectDetailUrl(project) {
@@ -278,9 +326,15 @@ function matchesTopic(project) {
   const haystack = `${project.category} ${project.industry} ${project.tags.join(' ')} ${project.stack.join(' ')}`.toLowerCase();
   const topic = state.topic.toLowerCase();
   if (topic === 'backend/api') return haystack.includes('backend') || haystack.includes('api') || haystack.includes('fastapi');
-  if (topic === 'document ai') return haystack.includes('document') || haystack.includes('pdf') || haystack.includes('rag');
+  if (topic === 'documents & ocr') return haystack.includes('document') || haystack.includes('pdf') || haystack.includes('ocr') || haystack.includes('tender');
   if (topic === 'business platforms') return haystack.includes('platform') || haystack.includes('crm') || haystack.includes('scheduling');
-  if (topic === 'private ai') return haystack.includes('ai') || haystack.includes('llm') || haystack.includes('ollama') || haystack.includes('openai');
+  if (topic === 'ai & agents') return haystack.includes('ai') || haystack.includes('llm') || haystack.includes('rag') || haystack.includes('agent') || haystack.includes('ollama') || haystack.includes('openai');
+  if (topic === 'finance & bi') return haystack.includes('finance') || haystack.includes('financial') || haystack.includes('trading') || haystack.includes('market') || haystack.includes('power bi') || haystack.includes('business intelligence');
+  if (topic === 'healthcare') return haystack.includes('health') || haystack.includes('medical') || haystack.includes('clinic') || haystack.includes('residency');
+  if (topic === 'data pipelines') return haystack.includes('data') || haystack.includes('pipeline') || haystack.includes('extract') || haystack.includes('csv') || haystack.includes('json');
+  if (topic === 'browser automation') return haystack.includes('browser') || haystack.includes('playwright') || haystack.includes('camoufox') || haystack.includes('selenium') || haystack.includes('directory');
+  if (topic === 'construction') return haystack.includes('construction') || haystack.includes('bim') || haystack.includes('autodesk') || haystack.includes('revit') || haystack.includes('dxf');
+  if (topic === 'mobile') return haystack.includes('mobile') || haystack.includes('android') || haystack.includes('kotlin') || haystack.includes('compose');
   return haystack.includes(topic);
 }
 
@@ -309,33 +363,51 @@ function renderViewSwitch() {
   els.allView.setAttribute('aria-pressed', String(!featured));
 }
 
+function updatePortfolioStats() {
+  const domains = new Set(state.projects.map((project) => project.theme).filter(Boolean));
+  const production = state.projects.filter((project) => project.status.toLowerCase() === 'production').length;
+  els.count.textContent = String(state.projects.length);
+  if (els.systemCount) els.systemCount.textContent = String(state.projects.length);
+  if (els.domainCount) els.domainCount.textContent = String(domains.size);
+  if (els.productionCount) els.productionCount.textContent = String(production);
+}
+
 function renderProjects() {
-  els.count.textContent = String(state.filtered.length);
+  updatePortfolioStats();
   els.status.textContent = state.filtered.length
     ? (state.view === 'featured' && !state.query && state.topic === 'All'
-      ? `${state.filtered.length} flagship projects selected from the approved portfolio.`
-      : `${state.filtered.length} approved portfolio record${state.filtered.length === 1 ? '' : 's'} shown.`)
+      ? `${state.filtered.length} selected case studies shown. Switch to All projects for the complete archive.`
+      : `${state.filtered.length} of ${state.projects.length} documented system${state.projects.length === 1 ? '' : 's'} shown.`)
     : 'No matching portfolio records.';
 
   els.grid.innerHTML = state.filtered.map((project, index) => {
-    const initials = project.title.split(/\s+/).filter(Boolean).slice(0, 2).map((word) => word[0]).join('').toUpperCase();
     const tags = project.tags.length ? project.tags : project.stack;
     const detailUrl = projectDetailUrl(project);
+    const recordType = project.status.toLowerCase() === 'production' ? 'Production' : 'Delivered';
     return `
-      <article class="project-card ${project.featured || index === 0 ? 'featured' : ''}" data-project-url="${escapeHtml(detailUrl)}" role="link" tabindex="0" aria-label="Open ${escapeHtml(project.title)} project page">
-        <div class="project-head">
-          <div class="project-icon">${escapeHtml(initials || 'TE')}</div>
+      <article class="project-card ${project.featured ? 'featured' : ''}" data-theme="${escapeHtml(project.theme)}" data-project-url="${escapeHtml(detailUrl)}" role="link" tabindex="0" aria-label="Open ${escapeHtml(project.title)} project page">
+        <div class="project-card-visual" aria-hidden="true">
+          <span class="project-visual-type">${escapeHtml(project.themeLabel)}</span>
+          <span class="project-visual-index">${String(index + 1).padStart(2, '0')}</span>
+          <div class="project-visual-icon">${categoryIcon(project)}</div>
+          <div class="project-visual-flow"><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="project-card-body">
+          <div class="project-head">
           <div>
             <p class="project-industry">${escapeHtml(project.industry)}</p>
             <h2>${escapeHtml(project.title)}</h2>
           </div>
-        </div>
-        <p>${escapeHtml(project.summary)}</p>
-        <div class="project-tags">${tags.slice(0, 6).map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</div>
-        <div class="project-meta">Role: ${escapeHtml(project.role)}</div>
-        <div class="project-actions">
-          <a class="project-link" href="${escapeHtml(detailUrl)}">View case study →</a>
-          <button class="project-link project-ask" type="button" data-project="${escapeHtml(project.title)}">Ask</button>
+          </div>
+          <p class="project-summary">${escapeHtml(project.summary)}</p>
+          <div class="project-tags">${tags.slice(0, 5).map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</div>
+          <div class="project-card-footer">
+            <span class="project-record-type"><i></i>${escapeHtml(recordType)}</span>
+            <div class="project-actions">
+              <a class="project-link" href="${escapeHtml(detailUrl)}">Open case study →</a>
+              <button class="project-link project-ask" type="button" data-project="${escapeHtml(project.title)}">Ask</button>
+            </div>
+          </div>
         </div>
       </article>
     `;
@@ -488,6 +560,16 @@ async function init() {
     state.projects = fallbackProjects.map(normalizeProject);
     els.status.textContent = 'Using local portfolio records while the API is unavailable.';
   }
+  state.projects.sort((a, b) => {
+    const aRank = FEATURED_SLUGS.indexOf(a.slug);
+    const bRank = FEATURED_SLUGS.indexOf(b.slug);
+    if (aRank !== -1 || bRank !== -1) {
+      if (aRank === -1) return 1;
+      if (bRank === -1) return -1;
+      return aRank - bRank;
+    }
+    return a.title.localeCompare(b.title);
+  });
   applyFilters();
 }
 

@@ -2,6 +2,30 @@ import { API_BASE_URL } from './apiConfig.js';
 
 const EXCLUDED_SLUGS = new Set(['trkelnit-mini-yacht', 'trkelnit', 'trkelnit-github-io']);
 
+const CATEGORY_ICONS = {
+  platform: '<svg viewBox="0 0 48 48"><rect x="7" y="8" width="34" height="32" rx="7"/><path d="M7 18h34M18 18v22M24 25h10M24 31h7"/></svg>',
+  ai: '<svg viewBox="0 0 48 48"><path d="M24 7l3.2 8.8L36 19l-8.8 3.2L24 31l-3.2-8.8L12 19l8.8-3.2L24 7Z"/><path d="M36 29l1.8 4.8L43 36l-5.2 1.8L36 43l-1.8-5.2L29 36l5.2-2.2L36 29Z"/></svg>',
+  document: '<svg viewBox="0 0 48 48"><path d="M13 6h15l9 9v27H13V6Z"/><path d="M28 6v10h9M19 24h12M19 30h12M19 36h8"/></svg>',
+  construction: '<svg viewBox="0 0 48 48"><path d="M24 5 41 14 24 23 7 14 24 5Z"/><path d="M7 14v19l17 10 17-10V14M24 23v20"/></svg>',
+  data: '<svg viewBox="0 0 48 48"><ellipse cx="24" cy="10" rx="15" ry="6"/><path d="M9 10v10c0 3.3 6.7 6 15 6s15-2.7 15-6V10M9 20v10c0 3.3 6.7 6 15 6s15-2.7 15-6V20M9 30v8c0 3.3 6.7 6 15 6s15-2.7 15-6v-8"/></svg>',
+  finance: '<svg viewBox="0 0 48 48"><path d="M7 39h34M10 34l8-9 7 5 12-16"/><path d="M29 14h8v8"/></svg>',
+  bi: '<svg viewBox="0 0 48 48"><rect x="6" y="7" width="36" height="34" rx="7"/><path d="M13 33V23M21 33V16M29 33V26M37 33V12"/></svg>',
+  browser: '<svg viewBox="0 0 48 48"><rect x="5" y="7" width="38" height="34" rx="7"/><path d="M5 16h38M12 11.5h.1M18 11.5h.1M17 31l6-6 5 4 7-8"/></svg>',
+  ecommerce: '<svg viewBox="0 0 48 48"><path d="M11 17h26l-2 25H13l-2-25Z"/><path d="M18 18v-5a6 6 0 0 1 12 0v5"/></svg>',
+  mobile: '<svg viewBox="0 0 48 48"><rect x="14" y="4" width="20" height="40" rx="6"/><path d="M20 9h8M22 38h4"/></svg>',
+  healthcare: '<svg viewBox="0 0 48 48"><path d="M19 7h10v12h12v10H29v12H19V29H7V19h12V7Z"/></svg>',
+  public: '<svg viewBox="0 0 48 48"><path d="m7 17 17-10 17 10-17 10L7 17Z"/><path d="M11 22v13M19 27v8M29 27v8M37 22v13M7 40h34"/></svg>',
+  default: '<svg viewBox="0 0 48 48"><path d="m18 13-10 11 10 11M30 13l10 11-10 11M27 7l-6 34"/></svg>'
+};
+
+const CATEGORY_LABELS = {
+  platform: 'Business system', ai: 'AI system', document: 'Document workflow',
+  construction: 'Construction tech', data: 'Data pipeline', finance: 'Finance data',
+  bi: 'Business intelligence', browser: 'Browser automation', ecommerce: 'Ecommerce',
+  mobile: 'Mobile application', healthcare: 'Healthcare data', public: 'Public data',
+  default: 'Software delivery'
+};
+
 const PROJECT_DETAILS = {
   'trkelnit-production-platform': {
     category: 'Business platforms',
@@ -90,6 +114,86 @@ const PROJECT_DETAILS = {
     solution: 'A desktop operator console for starting and supervising session-oriented browser automation while keeping credentials and browser profiles private.',
     responsibilities: ['Operator workflow and interface', 'Authenticated session-oriented execution', 'Task launching and status feedback', 'Reusable automation and operational error handling'],
     evidence: ['Completed implementation documented as a sanitized private case study', 'Credentials, browser profiles, customer data, and private infrastructure are excluded']
+  },
+  'euribor-data-dashboard': {
+    category: 'Finance & BI',
+    industry: 'Finance and market data',
+    problem: 'Official monthly rate observations needed repeatable selection, conversion, validation, and historical storage instead of manual spreadsheet updates.',
+    solution: 'A FastAPI dashboard and scheduled pipeline using the official Deutsche Bundesbank API, explicit EUR360-to-EUR365 conversion, idempotent CSV history, tests, and GitHub Actions.',
+    responsibilities: ['Official API integration and observation selection', 'Decimal conversion and validation rules', 'Duplicate-safe historical storage', 'Dashboard, CLI, automated tests, and scheduled execution'],
+    evidence: ['Official source and calculation path are documented', 'Manual and scheduled execution are supported', 'Pytest coverage validates critical behavior']
+  },
+  'power-bi-equipment-data-pipeline': {
+    category: 'Finance & BI',
+    industry: 'Business intelligence and maintenance',
+    problem: 'Equipment and maintenance records needed a consistent cloud data path before they could support dependable Power BI reporting.',
+    solution: 'Python utilities prepare report-ready records, publish controlled datasets to Azure Blob Storage, validate SQL connectivity, and supply consistent inputs to Power BI models.',
+    responsibilities: ['Equipment-data preparation', 'Azure Blob Storage workflow', 'SQL connectivity validation', 'Power BI-ready dataset delivery'],
+    evidence: ['Cloud storage and database paths are represented without credentials', 'Structured files support repeatable downstream reporting']
+  },
+  'financial-document-normalization': {
+    category: 'Document AI',
+    industry: 'Finance and document operations',
+    problem: 'Extracted financial statements were still difficult to review and load because OCR output remained in inconsistent XML structures.',
+    solution: 'A deterministic post-OCR pipeline parses XML, separates financial categories, normalizes fields, and produces structured CSV deliverables for reconciliation and analysis.',
+    responsibilities: ['XML parsing', 'Financial-category separation', 'Field normalization and validation', 'Review-ready CSV generation'],
+    evidence: ['The public record describes the transformation path', 'Private source documents and financial records remain excluded']
+  },
+  'fmcsa-carrier-lead-pipeline': {
+    category: 'Data pipelines',
+    industry: 'Transportation and lead intelligence',
+    problem: 'Recent carrier registrations needed to be selected from a large official dataset with traceable source records and repeatable filters.',
+    solution: 'A public-data workflow profiles FMCSA coverage, retrieves recent records using controlled parameters, preserves raw JSON, and produces normalized CSV plus a run summary.',
+    responsibilities: ['Official dataset profiling', 'Controlled API extraction', 'Raw-response preservation', 'Normalized lead export and run verification'],
+    evidence: ['Raw and normalized output formats are defined', 'Dataset count and date coverage are validated before delivery']
+  },
+  'public-property-records-pipeline': {
+    category: 'Data pipelines',
+    industry: 'Real estate and public records',
+    problem: 'Public parcel data needed a stable, reproducible extraction path rather than manual browsing through a county map interface.',
+    solution: 'A direct ArcGIS REST workflow selects controlled parcel fields, applies stable ordering, validates response structure, and exports records for enrichment.',
+    responsibilities: ['ArcGIS service discovery', 'Field and ordering design', 'Response validation', 'Structured JSON and CSV export'],
+    evidence: ['Uses public records and direct service queries', 'Reproducible ordering supports comparable samples']
+  },
+  'healthcare-provider-directory-pipeline': {
+    category: 'Healthcare data',
+    industry: 'Healthcare data',
+    problem: 'Healthcare practice information was split between a dynamic map and individual pages, with inconsistent field coverage.',
+    solution: 'A browser and HTML-parsing workflow discovers practices, opens detail records, normalizes contact, location, service, and membership fields, and reports coverage.',
+    responsibilities: ['Map-interface discovery', 'Detail-page parsing', 'Healthcare field normalization', 'Coverage reporting and reusable exports'],
+    evidence: ['JSON and CSV deliverables are supported', 'Field-coverage checks expose incomplete source data']
+  },
+  'professional-services-directory-pipeline': {
+    category: 'Browser automation',
+    industry: 'Professional services data',
+    problem: 'A regional professional directory required dynamic expansion, detail-page traversal, category inference, and the ability to resume long runs.',
+    solution: 'A resilient Playwright pipeline discovers regions, handles dynamic UI states, extracts listing and detail fields, infers practice areas, and saves progress incrementally.',
+    responsibilities: ['Regional discovery and dynamic loading', 'Listing and detail extraction', 'Service-category inference', 'Incremental state and export delivery'],
+    evidence: ['Partial-run recovery is built into the workflow', 'Normalized JSON and CSV outputs support handoff']
+  },
+  'localized-business-directory-intelligence': {
+    category: 'Browser automation',
+    industry: 'Local business intelligence',
+    problem: 'Dynamic multilingual listings hid contact fields and mixed structured and unstructured sources across pagination.',
+    solution: 'A multistage workflow captures business links, reveals protected fields, prioritizes JSON-LD and DOM extraction, and uses a local model only to fill incomplete structured data.',
+    responsibilities: ['Pagination-safe link capture', 'Contact-field reveal and detail parsing', 'JSON-LD and DOM fallback strategy', 'Local-model cleanup and incremental delivery'],
+    evidence: ['Records are persisted incrementally to CSV and JSONL', 'Structured sources remain authoritative over model output']
+  },
+  'web-to-pdf-publishing-automation': {
+    category: 'Document AI',
+    industry: 'Publishing and document automation',
+    problem: 'Browser-rendered pages could not be converted consistently with simple HTTP download or manual printing.',
+    solution: 'A Playwright publishing utility waits for network and visual completion, applies print-ready page settings, and creates repeatable full-page PDFs.',
+    responsibilities: ['Browser rendering and completion checks', 'Print layout configuration', 'Full-page PDF generation', 'Repeatable publishing workflow'],
+    evidence: ['The workflow preserves rendered layout and images', 'Output no longer depends on manual browser printing']
+  },
+  'real-time-browser-telemetry-pipeline': {
+    category: 'Browser automation',
+    industry: 'Real-time data operations',
+    problem: 'A fast-changing embedded interface required ordered event capture, evidence screenshots, and continuous recovery without corrupting state.',
+    solution: 'A long-running Camoufox and Playwright system maintains authenticated rendering, validates event order, buffers records, posts to backend APIs, captures evidence, and isolates workloads across Linux services.',
+    responsibilities: ['Persistent authenticated rendering', 'Short-interval state interpretation and ordering', 'Snapshot validation and evidence upload', 'Popup, stale-session, and service recovery'],
+    evidence: ['Operated as isolated systemd services', 'Incomplete snapshots are rejected before API delivery', 'Scheduled screenshots preserve review evidence']
   }
 };
 
@@ -137,7 +241,9 @@ const els = {
   assistantBody: document.getElementById('assistantBody'),
   assistantForm: document.getElementById('assistantForm'),
   assistantQuestion: document.getElementById('assistantQuestion'),
-  assistantProjectLabel: document.getElementById('assistantProjectLabel')
+  assistantProjectLabel: document.getElementById('assistantProjectLabel'),
+  visual: document.getElementById('projectVisual'),
+  facts: document.getElementById('projectFacts')
 };
 
 function escapeHtml(value) {
@@ -206,6 +312,27 @@ function cleanDisplayTitle(value) {
     .trim();
 }
 
+function projectTheme(project) {
+  const text = `${project.slug || ''} ${project.title || ''} ${project.category || ''} ${project.industry || ''} ${(project.tags || []).join(' ')} ${(project.stack || []).join(' ')}`.toLowerCase();
+  if (/power bi|business intelligence|dashboard/.test(text)) return 'bi';
+  if (/health|medical|clinic|residency/.test(text)) return 'healthcare';
+  if (/finance|financial|trading|market|euribor|invoice|payment|bank/.test(text)) return 'finance';
+  if (/construction|bim|autodesk|revit|cad|dxf|estimate/.test(text)) return 'construction';
+  if (/document|ocr|pdf|tender|powerpoint|excel|publishing/.test(text)) return 'document';
+  if (/shopify|ecommerce|e-commerce|inventory|catalog|seller/.test(text)) return 'ecommerce';
+  if (/android|mobile|kotlin|compose/.test(text)) return 'mobile';
+  if (/browser|scrap|playwright|camoufox|selenium|directory|zillow|booking/.test(text)) return 'browser';
+  if (/public data|public record|arcgis|fmcsa|government/.test(text)) return 'public';
+  if (/\bai\b|llm|rag|agent|openai|ollama|langgraph/.test(text)) return 'ai';
+  if (/crm|platform|booking|operations|workspace|business system/.test(text)) return 'platform';
+  if (/data|pipeline|postgres|api|csv|json/.test(text)) return 'data';
+  return 'default';
+}
+
+function categoryIcon(project) {
+  return CATEGORY_ICONS[project.theme] || CATEGORY_ICONS.default;
+}
+
 function normalizeProject(project, index) {
   const topics = toArray(pick(project, ['topics', 'tags', 'keywords'], []));
   const stack = toArray(pick(project, ['stack', 'technologies', 'tech_stack'], []));
@@ -217,7 +344,7 @@ function normalizeProject(project, index) {
   const summary = String(pick(project, ['summary', 'problem', 'readme_summary'], 'Portfolio record imported from project README.'));
   const description = String(pick(project, ['description', 'details', 'readme', 'notes'], summary));
 
-  return {
+  const normalized = {
     id: String(pick(project, ['id'], slug)),
     slug,
     title,
@@ -237,6 +364,9 @@ function normalizeProject(project, index) {
     profile,
     featured: Boolean(profile || project.featured || index === 0)
   };
+  normalized.theme = projectTheme(normalized);
+  normalized.themeLabel = CATEGORY_LABELS[normalized.theme] || CATEGORY_LABELS.default;
+  return normalized;
 }
 
 function projectDetailUrl(project) {
@@ -647,6 +777,44 @@ function renderDescription(project) {
   `;
 }
 
+function renderProjectOverview(project) {
+  const delivery = project.status.toLowerCase() === 'production' ? 'Production operated' : 'Delivered case study';
+  const implementation = project.repoUrl && project.visibility !== 'private' ? 'Public implementation' : 'Private implementation';
+  const stackPreview = project.stack.slice(0, 3);
+
+  if (els.visual) {
+    els.visual.dataset.theme = project.theme;
+    els.visual.innerHTML = `
+      <div class="project-detail-visual-head">
+        <span>${escapeHtml(project.themeLabel)}</span>
+        <strong>${escapeHtml(delivery)}</strong>
+      </div>
+      <div class="project-detail-visual-core" aria-hidden="true">
+        <div class="project-detail-visual-icon">${categoryIcon(project)}</div>
+        <div class="project-detail-visual-rings"><i></i><i></i><i></i></div>
+      </div>
+      <div class="project-detail-system-flow" aria-label="System delivery flow">
+        <span>Input</span><i></i><span>Processing</span><i></i><span>Delivery</span>
+      </div>
+      <div class="project-detail-visual-stack">
+        ${(stackPreview.length ? stackPreview : [project.category]).map((item) => `<span>${escapeHtml(item)}</span>`).join('')}
+      </div>
+    `;
+  }
+
+  if (els.facts) {
+    const facts = [
+      ['Delivery', delivery],
+      ['Domain', project.industry],
+      ['Technology', `${project.stack.length || project.tags.length} documented tools`],
+      ['Access', implementation]
+    ];
+    els.facts.innerHTML = facts.map(([label, value]) => `
+      <div><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>
+    `).join('');
+  }
+}
+
 function renderRelated(project) {
   const projectText = `${project.industry} ${project.category} ${project.topics.join(' ')} ${project.stack.join(' ')}`.toLowerCase();
   const related = state.projects
@@ -662,24 +830,45 @@ function renderRelated(project) {
     .map(({ item }) => item);
 
   els.related.innerHTML = related.length
-    ? related.map((item) => {
+    ? related.map((item, index) => {
       const detailUrl = projectDetailUrl(item);
+      const recordType = item.status.toLowerCase() === 'production' ? 'Production' : 'Delivered';
       return `
-      <article class="project-card" data-project-url="${escapeHtml(detailUrl)}" role="link" tabindex="0" aria-label="Open ${escapeHtml(item.title)} project page">
-        <div class="project-head">
-          <div class="project-icon">${escapeHtml(item.title.split(/\s+/).slice(0, 2).map((word) => word[0]).join('').toUpperCase() || 'TE')}</div>
-          <div>
+      <article class="project-card" data-theme="${escapeHtml(item.theme)}" data-project-url="${escapeHtml(detailUrl)}" role="link" tabindex="0" aria-label="Open ${escapeHtml(item.title)} project page">
+        <div class="project-card-visual" aria-hidden="true">
+          <span class="project-visual-type">${escapeHtml(item.themeLabel)}</span>
+          <span class="project-visual-index">${String(index + 1).padStart(2, '0')}</span>
+          <div class="project-visual-icon">${categoryIcon(item)}</div>
+          <div class="project-visual-flow"><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="project-card-body">
+          <div class="project-head">
             <p class="project-industry">${escapeHtml(item.industry)}</p>
             <h2>${escapeHtml(item.title)}</h2>
           </div>
+          <p class="project-summary">${escapeHtml(item.summary)}</p>
+          <div class="project-tags">${(item.tags.length ? item.tags : item.stack).slice(0, 5).map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</div>
+          <div class="project-card-footer">
+            <span class="project-record-type"><i></i>${escapeHtml(recordType)}</span>
+            <a class="project-link" href="${escapeHtml(detailUrl)}">Open case study →</a>
+          </div>
         </div>
-        <p>${escapeHtml(item.summary)}</p>
-        <div class="project-tags">${(item.tags.length ? item.tags : item.stack).slice(0, 5).map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</div>
-        <a class="project-link" href="${escapeHtml(detailUrl)}">Open project -></a>
       </article>
     `;
     }).join('')
     : '<p class="empty-state">No related project records found.</p>';
+
+  els.related.querySelectorAll('.project-card[data-project-url]').forEach((card) => {
+    card.addEventListener('click', (event) => {
+      if (event.target.closest('a, button')) return;
+      window.location.href = card.dataset.projectUrl;
+    });
+    card.addEventListener('keydown', (event) => {
+      if (!['Enter', ' '].includes(event.key) || event.target.closest('a, button')) return;
+      event.preventDefault();
+      window.location.href = card.dataset.projectUrl;
+    });
+  });
 }
 
 function renderProject(project) {
@@ -717,6 +906,7 @@ function renderProject(project) {
   els.summary.textContent = project.summary;
   els.industry.textContent = project.industry;
   els.assistantProjectLabel.textContent = project.title;
+  renderProjectOverview(project);
   renderDescription(project);
   renderTags(els.stack, project.stack, 'Stack data is not listed for this project.');
   renderTags(els.topics, project.topics.length ? project.topics : project.tags, 'Topics are not listed for this project.');
@@ -745,7 +935,10 @@ function renderNotFound() {
   els.title.textContent = 'Project not found';
   els.summary.textContent = 'This project record was not found in the approved portfolio data.';
   els.description.innerHTML = '<p>Return to the project library and choose another project.</p>';
-  renderDiagrams({ diagrams: [] });
+  if (els.visual) els.visual.hidden = true;
+  if (els.facts) els.facts.hidden = true;
+  if (els.diagramsSection) els.diagramsSection.hidden = true;
+  if (els.diagrams) els.diagrams.innerHTML = '';
   els.askButton.hidden = true;
 }
 
