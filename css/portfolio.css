@@ -27,6 +27,28 @@ body {
 a { color: inherit; text-decoration: none; }
 button, input { font: inherit; }
 
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 200;
+  padding: 12px 16px;
+  border-radius: 10px;
+  color: #fff;
+  background: #081a33;
+  font-weight: 800;
+  transform: translateY(-160%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+:where(a, button, input):focus-visible {
+  outline: 3px solid #1c6ee8;
+  outline-offset: 3px;
+}
+
 .page-shell {
   width: min(1280px, calc(100% - 64px));
   margin: 0 auto;
@@ -180,9 +202,85 @@ h1 span {
   line-height: 1.45;
 }
 
+.portfolio-proof {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  margin-top: 24px;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.portfolio-proof span {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.portfolio-proof span::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #1769e0;
+  box-shadow: 0 0 0 4px #e9f2ff;
+}
+
 .library-panel {
   margin-top: 44px;
-  max-width: 1060px;
+  max-width: none;
+}
+
+.library-heading-row {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.section-kicker {
+  margin: 0 0 8px;
+  color: #1769e0;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.library-heading-row h2,
+.portfolio-method h2 {
+  margin: 0;
+  color: #0b172a;
+  font-size: clamp(30px, 3vw, 44px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.library-view-switch {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.library-view-switch button {
+  min-height: 40px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 10px;
+  color: #526173;
+  background: transparent;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.library-view-switch button.active {
+  color: #fff;
+  background: #081a33;
 }
 
 .library-tools {
@@ -280,6 +378,10 @@ h1 span {
   transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
 }
 
+.project-card > .project-link:last-child {
+  margin-top: 2px;
+}
+
 .project-card[data-project-url] {
   cursor: pointer;
 }
@@ -367,6 +469,50 @@ h1 span {
 .project-meta {
   color: #526173;
   font-size: 13px;
+  line-height: 1.45;
+}
+
+.noscript-note {
+  margin: 20px 0 0;
+  padding: 14px 16px;
+  border: 1px solid #d9e4f5;
+  border-radius: 12px;
+  color: #344054;
+  background: #f5f9ff;
+}
+
+.portfolio-method {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.75fr) minmax(0, 1.6fr);
+  gap: 52px;
+  margin-top: 76px;
+  padding: 38px;
+  border: 1px solid #dbe4f0;
+  border-radius: 24px;
+  background: #f4f8ff;
+}
+
+.method-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.method-grid article {
+  padding-left: 18px;
+  border-left: 2px solid #1769e0;
+}
+
+.method-grid strong {
+  color: #0b172a;
+  font-size: 17px;
+}
+
+.method-grid p {
+  margin: 9px 0 0;
+  color: #526173;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 .project-actions {
@@ -506,6 +652,18 @@ h1 span {
 
 .project-copy-section li::marker {
   color: #000;
+}
+
+.project-evidence-section {
+  margin-top: 4px;
+  padding: 20px;
+  border: 1px solid #cfe0f8;
+  border-radius: 16px;
+  background: #f3f8ff;
+}
+
+.project-evidence-section li::marker {
+  color: #1769e0;
 }
 
 .detail-tags {
@@ -940,6 +1098,9 @@ h1 span {
     position: static;
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+  .portfolio-method {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 760px) {
@@ -1001,6 +1162,20 @@ h1 span {
     width: min(100%, calc(100vw - 32px));
     max-width: calc(100vw - 32px);
   }
+  .portfolio-proof {
+    display: grid;
+    gap: 13px;
+  }
+  .library-heading-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .library-view-switch {
+    width: 100%;
+  }
+  .library-view-switch button {
+    flex: 1;
+  }
   .hero-copy { max-width: 100%; }
   .eyebrow {
     flex-wrap: wrap;
@@ -1038,6 +1213,14 @@ h1 span {
     max-width: calc(100vw - 32px);
   }
   .project-grid { grid-template-columns: 1fr; }
+  .portfolio-method {
+    gap: 28px;
+    margin-top: 52px;
+    padding: 24px 20px;
+  }
+  .method-grid {
+    grid-template-columns: 1fr;
+  }
   .project-actions {
     flex-wrap: wrap;
   }

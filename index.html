@@ -4,12 +4,31 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TrkElnIt Portfolio | Project Library</title>
-  <meta name="description" content="Search TrkElnIt project examples across AI automation, backend systems, CRM, trading, document intelligence, and mobile workflows." />
+  <meta name="description" content="Explore verified TrkElnIt work across production platforms, Python backends, private AI, document intelligence, construction, ecommerce, browser automation, and Android." />
+  <link rel="canonical" href="https://trkelnit.github.io/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="TrkElnIt Portfolio | Production Systems and Automation" />
+  <meta property="og:description" content="Selected production and private case studies across backend, AI, automation, data, construction, ecommerce, and mobile systems." />
+  <meta property="og:url" content="https://trkelnit.github.io/" />
+  <meta property="og:image" content="https://trkelnit.github.io/assets/diagrams/current-stack-map.png" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/svg+xml" href="assets/brand/app-icon.svg?v=20260609-traced-logo" />
   <link rel="stylesheet" href="css/portfolio.css?v=20260628-project-pages" />
   <link rel="stylesheet" href="css/brand.css?v=20260609-traced-logo" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "TrkElnIt project portfolio",
+      "url": "https://trkelnit.github.io/",
+      "description": "Selected production systems and sanitized private case studies delivered by TrkElnIt.",
+      "isPartOf": {"@type": "WebSite", "name": "TrkElnIt", "url": "https://trkelnit.com/"},
+      "about": ["Python backend development", "Private AI systems", "Browser automation", "Document intelligence", "Mobile applications"]
+    }
+  </script>
 </head>
 <body>
+  <a class="skip-link" href="#projects">Skip to projects</a>
   <header class="portfolio-topbar">
     <div class="topbar-inner">
       <a class="brand brand--site brand--portfolio" href="https://trkelnit.github.io/" aria-label="TrkElnIt portfolio home">
@@ -53,11 +72,26 @@
       <div class="page-shell">
         <div class="hero-copy">
           <p class="eyebrow"><span></span>AI systems & workflow infrastructure</p>
-          <h1>Project Library <span id="projectCount">0</span></h1>
-          <p class="hero-subtitle">A searchable collection of systems built across AI automation, backend APIs, CRM, document intelligence, trading, ecommerce, mobile, and workflow operations.</p>
+          <h1>Systems built to work <span id="projectCount">11</span></h1>
+          <p class="hero-subtitle">Selected production systems and sanitized private case studies across backend APIs, private AI, document intelligence, construction, ecommerce, browser automation, data, and mobile operations.</p>
+          <div class="portfolio-proof" aria-label="Portfolio evidence">
+            <span>Production-operated systems</span>
+            <span>Architecture on every project</span>
+            <span>Private work sanitized for review</span>
+          </div>
         </div>
 
         <section class="library-panel" aria-label="Project library">
+          <div class="library-heading-row">
+            <div>
+              <p class="section-kicker">Selected work</p>
+              <h2>Flagship projects</h2>
+            </div>
+            <div class="library-view-switch" aria-label="Choose portfolio view">
+              <button class="active" id="featuredViewButton" type="button" aria-pressed="true">Featured work</button>
+              <button id="allViewButton" type="button" aria-pressed="false">Full library</button>
+            </div>
+          </div>
           <div class="library-tools">
             <label class="search-box" for="projectSearch">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 19.59-5.08-5.08a7.5 7.5 0 1 0-1.41 1.41L19.59 21 21 19.59ZM4 10.5a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0Z" /></svg>
@@ -67,8 +101,99 @@
           </div>
 
           <div class="topic-filter" id="topicFilter" aria-label="Project filters"></div>
-          <p class="library-status" id="libraryStatus">Loading portfolio records...</p>
-          <div class="project-grid" id="projectGrid"></div>
+          <p class="library-status" id="libraryStatus" aria-live="polite">11 flagship projects selected from the approved portfolio.</p>
+          <div class="project-grid" id="projectGrid">
+            <article class="project-card featured" data-project-url="project.html?project=trkelnit-production-platform" role="link" tabindex="0" aria-label="Open TrkElnIt production platform project page">
+              <div class="project-head"><div class="project-icon">TP</div><div><p class="project-industry">Business platforms</p><h2>TrkElnIt production platform</h2></div></div>
+              <p>Deployed operating system connecting the public website, customer portal, staff CRM, Android administration, booking, billing, notifications, and production operations.</p>
+              <div class="project-tags"><span>FastAPI</span><span>PostgreSQL</span><span>AWS</span><span>Kotlin</span></div>
+              <div class="project-meta">Role: architecture, backend, web, mobile, cloud operations</div>
+              <a class="project-link" href="project.html?project=trkelnit-production-platform">View case study →</a>
+            </article>
+            <article class="project-card featured" data-project-url="project.html?project=crm-mobile-admin" role="link" tabindex="0" aria-label="Open Mobile CRM admin application project page">
+              <div class="project-head"><div class="project-icon">MC</div><div><p class="project-industry">Mobile operations</p><h2>Mobile CRM admin application</h2></div></div>
+              <p>Private Android CRM for clients, meetings, invoices, orders, payments, proposals, notifications, assistant chat, and controlled app updates.</p>
+              <div class="project-tags"><span>Kotlin</span><span>Jetpack Compose</span><span>Retrofit</span><span>Firebase</span></div>
+              <div class="project-meta">Role: mobile architecture, API integration, release workflow</div>
+              <a class="project-link" href="project.html?project=crm-mobile-admin">View case study →</a>
+            </article>
+            <article class="project-card featured" data-project-url="project.html?project=public-chat-intake-assistant" role="link" tabindex="0" aria-label="Open Public chat intake assistant project page">
+              <div class="project-head"><div class="project-icon">AI</div><div><p class="project-industry">Private AI</p><h2>Public chat intake assistant</h2></div></div>
+              <p>Consent-aware assistant that routes questions, quote intake, meeting intake, attachments, and structured lead data without exposing private CRM records.</p>
+              <div class="project-tags"><span>FastAPI</span><span>OpenAI/Ollama</span><span>PostgreSQL</span><span>Klaro</span></div>
+              <div class="project-meta">Role: workflow design, guardrails, persistence, frontend</div>
+              <a class="project-link" href="project.html?project=public-chat-intake-assistant">View case study →</a>
+            </article>
+            <article class="project-card featured" data-project-url="project.html?project=meeting-booking-availability-engine" role="link" tabindex="0" aria-label="Open Meeting booking and availability engine project page">
+              <div class="project-head"><div class="project-icon">MB</div><div><p class="project-industry">Scheduling</p><h2>Meeting booking and availability engine</h2></div></div>
+              <p>Public booking flow driven by CRM-managed availability, blockouts, duration pricing, persisted records, and staff notifications.</p>
+              <div class="project-tags"><span>FastAPI</span><span>PostgreSQL</span><span>JavaScript</span><span>Stripe</span></div>
+              <div class="project-meta">Role: data model, APIs, booking UI, admin integration</div>
+              <a class="project-link" href="project.html?project=meeting-booking-availability-engine">View case study →</a>
+            </article>
+            <article class="project-card featured" data-project-url="project.html?project=autodesk-bim-file-uploader" role="link" tabindex="0" aria-label="Open Autodesk BIM File Integration project page">
+              <div class="project-head"><div class="project-icon">BI</div><div><p class="project-industry">Construction / BIM</p><h2>Autodesk BIM File Integration</h2></div></div>
+              <p>Autodesk Platform Services integration for OAuth token management, storage discovery and provisioning, large BIM/Revit uploads, and API validation.</p>
+              <div class="project-tags"><span>Python</span><span>Autodesk APS</span><span>OAuth</span><span>BIM</span></div>
+              <div class="project-meta">Evidence: sanitized private implementation summary</div>
+              <a class="project-link" href="project.html?project=autodesk-bim-file-uploader">View case study →</a>
+            </article>
+            <article class="project-card featured" data-project-url="project.html?project=construction-estimate-automation" role="link" tabindex="0" aria-label="Open Construction Estimate Automation project page">
+              <div class="project-head"><div class="project-icon">CE</div><div><p class="project-industry">Construction</p><h2>Construction Estimate Automation</h2></div></div>
+              <p>Structured estimate and proposal generation with formulas, validation rules, reusable formatting, templates, and operational retry handling.</p>
+              <div class="project-tags"><span>Python</span><span>Google Sheets</span><span>Formulas</span><span>Validation</span></div>
+              <div class="project-meta">Evidence: sanitized private implementation summary</div>
+              <a class="project-link" href="project.html?project=construction-estimate-automation">View case study →</a>
+            </article>
+            <article class="project-card featured" data-project-url="project.html?project=records-ocr-workflow" role="link" tabindex="0" aria-label="Open Records OCR and Data Entry Workflow project page">
+              <div class="project-head"><div class="project-icon">OC</div><div><p class="project-industry">Document intelligence</p><h2>Records OCR and Data Entry Workflow</h2></div></div>
+              <p>Authenticated record retrieval, document capture, OCR, local-model field parsing, human review, structured delivery, and completion alerts.</p>
+              <div class="project-tags"><span>Python</span><span>Playwright</span><span>OCR</span><span>Ollama</span></div>
+              <div class="project-meta">Evidence: sanitized private implementation summary</div>
+              <a class="project-link" href="project.html?project=records-ocr-workflow">View case study →</a>
+            </article>
+            <article class="project-card featured" data-project-url="project.html?project=tender-response-ai" role="link" tabindex="0" aria-label="Open Tender Response AI Assistant project page">
+              <div class="project-head"><div class="project-icon">TR</div><div><p class="project-industry">Document AI</p><h2>Tender Response AI Assistant</h2></div></div>
+              <p>Extracts tender questions, assembles supporting context, drafts structured responses, and preserves a human review step before delivery.</p>
+              <div class="project-tags"><span>Python</span><span>OpenAI</span><span>Office documents</span><span>Human review</span></div>
+              <div class="project-meta">Evidence: sanitized private implementation summary</div>
+              <a class="project-link" href="project.html?project=tender-response-ai">View case study →</a>
+            </article>
+            <article class="project-card featured" data-project-url="project.html?project=sports-data-delivery-pipeline" role="link" tabindex="0" aria-label="Open Sports Data Extraction and Delivery Pipeline project page">
+              <div class="project-head"><div class="project-icon">SD</div><div><p class="project-industry">Data pipelines</p><h2>Sports Data Extraction and Delivery</h2></div></div>
+              <p>Multi-source player-prop collection, normalization, branded report generation, database persistence, and delivery through Drive and messaging channels.</p>
+              <div class="project-tags"><span>Python</span><span>PostgreSQL</span><span>Playwright</span><span>Google Cloud</span></div>
+              <div class="project-meta">Evidence: sanitized private implementation summary</div>
+              <a class="project-link" href="project.html?project=sports-data-delivery-pipeline">View case study →</a>
+            </article>
+            <article class="project-card featured" data-project-url="project.html?project=shopify-inventory-sync" role="link" tabindex="0" aria-label="Open Shopify Inventory Synchronization project page">
+              <div class="project-head"><div class="project-icon">SI</div><div><p class="project-industry">Ecommerce operations</p><h2>Shopify Inventory Synchronization</h2></div></div>
+              <p>Scheduled supplier monitoring and variant-level Shopify updates with backorder, discontinued-state, archive, and operational tracking rules.</p>
+              <div class="project-tags"><span>Python</span><span>Shopify</span><span>Playwright</span><span>Scheduling</span></div>
+              <div class="project-meta">Evidence: sanitized private implementation summary</div>
+              <a class="project-link" href="project.html?project=shopify-inventory-sync">View case study →</a>
+            </article>
+            <article class="project-card featured" data-project-url="project.html?project=browser-automation-desktop-console" role="link" tabindex="0" aria-label="Open Browser Automation Desktop Console project page">
+              <div class="project-head"><div class="project-icon">BA</div><div><p class="project-industry">Browser automation</p><h2>Browser Automation Desktop Console</h2></div></div>
+              <p>Operator interface for launching authenticated browser tasks, controlling session-oriented execution, and reviewing operational status.</p>
+              <div class="project-tags"><span>Python</span><span>Authenticated sessions</span><span>Operator controls</span><span>Run status</span></div>
+              <div class="project-meta">Evidence: sanitized private implementation summary</div>
+              <a class="project-link" href="project.html?project=browser-automation-desktop-console">View case study →</a>
+            </article>
+          </div>
+          <noscript><p class="noscript-note">Search and filtering require JavaScript. Every flagship case study above remains available without it.</p></noscript>
+        </section>
+
+        <section class="portfolio-method" aria-labelledby="portfolioMethodTitle">
+          <div>
+            <p class="section-kicker">How to read this portfolio</p>
+            <h2 id="portfolioMethodTitle">Evidence without exposing private work</h2>
+          </div>
+          <div class="method-grid">
+            <article><strong>Production</strong><p>Systems operated as part of TrkElnIt’s public, customer, staff, mobile, and cloud platform.</p></article>
+            <article><strong>Sanitized case study</strong><p>Verified implementation summaries with credentials, customer data, and confidential source excluded.</p></article>
+            <article><strong>Architecture</strong><p>Each project page explains inputs, processing, data flow, controls, and delivery—not only a list of technologies.</p></article>
+          </div>
         </section>
       </div>
     </section>
@@ -109,6 +234,6 @@
     </div>
   </footer>
 
-  <script type="module" src="js/portfolio.js?v=20260628-project-pages"></script>
+  <script type="module" src="js/portfolio.js?v=20260816-curated-library"></script>
 </body>
 </html>

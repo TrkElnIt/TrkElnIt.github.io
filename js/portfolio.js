@@ -1,58 +1,171 @@
 import { API_BASE_URL } from './apiConfig.js';
 
+const EXCLUDED_SLUGS = new Set(['trkelnit-mini-yacht', 'trkelnit', 'trkelnit-github-io']);
+const FEATURED_SLUGS = [
+  'trkelnit-production-platform',
+  'crm-mobile-admin',
+  'public-chat-intake-assistant',
+  'meeting-booking-availability-engine',
+  'autodesk-bim-file-uploader',
+  'construction-estimate-automation',
+  'records-ocr-workflow',
+  'tender-response-ai',
+  'sports-data-delivery-pipeline',
+  'shopify-inventory-sync',
+  'browser-automation-desktop-console'
+];
+
+const PROJECT_PROFILES = {
+  'trkelnit-production-platform': {
+    category: 'Business platforms',
+    industry: 'Professional services',
+    role: 'Architecture, backend, web, mobile, and cloud operations'
+  },
+  'crm-mobile-admin': {
+    category: 'Mobile',
+    industry: 'Mobile operations',
+    role: 'Mobile architecture, API integration, and release workflow'
+  },
+  'public-chat-intake-assistant': {
+    category: 'Private AI',
+    industry: 'AI-assisted operations',
+    role: 'Workflow design, guardrails, persistence, and frontend'
+  },
+  'meeting-booking-availability-engine': {
+    category: 'Business platforms',
+    industry: 'Scheduling and operations',
+    role: 'Data model, APIs, booking UI, and admin integration'
+  },
+  'autodesk-bim-file-uploader': {
+    category: 'Construction',
+    industry: 'Construction / BIM',
+    role: 'API integration, storage workflow, upload validation'
+  },
+  'construction-estimate-automation': {
+    category: 'Construction',
+    industry: 'Construction estimating',
+    role: 'Automation, formulas, validation, and reusable templates'
+  },
+  'records-ocr-workflow': {
+    category: 'Document AI',
+    industry: 'Document operations',
+    role: 'Browser retrieval, OCR, field parsing, review, and delivery'
+  },
+  'tender-response-ai': {
+    category: 'Document AI',
+    industry: 'Tender and proposal operations',
+    role: 'Document extraction, context assembly, drafting, and review'
+  },
+  'sports-data-delivery-pipeline': {
+    category: 'Data pipelines',
+    industry: 'Sports analytics',
+    role: 'Extraction, normalization, reporting, persistence, and delivery'
+  },
+  'shopify-inventory-sync': {
+    category: 'Ecommerce',
+    industry: 'Ecommerce operations',
+    role: 'Supplier monitoring, Shopify updates, rules, and scheduling'
+  },
+  'browser-automation-desktop-console': {
+    category: 'Browser automation',
+    industry: 'Browser automation',
+    role: 'Operator controls, authenticated sessions, and run status'
+  }
+};
+
 const fallbackProjects = [
   {
-    title: 'Rafik AI Agent Orchestrator',
-    category: 'AI Automation',
-    industry: 'AI Automation',
-    summary: 'Multi-agent AI system that automates research, data extraction, analysis, and reporting workflows with human-in-the-loop controls.',
-    tags: ['AI automation', 'Agents', 'Research', 'Reports'],
-    stack: ['Python', 'FastAPI', 'PostgreSQL']
+    slug: 'trkelnit-production-platform',
+    title: 'TrkElnIt production platform',
+    summary: 'Deployed operating system connecting the public website, customer portal, staff CRM, Android administration, booking, billing, notifications, and production operations.',
+    topics: ['CRM', 'Operations', 'Authentication', 'Payments'],
+    stack: ['Python', 'FastAPI', 'PostgreSQL', 'AWS', 'Kotlin'],
+    status: 'production'
   },
   {
-    title: 'FinSight Trading Dashboard',
-    category: 'Trading',
-    industry: 'Finance / Trading',
-    summary: 'Real-time market data aggregation, analytics, strategy backtesting, and automated alerts for risk-controlled trading workflows.',
-    tags: ['finance / trading', 'Analytics', 'Alerts', 'Backtesting'],
-    stack: ['Python', 'FastAPI', 'WebSocket']
+    slug: 'crm-mobile-admin',
+    title: 'Mobile CRM admin application',
+    summary: 'Private Android CRM for clients, meetings, invoices, orders, payments, proposals, notifications, assistant chat, and controlled app updates.',
+    topics: ['Android', 'CRM', 'Notifications'],
+    stack: ['Kotlin', 'Jetpack Compose', 'Retrofit', 'Firebase'],
+    status: 'production'
   },
   {
-    title: 'Production Business CRM Platform',
-    category: 'CRM',
-    industry: 'CRM / Internal Tools',
-    summary: 'FastAPI and PostgreSQL backend with public intake, clients, invoices, payments, meetings, notifications, admin authentication, Android CRM, and production deployment.',
-    tags: ['CRM', 'FastAPI', 'PostgreSQL', 'Android'],
-    stack: ['Python', 'FastAPI', 'PostgreSQL', 'Kotlin']
+    slug: 'public-chat-intake-assistant',
+    title: 'Public chat intake assistant',
+    summary: 'Consent-aware assistant that routes questions, quote intake, meeting intake, attachments, and structured lead data without exposing private CRM records.',
+    topics: ['Private AI', 'Lead intake', 'Human handoff'],
+    stack: ['FastAPI', 'OpenAI/Ollama', 'PostgreSQL', 'Klaro'],
+    status: 'production'
   },
   {
-    title: 'Meeting Booking and Availability Engine',
-    category: 'CRM',
-    industry: 'Scheduling / Services',
-    summary: 'Calendar-style booking flow connected to CRM-managed weekly availability, selectable times, durations, Stripe checkout, and booking records.',
-    tags: ['Calendar', 'Meetings', 'CRM', 'Notifications'],
-    stack: ['FastAPI', 'PostgreSQL', 'JavaScript', 'Kotlin']
+    slug: 'meeting-booking-availability-engine',
+    title: 'Meeting booking and availability engine',
+    summary: 'Public booking flow driven by CRM-managed availability, blockouts, duration pricing, persisted records, and staff notifications.',
+    topics: ['Calendar', 'Availability', 'CRM'],
+    stack: ['FastAPI', 'PostgreSQL', 'JavaScript', 'Stripe'],
+    status: 'production'
   },
   {
-    title: 'Document Intelligence Pipeline',
-    category: 'Document AI',
-    industry: 'Finance and Document Operations',
-    summary: 'Document parsing pattern for invoices, statements, PDFs, attachments, and forms into structured records with validation and workflow routing.',
-    tags: ['Document parsing', 'PDF', 'RAG', 'Validation'],
-    stack: ['Python', 'PostgreSQL', 'pgvector']
+    slug: 'autodesk-bim-file-uploader',
+    title: 'Autodesk BIM File Integration',
+    summary: 'Autodesk Platform Services integration for OAuth token management, storage discovery and provisioning, large BIM/Revit uploads, and API validation.',
+    topics: ['Construction', 'BIM', 'API integration'],
+    stack: ['Python', 'Autodesk APS', 'OAuth'],
+    status: 'sanitized-summary'
   },
   {
-    title: 'E-Com Price Monitor',
-    category: 'Scraping',
-    industry: 'E-Commerce',
-    summary: 'Scrapes product price monitoring across competitors with smart anti-bot patterns, change detection, and notification routing.',
-    tags: ['e-commerce', 'Scraping', 'Browser automation', 'Notifications'],
-    stack: ['Python', 'Playwright', 'PostgreSQL']
+    slug: 'construction-estimate-automation',
+    title: 'Construction Estimate Automation',
+    summary: 'Structured estimate and proposal generation with formulas, validation rules, reusable formatting, templates, and operational retry handling.',
+    topics: ['Construction', 'Estimating', 'Automation'],
+    stack: ['Python', 'Google Sheets'],
+    status: 'sanitized-summary'
+  },
+  {
+    slug: 'records-ocr-workflow',
+    title: 'Records OCR and Data Entry Workflow',
+    summary: 'Authenticated record retrieval, document capture, OCR, local-model field parsing, human review, structured delivery, and completion alerts.',
+    topics: ['Document intelligence', 'OCR', 'Browser automation'],
+    stack: ['Python', 'Playwright', 'OCR', 'Ollama'],
+    status: 'sanitized-summary'
+  },
+  {
+    slug: 'tender-response-ai',
+    title: 'Tender Response AI Assistant',
+    summary: 'Extracts tender questions, assembles supporting context, drafts structured responses, and preserves a human review step before delivery.',
+    topics: ['Document AI', 'Tender response', 'Human review'],
+    stack: ['Python', 'OpenAI'],
+    status: 'sanitized-summary'
+  },
+  {
+    slug: 'sports-data-delivery-pipeline',
+    title: 'Sports Data Extraction and Delivery Pipeline',
+    summary: 'Multi-source player-prop collection, normalization, branded report generation, database persistence, and delivery through Drive and messaging channels.',
+    topics: ['Data pipelines', 'Reporting', 'Notifications'],
+    stack: ['Python', 'PostgreSQL', 'Playwright', 'Google Cloud'],
+    status: 'sanitized-summary'
+  },
+  {
+    slug: 'shopify-inventory-sync',
+    title: 'Shopify Inventory Synchronization',
+    summary: 'Scheduled supplier monitoring and variant-level Shopify updates with backorder, discontinued-state, archive, and operational tracking rules.',
+    topics: ['Ecommerce', 'Inventory', 'Automation'],
+    stack: ['Python', 'Shopify', 'Playwright'],
+    status: 'sanitized-summary'
+  },
+  {
+    slug: 'browser-automation-desktop-console',
+    title: 'Browser Automation Desktop Console',
+    summary: 'Operator interface for launching authenticated browser tasks, controlling session-oriented execution, and reviewing operational status.',
+    topics: ['Browser automation', 'Authenticated sessions', 'Operator controls'],
+    stack: ['Python'],
+    status: 'sanitized-summary'
   }
 ];
 
-const topicOrder = ['All', 'AI Automation', 'Backend/API', 'CRM', 'Trading', 'Scraping', 'Document AI', 'Mobile'];
-const state = { projects: [], filtered: [], topic: 'All', query: '' };
+const topicOrder = ['All', 'Private AI', 'Backend/API', 'Business platforms', 'Document AI', 'Construction', 'Data pipelines', 'Ecommerce', 'Browser automation', 'Mobile'];
+const state = { projects: [], filtered: [], topic: 'All', query: '', view: 'featured' };
 
 const els = {
   count: document.getElementById('projectCount'),
@@ -61,6 +174,8 @@ const els = {
   filter: document.getElementById('topicFilter'),
   search: document.getElementById('projectSearch'),
   semanticSearch: document.getElementById('semanticSearchButton'),
+  featuredView: document.getElementById('featuredViewButton'),
+  allView: document.getElementById('allViewButton'),
   fab: document.getElementById('assistantFab'),
   assistant: document.getElementById('portfolioAssistant'),
   assistantClose: document.getElementById('assistantClose'),
@@ -103,19 +218,21 @@ function cleanDisplayTitle(value) {
 function normalizeProject(project, index) {
   const tags = toArray(pick(project, ['tags', 'topics', 'keywords'], []));
   const stack = toArray(pick(project, ['stack', 'technologies', 'tech_stack'], []));
-  const category = String(pick(project, ['category', 'topic', 'domain'], tags[0] || 'Backend/API'));
   const sourceTitle = String(pick(project, ['title', 'name', 'repo', 'repository'], `Project ${index + 1}`));
   const title = cleanDisplayTitle(sourceTitle) || sourceTitle;
   const summary = String(pick(project, ['summary', 'description', 'problem', 'readme_summary'], 'Portfolio record imported from project README.'));
   const id = String(pick(project, ['id', 'slug', 'repo'], sourceTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')));
+  const slug = String(pick(project, ['slug', 'repo', 'id'], id));
+  const profile = PROJECT_PROFILES[slug] || {};
+  const category = profile.category || String(pick(project, ['category', 'topic', 'domain'], tags[0] || 'Backend/API'));
 
   return {
     id,
-    slug: String(pick(project, ['slug', 'repo', 'id'], id)),
+    slug,
     title,
     sourceTitle,
     category,
-    industry: String(pick(project, ['industry', 'sector', 'category'], category)),
+    industry: profile.industry || String(pick(project, ['industry', 'sector', 'category'], category)),
     summary,
     description: String(pick(project, ['description', 'details', 'readme', 'notes'], '')),
     tags: [...new Set([...tags, ...stack].filter(Boolean))].slice(0, 7),
@@ -124,7 +241,8 @@ function normalizeProject(project, index) {
     repoUrl: String(pick(project, ['repo_url', 'repoUrl', 'url'], '')),
     status: String(pick(project, ['status'], 'production')),
     visibility: String(pick(project, ['visibility'], 'public')),
-    featured: Boolean(project.featured || index === 0)
+    role: profile.role || 'Design, implementation, validation, and delivery',
+    featured: FEATURED_SLUGS.includes(slug)
   };
 }
 
@@ -137,7 +255,7 @@ async function fetchProjects() {
   if (!response.ok) throw new Error(`Portfolio API ${response.status}`);
   const data = await response.json();
   const list = Array.isArray(data) ? data : (data.items || data.projects || data.records || []);
-  return list.map(normalizeProject);
+  return list.map(normalizeProject).filter((project) => !EXCLUDED_SLUGS.has(project.slug));
 }
 
 function renderFilters() {
@@ -161,6 +279,8 @@ function matchesTopic(project) {
   const topic = state.topic.toLowerCase();
   if (topic === 'backend/api') return haystack.includes('backend') || haystack.includes('api') || haystack.includes('fastapi');
   if (topic === 'document ai') return haystack.includes('document') || haystack.includes('pdf') || haystack.includes('rag');
+  if (topic === 'business platforms') return haystack.includes('platform') || haystack.includes('crm') || haystack.includes('scheduling');
+  if (topic === 'private ai') return haystack.includes('ai') || haystack.includes('llm') || haystack.includes('ollama') || haystack.includes('openai');
   return haystack.includes(topic);
 }
 
@@ -171,15 +291,30 @@ function matchesSearch(project) {
 }
 
 function applyFilters() {
-  state.filtered = state.projects.filter((project) => matchesTopic(project) && matchesSearch(project));
+  const useFullLibrary = state.view === 'all' || Boolean(state.query) || state.topic !== 'All';
+  const source = useFullLibrary
+    ? state.projects
+    : FEATURED_SLUGS.map((slug) => state.projects.find((project) => project.slug === slug)).filter(Boolean);
+  state.filtered = source.filter((project) => matchesTopic(project) && matchesSearch(project));
   renderFilters();
+  renderViewSwitch();
   renderProjects();
 }
 
+function renderViewSwitch() {
+  const featured = state.view === 'featured';
+  els.featuredView.classList.toggle('active', featured);
+  els.featuredView.setAttribute('aria-pressed', String(featured));
+  els.allView.classList.toggle('active', !featured);
+  els.allView.setAttribute('aria-pressed', String(!featured));
+}
+
 function renderProjects() {
-  els.count.textContent = String(state.projects.length);
+  els.count.textContent = String(state.filtered.length);
   els.status.textContent = state.filtered.length
-    ? `${state.filtered.length} portfolio record${state.filtered.length === 1 ? '' : 's'}`
+    ? (state.view === 'featured' && !state.query && state.topic === 'All'
+      ? `${state.filtered.length} flagship projects selected from the approved portfolio.`
+      : `${state.filtered.length} approved portfolio record${state.filtered.length === 1 ? '' : 's'} shown.`)
     : 'No matching portfolio records.';
 
   els.grid.innerHTML = state.filtered.map((project, index) => {
@@ -197,9 +332,9 @@ function renderProjects() {
         </div>
         <p>${escapeHtml(project.summary)}</p>
         <div class="project-tags">${tags.slice(0, 6).map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</div>
-        <div class="project-meta">Stack: ${escapeHtml((project.stack.length ? project.stack : tags).slice(0, 4).join(' · ') || 'Project README')}</div>
+        <div class="project-meta">Role: ${escapeHtml(project.role)}</div>
         <div class="project-actions">
-          <a class="project-link" href="${escapeHtml(detailUrl)}">Open project -></a>
+          <a class="project-link" href="${escapeHtml(detailUrl)}">View case study →</a>
           <button class="project-link project-ask" type="button" data-project="${escapeHtml(project.title)}">Ask</button>
         </div>
       </article>
@@ -240,7 +375,10 @@ async function runSemanticSearch() {
     if (!response.ok) throw new Error(`Search API ${response.status}`);
     const data = await response.json();
     const list = Array.isArray(data) ? data : (data.items || data.projects || data.results || []);
-    state.filtered = list.map(normalizeProject).filter(matchesTopic);
+    state.filtered = list
+      .map(normalizeProject)
+      .filter((project) => !EXCLUDED_SLUGS.has(project.slug))
+      .filter(matchesTopic);
     renderProjects();
   } catch (error) {
     applyFilters();
@@ -303,6 +441,17 @@ async function askAssistant(question) {
 }
 
 function bindEvents() {
+  els.featuredView.addEventListener('click', () => {
+    state.view = 'featured';
+    state.topic = 'All';
+    state.query = '';
+    els.search.value = '';
+    applyFilters();
+  });
+  els.allView.addEventListener('click', () => {
+    state.view = 'all';
+    applyFilters();
+  });
   els.search.addEventListener('input', () => {
     state.query = els.search.value.trim();
     applyFilters();

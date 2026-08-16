@@ -1,5 +1,98 @@
 import { API_BASE_URL } from './apiConfig.js';
 
+const EXCLUDED_SLUGS = new Set(['trkelnit-mini-yacht', 'trkelnit', 'trkelnit-github-io']);
+
+const PROJECT_DETAILS = {
+  'trkelnit-production-platform': {
+    category: 'Business platforms',
+    industry: 'Professional services',
+    problem: 'Public intake, customer access, staff operations, mobile administration, billing, scheduling, and production infrastructure needed to work as one controlled system instead of separate tools.',
+    solution: 'A deployed platform connecting the public website, Cognito customer portal, protected staff CRM, FastAPI services, PostgreSQL records, Android administration, notifications, and cloud operations.',
+    responsibilities: ['Requirements and system architecture', 'Python APIs and PostgreSQL data model', 'Responsive public, customer, and staff interfaces', 'Android CRM integration', 'Deployment, authentication, monitoring, and operational runbooks'],
+    evidence: ['Public website and customer portal are deployed', 'Staff and mobile clients use protected production APIs', 'Current architecture diagram is published below', 'Private source, credentials, and customer data remain excluded']
+  },
+  'crm-mobile-admin': {
+    category: 'Mobile',
+    industry: 'Mobile operations',
+    problem: 'Staff needed secure mobile access to operational records and notifications without reproducing business logic inside a disconnected app.',
+    solution: 'A Kotlin and Jetpack Compose client connected to authenticated FastAPI administration endpoints, Firebase notifications, and a controlled internal release workflow.',
+    responsibilities: ['Mobile information architecture and Compose UI', 'Retrofit API integration and authenticated requests', 'CRM record, meeting, invoice, payment, and proposal workflows', 'Notification and application-update delivery'],
+    evidence: ['Connected to the production CRM backend', 'Firebase Cloud Messaging supports phone notifications', 'Release metadata and Firebase App Distribution support controlled internal updates']
+  },
+  'public-chat-intake-assistant': {
+    category: 'Private AI',
+    industry: 'AI-assisted operations',
+    problem: 'A public assistant must answer general questions and collect useful project intake while preventing public access to private CRM context.',
+    solution: 'A consent-aware, session-based assistant that routes questions, quotes, meetings, and attachments into structured workflows with persistence and human handoff.',
+    responsibilities: ['Conversation and intake-state design', 'Public/private data boundary and guardrails', 'FastAPI routing and PostgreSQL persistence', 'Consent-aware browser memory and responsive chat UI'],
+    evidence: ['Deployed on the TrkElnIt website', 'Quote and meeting routes connect to operational workflows', 'Public sessions cannot retrieve private CRM records']
+  },
+  'meeting-booking-availability-engine': {
+    category: 'Business platforms',
+    industry: 'Scheduling and operations',
+    problem: 'Public availability, internal blockouts, duration pricing, bookings, and staff notifications require one reliable source of truth.',
+    solution: 'A calendar booking flow backed by FastAPI and PostgreSQL, with availability administered through the CRM and shared with web and Android clients.',
+    responsibilities: ['Availability and booking data model', 'Public and protected administration APIs', 'Responsive booking experience', 'Payment-ready duration pricing and notification integration'],
+    evidence: ['Public booking flow is deployed', 'Availability and blockouts are CRM-managed', 'Bookings persist as operational records']
+  },
+  'autodesk-bim-file-uploader': {
+    category: 'Construction',
+    industry: 'Construction / BIM',
+    problem: 'Large BIM and Revit files require authenticated cloud storage workflows, bucket management, upload handling, and API-response validation.',
+    solution: 'A Python integration with Autodesk Platform Services covering OAuth tokens, bucket discovery and provisioning, large-file upload, and validated responses.',
+    responsibilities: ['OAuth and Autodesk API integration', 'Storage discovery and provisioning', 'Large design-file upload workflow', 'Response validation and operational error handling'],
+    evidence: ['Completed implementation documented as a sanitized private case study', 'Credentials, customer files, and confidential source are not published']
+  },
+  'construction-estimate-automation': {
+    category: 'Construction',
+    industry: 'Construction estimating',
+    problem: 'Construction estimates and proposals become error-prone when formulas, dropdowns, validation, and formatting are rebuilt manually.',
+    solution: 'A Python-driven Google Sheets workflow that generates structured estimates and proposals from reusable formulas, validation rules, and templates.',
+    responsibilities: ['Estimate and proposal structure', 'Formula and validation generation', 'Reusable formatting and templates', 'API retry handling and repeatable execution'],
+    evidence: ['Completed implementation documented as a sanitized private case study', 'Confidential estimate data and customer source are excluded']
+  },
+  'records-ocr-workflow': {
+    category: 'Document AI',
+    industry: 'Document operations',
+    problem: 'Scanned records required authenticated retrieval, field extraction, validation, and delivery without turning uncertain OCR output into unchecked data.',
+    solution: 'A browser and OCR workflow that captures source documents, parses fields with local-model assistance, supports review, and delivers structured results with completion alerts.',
+    responsibilities: ['Authenticated browser retrieval', 'Document capture and OCR', 'Local-model field parsing', 'Review, structured delivery, and completion notifications'],
+    evidence: ['Completed implementation documented as a sanitized private case study', 'Private records, credentials, and raw source are excluded']
+  },
+  'tender-response-ai': {
+    category: 'Document AI',
+    industry: 'Tender and proposal operations',
+    problem: 'Tender packages distribute questions and supporting context across office documents, making consistent response preparation slow and difficult to review.',
+    solution: 'An AI-assisted document workflow that extracts questions, assembles context, drafts structured responses, and keeps a human review step before delivery.',
+    responsibilities: ['Tender document ingestion', 'Question extraction and context assembly', 'Structured AI drafting', 'Human-review workflow and document handling'],
+    evidence: ['Completed implementation documented as a sanitized private case study', 'No confidential tender files or unreviewed customer content are published']
+  },
+  'sports-data-delivery-pipeline': {
+    category: 'Data pipelines',
+    industry: 'Sports analytics',
+    problem: 'Multi-league player-prop data needed repeatable collection, normalization, visual reporting, persistence, and multi-channel delivery.',
+    solution: 'A production-oriented Python pipeline that collects data, normalizes JSON and CSV records, generates branded reports, stores results, and routes delivery notifications.',
+    responsibilities: ['Multi-source extraction', 'Normalization and validation', 'Automated visual-report generation', 'Database, Drive, Telegram, and Discord delivery'],
+    evidence: ['Completed implementation documented as a sanitized private case study', 'Private endpoints, credentials, and customer data are excluded']
+  },
+  'shopify-inventory-sync': {
+    category: 'Ecommerce',
+    industry: 'Ecommerce operations',
+    problem: 'Supplier availability and Shopify variant states can drift when backorders, discontinued products, and archive rules are handled manually.',
+    solution: 'A scheduled Python service that monitors supplier stock and updates Shopify product and variant state through authenticated workflows and explicit business rules.',
+    responsibilities: ['Supplier monitoring', 'Variant-level inventory updates', 'Backorder, discontinued, and archive rules', 'Scheduling and operational tracking'],
+    evidence: ['Completed implementation documented as a sanitized private case study', 'Store credentials and private catalog data are excluded']
+  },
+  'browser-automation-desktop-console': {
+    category: 'Browser automation',
+    industry: 'Browser automation',
+    problem: 'Authenticated browser workflows need visible operator controls, persistent execution context, status feedback, and repeatable task launching.',
+    solution: 'A desktop operator console for starting and supervising session-oriented browser automation while keeping credentials and browser profiles private.',
+    responsibilities: ['Operator workflow and interface', 'Authenticated session-oriented execution', 'Task launching and status feedback', 'Reusable automation and operational error handling'],
+    evidence: ['Completed implementation documented as a sanitized private case study', 'Credentials, browser profiles, customer data, and private infrastructure are excluded']
+  }
+};
+
 const fallbackProjects = [
   {
     title: 'Rafik AI Agent Orchestrator',
@@ -116,10 +209,11 @@ function cleanDisplayTitle(value) {
 function normalizeProject(project, index) {
   const topics = toArray(pick(project, ['topics', 'tags', 'keywords'], []));
   const stack = toArray(pick(project, ['stack', 'technologies', 'tech_stack'], []));
-  const category = String(pick(project, ['category', 'topic', 'domain'], topics[0] || 'Backend/API'));
   const sourceTitle = String(pick(project, ['title', 'name', 'repo', 'repository'], `Project ${index + 1}`));
   const title = cleanDisplayTitle(sourceTitle) || sourceTitle;
   const slug = String(pick(project, ['slug', 'repo', 'id'], slugify(sourceTitle)));
+  const profile = PROJECT_DETAILS[slug] || null;
+  const category = profile?.category || String(pick(project, ['category', 'topic', 'domain'], topics[0] || 'Backend/API'));
   const summary = String(pick(project, ['summary', 'problem', 'readme_summary'], 'Portfolio record imported from project README.'));
   const description = String(pick(project, ['description', 'details', 'readme', 'notes'], summary));
 
@@ -129,7 +223,7 @@ function normalizeProject(project, index) {
     title,
     sourceTitle,
     category,
-    industry: String(pick(project, ['industry', 'sector', 'category'], category)),
+    industry: profile?.industry || String(pick(project, ['industry', 'sector', 'category'], category)),
     summary,
     description,
     topics: [...new Set(topics.filter(Boolean))],
@@ -140,7 +234,8 @@ function normalizeProject(project, index) {
     diagrams: normalizeDiagrams(pick(project, ['diagrams', 'architecture_diagrams', 'architectureDiagrams', 'diagram_url', 'diagramUrl'], [])),
     status: String(pick(project, ['status'], 'production')),
     visibility: String(pick(project, ['visibility'], 'public')),
-    featured: Boolean(project.featured || index === 0)
+    profile,
+    featured: Boolean(profile || project.featured || index === 0)
   };
 }
 
@@ -153,7 +248,7 @@ async function fetchProjects() {
   if (!response.ok) throw new Error(`Portfolio API ${response.status}`);
   const data = await response.json();
   const list = Array.isArray(data) ? data : (data.items || data.projects || data.records || []);
-  return list.map(normalizeProject);
+  return list.map(normalizeProject).filter((project) => !EXCLUDED_SLUGS.has(project.slug));
 }
 
 function selectedProjectSlug() {
@@ -457,6 +552,28 @@ function renderDiagrams(project) {
 }
 
 function renderDescription(project) {
+  if (project.profile) {
+    els.description.innerHTML = `
+      <section class="project-copy-section">
+        <h2>Problem</h2>
+        <p>${escapeHtml(project.profile.problem)}</p>
+      </section>
+      <section class="project-copy-section">
+        <h2>Solution</h2>
+        <p>${escapeHtml(project.profile.solution)}</p>
+      </section>
+      <section class="project-copy-section">
+        <h2>Responsibilities</h2>
+        ${renderList(project.profile.responsibilities)}
+      </section>
+      <section class="project-copy-section project-evidence-section">
+        <h2>Delivery evidence</h2>
+        ${renderList(project.profile.evidence)}
+      </section>
+    `;
+    return;
+  }
+
   const details = String(project.description || project.summary || '').trim();
   const sentences = splitSentences(details);
   const overview = sentences.slice(0, 3).join(' ') || project.summary;
@@ -570,6 +687,31 @@ function renderProject(project) {
   document.title = `TrkElnIt Portfolio | ${project.title}`;
   const metaDescription = document.querySelector('meta[name="description"]');
   if (metaDescription) metaDescription.setAttribute('content', project.summary.slice(0, 155));
+  const projectUrl = `https://trkelnit.github.io/project.html?project=${encodeURIComponent(project.slug)}`;
+  const canonical = document.querySelector('link[rel="canonical"]');
+  if (canonical) canonical.setAttribute('href', projectUrl);
+  const socialValues = {
+    'meta[property="og:title"]': project.title,
+    'meta[property="og:description"]': project.summary.slice(0, 200),
+    'meta[property="og:url"]': projectUrl
+  };
+  Object.entries(socialValues).forEach(([selector, value]) => {
+    const element = document.querySelector(selector);
+    if (element) element.setAttribute('content', value);
+  });
+  const schema = document.getElementById('projectSchema');
+  if (schema) {
+    schema.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'CreativeWork',
+      name: project.title,
+      description: project.summary,
+      url: projectUrl,
+      creator: { '@type': 'Organization', name: 'TrkElnIt', url: 'https://trkelnit.com/' },
+      keywords: [...new Set([...project.topics, ...project.stack])].join(', '),
+      genre: project.category
+    });
+  }
 
   els.title.textContent = project.title;
   els.summary.textContent = project.summary;
@@ -581,9 +723,9 @@ function renderProject(project) {
   renderDiagrams(project);
   els.meta.innerHTML = [
     ['Industry', project.industry],
-    ['Status', project.status],
-    ['Visibility', project.visibility],
-    ['Repository', project.repoName || 'Private or not listed']
+    ['Delivery record', project.status === 'production' ? 'Production' : 'Sanitized case study'],
+    ['Source access', project.repoUrl && project.visibility !== 'private' ? 'Public repository' : 'Private implementation'],
+    ['Confidentiality', 'Credentials and customer data excluded']
   ].map(([label, value]) => `
     <div>
       <span>${escapeHtml(label)}</span>
