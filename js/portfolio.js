@@ -260,6 +260,17 @@ function categoryIcon(project) {
   return CATEGORY_ICONS[project.theme] || CATEGORY_ICONS.default;
 }
 
+function publicAssetUrl(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  if (/^https?:\/\//i.test(raw)) return raw;
+  try {
+    return new URL(raw, `${API_BASE_URL.replace(/\/$/, '')}/`).href;
+  } catch (_error) {
+    return raw;
+  }
+}
+
 function normalizeProject(project, index) {
   const tags = toArray(pick(project, ['tags', 'topics', 'keywords'], []));
   const stack = toArray(pick(project, ['stack', 'technologies', 'tech_stack'], []));
@@ -270,6 +281,8 @@ function normalizeProject(project, index) {
   const slug = String(pick(project, ['slug', 'repo', 'id'], id));
   const profile = PROJECT_PROFILES[slug] || {};
   const category = profile.category || String(pick(project, ['category', 'topic', 'domain'], tags[0] || 'Backend/API'));
+  const media = Array.isArray(project.media) ? project.media : [];
+  const thumbnailItem = media.find((item) => item?.role === 'thumbnail') || media.find((item) => item?.kind === 'image');
 
   const normalized = {
     id,
@@ -289,6 +302,7 @@ function normalizeProject(project, index) {
     role: profile.role || 'Design, implementation, validation, and delivery',
     featured: FEATURED_SLUGS.includes(slug)
   };
+  normalized.thumbnail = publicAssetUrl(thumbnailItem?.url);
   normalized.theme = projectTheme(normalized);
   normalized.themeLabel = CATEGORY_LABELS[normalized.theme] || CATEGORY_LABELS.default;
   return normalized;
@@ -386,7 +400,8 @@ function renderProjects() {
     const recordType = project.status.toLowerCase() === 'production' ? 'Production' : 'Delivered';
     return `
       <article class="project-card ${project.featured ? 'featured' : ''}" data-theme="${escapeHtml(project.theme)}" data-project-url="${escapeHtml(detailUrl)}" role="link" tabindex="0" aria-label="Open ${escapeHtml(project.title)} project page">
-        <div class="project-card-visual" aria-hidden="true">
+        <div class="project-card-visual ${project.thumbnail ? 'has-thumbnail' : ''}" aria-hidden="true">
+          ${project.thumbnail ? `<img class="project-card-thumbnail" src="${escapeHtml(project.thumbnail)}" alt="" loading="lazy" />` : ''}
           <span class="project-visual-type">${escapeHtml(project.themeLabel)}</span>
           <span class="project-visual-index">${String(index + 1).padStart(2, '0')}</span>
           <div class="project-visual-icon">${categoryIcon(project)}</div>

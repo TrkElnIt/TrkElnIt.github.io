@@ -232,6 +232,8 @@ const els = {
   meta: document.getElementById('projectMeta'),
   diagramsSection: document.getElementById('projectDiagramsSection'),
   diagrams: document.getElementById('projectDiagrams'),
+  mediaSection: document.getElementById('projectMediaSection'),
+  media: document.getElementById('projectMedia'),
   repoLink: document.getElementById('projectRepoLink'),
   related: document.getElementById('relatedProjects'),
   askButton: document.getElementById('projectAskButton'),
@@ -296,6 +298,35 @@ function normalizeDiagrams(value) {
     .filter(Boolean);
 }
 
+function publicAssetUrl(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  if (/^https?:\/\//i.test(raw)) return raw;
+  try {
+    return new URL(raw, `${API_BASE_URL.replace(/\/$/, '')}/`).href;
+  } catch (_error) {
+    return raw;
+  }
+}
+
+function normalizeMedia(value) {
+  if (!Array.isArray(value)) return [];
+  return value.map((item) => {
+    if (!item || typeof item !== 'object') return null;
+    const url = publicAssetUrl(item.url);
+    if (!url) return null;
+    return {
+      url,
+      kind: String(item.kind || 'image').toLowerCase(),
+      role: String(item.role || 'gallery').toLowerCase(),
+      title: String(item.title || item.filename || 'Project media'),
+      alt: String(item.alt || item.title || 'Project media'),
+      caption: String(item.caption || ''),
+      contentType: String(item.content_type || '')
+    };
+  }).filter(Boolean);
+}
+
 function pick(project, keys, fallback = '') {
   for (const key of keys) {
     if (project && project[key] !== undefined && project[key] !== null && String(project[key]).trim() !== '') return project[key];
@@ -342,7 +373,14 @@ function normalizeProject(project, index) {
   const profile = PROJECT_DETAILS[slug] || null;
   const category = profile?.category || String(pick(project, ['category', 'topic', 'domain'], topics[0] || 'Backend/API'));
   const summary = String(pick(project, ['summary', 'problem', 'readme_summary'], 'Portfolio record imported from project README.'));
-  const description = String(pick(project, ['description', 'details', 'readme', 'notes'], summary));
+  const description = String(pick(project, ['description', 'readme', 'notes'], summary));
+  const details = project.details && typeof project.details === 'object' && !Array.isArray(project.details)
+    ? project.details
+    : {};
+  const media = normalizeMedia(project.media);
+  const mediaDiagrams = media
+    .filter((item) => item.kind === 'diagram')
+    .map((item) => ({ title: item.title, image: item.url, full: item.url, description: item.caption || item.alt }));
 
   const normalized = {
     id: String(pick(project, ['id'], slug)),
@@ -358,7 +396,12 @@ function normalizeProject(project, index) {
     stack,
     repoName: String(pick(project, ['repo_name', 'repoName', 'repo'], '')),
     repoUrl: String(pick(project, ['repo_url', 'repoUrl', 'url'], '')),
-    diagrams: normalizeDiagrams(pick(project, ['diagrams', 'architecture_diagrams', 'architectureDiagrams', 'diagram_url', 'diagramUrl'], [])),
+    diagrams: [
+      ...normalizeDiagrams(pick(project, ['diagrams', 'architecture_diagrams', 'architectureDiagrams', 'diagram_url', 'diagramUrl'], [])),
+      ...mediaDiagrams
+    ],
+    media,
+    details,
     status: String(pick(project, ['status'], 'production')),
     visibility: String(pick(project, ['visibility'], 'public')),
     profile,
@@ -367,6 +410,49 @@ function normalizeProject(project, index) {
   normalized.theme = projectTheme(normalized);
   normalized.themeLabel = CATEGORY_LABELS[normalized.theme] || CATEGORY_LABELS.default;
   return normalized;
+}
+
+function renderSafeMarkdown(value) {
+  const lines = String(value || '').replace(/\r/g, '').split('\n');
+  const output = [];
+  let list = [];
+  let paragraph = [];
+  const flushList = () => {
+    if (!list.length) return;
+    output.push(`<ul>${list.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`);
+    list = [];
+  };
+  const flushParagraph = () => {
+    if (!paragraph.length) return;
+    output.push(`<p>${escapeHtml(paragraph.join(' '))}</p>`);
+    paragraph = [];
+  };
+  lines.forEach((rawLine) => {
+    const line = rawLine.trim();
+    if (!line) {
+      flushParagraph();
+      flushList();
+      return;
+    }
+    const heading = line.match(/^#{1,4}\s+(.+)$/);
+    if (heading) {
+      flushParagraph();
+      flushList();
+      output.push(`<h3>${escapeHtml(heading[1])}</h3>`);
+      return;
+    }
+    const bullet = line.match(/^[-*+]\s+(.+)$/);
+    if (bullet) {
+      flushParagraph();
+      list.push(bullet[1]);
+      return;
+    }
+    flushList();
+    paragraph.push(line);
+  });
+  flushParagraph();
+  flushList();
+  return output.join('');
 }
 
 function projectDetailUrl(project) {
@@ -681,7 +767,33 @@ function renderDiagrams(project) {
   els.diagrams.innerHTML = architectureHtml + imageDiagrams;
 }
 
+function renderMedia(project) {
+  if (!els.mediaSection || !els.media) return;
+  const media = (project.media || []).filter((item) => item.role !== 'thumbnail' && item.kind !== 'diagram');
+  els.mediaSection.hidden = media.length === 0;
+  els.media.innerHTML = media.map((item) => {
+    const visual = item.kind === 'video'
+      ? `<video controls preload="metadata"><source src="${escapeHtml(item.url)}" type="${escapeHtml(item.contentType)}" />Your browser cannot play this video.</video>`
+      : `<a href="${escapeHtml(item.url)}" target="_blank" rel="noreferrer"><img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.alt)}" loading="lazy" /></a>`;
+    return `<figure class="project-media-card">${visual}<figcaption><strong>${escapeHtml(item.title)}</strong>${item.caption ? `<span>${escapeHtml(item.caption)}</span>` : ''}</figcaption></figure>`;
+  }).join('');
+}
+
 function renderDescription(project) {
+  const suppliedSections = [
+    ['Project overview', project.details?.overview],
+    ['Architecture and workflow', project.details?.architecture],
+    ['Results and evidence', project.details?.results]
+  ].filter(([, value]) => String(value || '').trim());
+  if (suppliedSections.length) {
+    els.description.innerHTML = suppliedSections.map(([title, value]) => `
+      <section class="project-copy-section">
+        <h2>${escapeHtml(title)}</h2>
+        <div class="project-markdown-copy">${renderSafeMarkdown(value)}</div>
+      </section>
+    `).join('');
+    return;
+  }
   if (project.profile) {
     els.description.innerHTML = `
       <section class="project-copy-section">
@@ -783,16 +895,24 @@ function renderProjectOverview(project) {
   const stackPreview = project.stack.slice(0, 3);
 
   if (els.visual) {
+    const thumbnail = (project.media || []).find((item) => item.role === 'thumbnail')
+      || (project.media || []).find((item) => item.kind === 'image');
     els.visual.dataset.theme = project.theme;
     els.visual.innerHTML = `
       <div class="project-detail-visual-head">
         <span>${escapeHtml(project.themeLabel)}</span>
         <strong>${escapeHtml(delivery)}</strong>
       </div>
-      <div class="project-detail-visual-core" aria-hidden="true">
-        <div class="project-detail-visual-icon">${categoryIcon(project)}</div>
-        <div class="project-detail-visual-rings"><i></i><i></i><i></i></div>
-      </div>
+      ${thumbnail ? `
+        <a class="project-detail-thumbnail" href="${escapeHtml(thumbnail.url)}" target="_blank" rel="noreferrer">
+          <img src="${escapeHtml(thumbnail.url)}" alt="${escapeHtml(thumbnail.alt)}" />
+        </a>
+      ` : `
+        <div class="project-detail-visual-core" aria-hidden="true">
+          <div class="project-detail-visual-icon">${categoryIcon(project)}</div>
+          <div class="project-detail-visual-rings"><i></i><i></i><i></i></div>
+        </div>
+      `}
       <div class="project-detail-system-flow" aria-label="System delivery flow">
         <span>Input</span><i></i><span>Processing</span><i></i><span>Delivery</span>
       </div>
@@ -911,6 +1031,7 @@ function renderProject(project) {
   renderTags(els.stack, project.stack, 'Stack data is not listed for this project.');
   renderTags(els.topics, project.topics.length ? project.topics : project.tags, 'Topics are not listed for this project.');
   renderDiagrams(project);
+  renderMedia(project);
   els.meta.innerHTML = [
     ['Industry', project.industry],
     ['Delivery record', project.status === 'production' ? 'Production' : 'Sanitized case study'],

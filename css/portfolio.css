@@ -834,6 +834,25 @@ h1 span {
   place-items: center;
 }
 
+.project-detail-thumbnail {
+  position: relative;
+  z-index: 2;
+  display: block;
+  min-height: 210px;
+  margin: 22px 0 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.project-detail-thumbnail img {
+  display: block;
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+}
+
 .project-detail-visual-icon {
   position: relative;
   z-index: 2;
@@ -1302,8 +1321,105 @@ h1 span {
   background: #000;
 }
 
+.project-media-section {
+  padding-top: 10px;
+}
+
+.project-media-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.project-media-card {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 16px 44px rgba(16, 24, 40, 0.08);
+}
+
+.project-media-card a,
+.project-media-card img,
+.project-media-card video {
+  display: block;
+  width: 100%;
+}
+
+.project-media-card img,
+.project-media-card video {
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  background: #07162b;
+}
+
+.project-media-card figcaption {
+  display: grid;
+  gap: 6px;
+  padding: 18px 20px;
+}
+
+.project-media-card figcaption strong {
+  color: #101828;
+  font-size: 17px;
+}
+
+.project-media-card figcaption span,
+.project-markdown-copy p,
+.project-markdown-copy li {
+  color: #536071;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.project-markdown-copy h3 {
+  margin: 20px 0 8px;
+  color: #101828;
+  font-size: 18px;
+}
+
+.project-markdown-copy ul {
+  margin: 10px 0 0;
+  padding-left: 20px;
+}
+
+.project-card-visual.has-thumbnail {
+  padding: 0;
+}
+
+.project-card-thumbnail {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-card-visual.has-thumbnail::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(7, 22, 43, 0.12), rgba(7, 22, 43, 0.64));
+}
+
+.project-card-visual.has-thumbnail .project-visual-type,
+.project-card-visual.has-thumbnail .project-visual-index {
+  z-index: 2;
+  color: #fff;
+}
+
+.project-card-visual.has-thumbnail .project-visual-icon,
+.project-card-visual.has-thumbnail .project-visual-flow {
+  display: none;
+}
+
 .project-related-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 720px) {
+  .project-media-grid { grid-template-columns: 1fr; }
 }
 
 .assistant-fab {
